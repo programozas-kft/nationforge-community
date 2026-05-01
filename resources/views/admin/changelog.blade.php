@@ -82,7 +82,7 @@
 
 <div class="timeline">
 
-    <!-- v1.5.0 LATEST -->
+    <!-- v1.5.1 LATEST -->
     <div class="tl-item">
         <div class="tl-dot latest">
             <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
@@ -90,8 +90,27 @@
         <div class="tl-content">
             <div class="tl-header">
                 <div class="tl-title">
-                    v1.5.0
+                    v1.5.1
                     <span class="tl-badge" style="background:rgba(10,179,156,0.1);color:#0ab39c;">Aktuális, Legújabb</span>
+                </div>
+                <div class="tl-date">2026. május 1.</div>
+            </div>
+            <ul>
+                <li><strong>Elrendezés és görgetés javítása:</strong> A teljes admin felület layoutjának optimalizálása (CSS <code>calc</code> használata a Flexbox korlátok helyett), így a hosszú tartalmak ezentúl tökéletesen görgethetők maradnak.</li>
+                <li><strong>Dinamikus számlálók a menüben:</strong> A bal oldali menüsáv mostantól valós időben mutatja az adatbázisban lévő rekordok pontos számát a modulok (Kapcsolatok, Projektek stb.) mellett.</li>
+                <li><strong>Livewire 404 hiba javítása Forge-on:</strong> A rendszer automatikusan publikálja a Livewire asseteket telepítéskor (<code>post-autoload-dump</code>), és be lett állítva a pontos statikus fizikai elérési út, kiküszöbölve a Nginx hibás `.js` fájl kiszolgálását az éles szerveren.</li>
+                <li><strong>Beragadt csomagok takarítása:</strong> A Filament végleges eltávolításának utolsó lépéseként a felesleges <code>filament:upgrade</code> parancs kikerült a Composer folyamatból, ami eddig telepítési hibát okozott.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.5.0 -->
+    <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.5.0
                 </div>
                 <div class="tl-date">2026. május 1.</div>
             </div>

@@ -1,0 +1,65 @@
+[
+    {
+        "id": 1,
+        "menu_key": "fooldal",
+        "title": "Főoldal",
+        "content": "A Fooldal attekintost nyujt a rendszer legfontosabb adatairol.\r\n\r\n**Statisztikai kartyak** - Az oldal teten negy osszesito kartya lathato:\r\n- **Osszes kapcsolat** - a rendszerben nyilvantartott szemelyek szama, plusz az adott havi uj felvetelk\r\n- **Kozelgo esemeny** - jovobeli esemenyek szama\r\n- **Osszes adomany** - a beerkezett adományok forint osszege\r\n- **Hirlevel feliratkozo** - az aktiv feliratkozok szama\r\n\r\n**Legujabb kapcsolatok** - A legutobb felvett szemelyek listaja. Kattintassal megnyilik a reszletes profil.\r\n\r\n**Kozelgo esemenyek** - A legkozelebbi programok datummal, idoponttal es helyszinnel.",
+        "sort_order": 1,
+        "created_at": "2026-04-23T19:39:42.000000Z",
+        "updated_at": "2026-04-23T19:41:17.000000Z"
+    },
+    {
+        "id": 2,
+        "menu_key": "kapcsolatok",
+        "title": "Kapcsolatok",
+        "content": "A Kapcsolatok modul a szemelyek es szervezetek teljes nyilvantartasara szolgal.\n\n**Uj kapcsolat felvetele** - Kattints az \"Uj kapcsolat\" gombra. A felugro ablakban megadhato a nev, email, telefon, varos, statusz, forras es megjegyzes. Profilkep is feltoltheto.\n\n**Szerkesztes** - Kattints barmelyik sorra a tablazatban; a szerkeszto ablak azonnal megnyilik az aktualis adatokkal.\n\n**Statuszok:**\n- **Tag** - aktiv szervezeti tag\n- **Tamogato** - szimpatizans, de nem tag\n- **Adományozo** - penzugyileg tamogato szemely\n- **VIP** - kiemelt kapcsolat\n- **Inaktiv** - jelenleg nem aktiv szemely\n\n**Hirlevel** - A feliratkozas jelolonegyzet mutatja, ki kap email kommunikaciot.",
+        "sort_order": 2,
+        "created_at": "2026-04-23T19:39:42.000000Z",
+        "updated_at": "2026-04-23T19:39:42.000000Z"
+    },
+    {
+        "id": 3,
+        "menu_key": "esemenyek",
+        "title": "Események",
+        "content": "Az Esemenyek modul az osszes szervezett program kezelesere szolgal.\n\n**Uj esemeny letrehozasa** - Kattints az \"Uj esemeny\" gombra. Megadhato:\n- Esemeny neve es tipusa\n- Kezdes es befejezes idopontja\n- Helyszin (varos, cim) vagy Online jelolo\n- Leiras es egyeb reszletek\n\n**Szerkesztes** - Kattints az esemeny sorar a tablazatban.\n\n**Torles** - A torles gombra kattintva megerosites utan az esemeny veglegesen torlodik.\n\n**Kozelgo esemenyek** - A Foolalon is megjelennek a hamarosan esedekesek.",
+        "sort_order": 3,
+        "created_at": "2026-04-23T19:39:42.000000Z",
+        "updated_at": "2026-04-23T19:39:42.000000Z"
+    },
+    {
+        "id": 4,
+        "menu_key": "csoportok",
+        "title": "Csoportok",
+        "content": "A Csoportok modul a kapcsolatok tematikus szervezesere szolgal.\n\n**Uj csoport letrehozasa** - Kattints az \"Uj csoport\" gombra, add meg a csoport nevet es leirassat.\n\n**Tagok kezelese** - A csoport szerkesztofeluleten tagok adhatoak hozza es tavolithatoak el.\n\n**Felhasznalás** - Csoportokkal konnyen szurodheto es celozható a kommunikacio, peldaul hirlevel-kuldesnel vagy esemeny-meghivasoknál.",
+        "sort_order": 4,
+        "created_at": "2026-04-23T19:39:42.000000Z",
+        "updated_at": "2026-04-23T19:39:42.000000Z"
+    },
+    {
+        "id": 5,
+        "menu_key": "adományok",
+        "title": "Adományok",
+        "content": "Az Adományok modul az osszes beerkező penzugyi tamogatas nyilvantartasara szolgal.\n\n**Adományok listaja** - A tablazatban lathato az adomanyozo neve, az osszeg (Ft), a beérkezes datuma es a fizetesi mod.\n\n**Reszletek** - Az adomanyra kattintva megjelennek a reszletes informaciok.\n\n**Torles** - Teves bejegyzes a torles gombbal eltavolithato.\n\n**Osszesito** - Az osszes adomany forint osszege a Foolalon a statisztikai kartyan is lathato.",
+        "sort_order": 5,
+        "created_at": "2026-04-23T19:39:42.000000Z",
+        "updated_at": "2026-04-23T19:39:42.000000Z"
+    },
+    {
+        "id": 6,
+        "menu_key": "felhasznalok",
+        "title": "Felhasználók",
+        "content": "A Felhasznalok oldalon az adminisztracios rendszer hozzaferesei kezelhetok.\n\n**Uj felhasznalo** - Kattints az \"Uj felhasznalo\" gombra. Kotelezo adatok: teljes nev, email cim, jelszo, szerepkor. Profilkep is feltoltheto.\n\n**Szerepkorok:**\n- **super-admin** - teljes hozzaferes mindenhez\n- **admin** - adminisztracios jogosultsag\n- **editor** - tartalom szerkesztesi jog\n- **member** - alapszintu hozzaferes\n\n**Szerkesztes** - Kattints a felhasznalo sorar. A jelszo mezot uresen hagyva a regi jelszo megmarad.\n\n**Sajat fiok** - A bejelentkezett felhasznalo sajat fiokjat nem lehet torolni.",
+        "sort_order": 6,
+        "created_at": "2026-04-23T19:39:42.000000Z",
+        "updated_at": "2026-04-23T19:39:42.000000Z"
+    },
+    {
+        "id": 7,
+        "menu_key": "beallitasok",
+        "title": "Beállítások",
+        "content": "A Beallitasok oldalon a rendszer alap konfiguracioja modosithato.\n\n**Altalanos beallitasok:**\n- **Rendszer neve** - a bongeszo fulon es az admin feluleten megjelenoő nev\n- **Alkalmazas URL** - csak a szerveren levo .env fajlban modosithato\n- **Nyelv** - jelenleg csak .env-ben allithato\n\n**Email beallitasok:**\n- **Felado neve** - kimeno emaileknel ez jelenik meg felladokent\n- **Felado email** - a valasz erre az email-re erkezik\n\n**Rendszerinformacio** - Az oldal aljan lathato a PHP verzio, a Laravel verzio es a jelenlegi kornyezet.",
+        "sort_order": 7,
+        "created_at": "2026-04-23T19:39:42.000000Z",
+        "updated_at": "2026-04-23T19:39:42.000000Z"
+    }
+]

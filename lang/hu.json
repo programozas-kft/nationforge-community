@@ -1,0 +1,21 @@
+{
+    "Email": "E-mail cím",
+    "Password": "Jelszó",
+    "Remember me": "Emlékezz rám",
+    "Forgot your password?": "Elfelejtette a jelszavát?",
+    "Log in": "Bejelentkezés",
+    "Register": "Regisztráció",
+    "Name": "Név",
+    "Confirm Password": "Jelszó megerősítése",
+    "Confirm": "Megerősítés",
+    "Email Password Reset Link": "Jelszó-visszaállító link küldése",
+    "Already registered?": "Már van fiókja?",
+    "This is a secure area of the application. Please confirm your password before continuing.": "Ez az alkalmazás egy védett területe. A folytatás előtt erősítse meg jelszavát.",
+    "Resend Verification Email": "Visszaigazoló e-mail újraküldése",
+    "Log Out": "Kijelentkezés",
+    "New Password": "Új jelszó",
+    "Reset Password": "Jelszó visszaállítása",
+    "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "Elfelejtette a jelszavát? Semmi gond. Adja meg e-mail címét, és küldünk egy jelszó-visszaállító linket, amellyel új jelszót választhat.",
+    "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.": "Köszönjük a regisztrációt! Mielőtt elkezdené, kérjük, erősítse meg e-mail címét az imént küldött linkre kattintva. Ha nem kapta meg az e-mailt, szívesen küldünk egy másikat.",
+    "A new verification link has been sent to the email address you provided during registration.": "Egy új visszaigazoló linket küldtünk a regisztrációkor megadott e-mail címre."
+}

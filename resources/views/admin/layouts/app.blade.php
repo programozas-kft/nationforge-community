@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Admin') | NationForge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        *, *::before, *::after { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f3f3f9; margin: 0; padding: 0; }
+
+        /* ── SIDEBAR ─────────────────────────────────── */
+        #sidebar {
+            width: 250px;
+            min-width: 250px;
+            background: linear-gradient(180deg, #405189 0%, #364474 100%);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.08) transparent;
+        }
+        #sidebar::-webkit-scrollbar { width: 4px; }
+        #sidebar::-webkit-scrollbar-track { background: transparent; }
+        #sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+
+        /* Brand */
+        .sb-brand {
+            display: flex; align-items: center; gap: 10px;
+            padding: 22px 20px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .sb-logo-icon {
+            width: 30px; height: 30px; border-radius: 6px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .sb-brand-name { color: #fff; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.02em; }
+
+        /* Section label */
+        .sb-section {
+            font-size: 0.625rem; font-weight: 700;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: #5a6587; padding: 20px 20px 6px;
+        }
+
+        /* Nav item (top-level) */
+        .sb-item {
+            display: flex; align-items: center;
+            padding: 9px 12px 9px 16px;
+            margin: 1px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            text-decoration: none;
+            color: #8a94b8;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            user-select: none;
+        }
+        .sb-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .sb-item.active { background: rgba(255,255,255,0.2); color: #fff; }
+        .sb-item.open   { background: rgba(255,255,255,0.08); color: #e8e4ff; }
+
+        .sb-item-icon {
+            width: 16px; height: 16px; flex-shrink: 0;
+            opacity: 0.7;
+        }
+        .sb-item.active .sb-item-icon { opacity: 1; color: #405189; }
+        .sb-item.active_SKIP .sb-item-icon,
+        .sb-item:hover  .sb-item-icon { opacity: 1; }
+
+        .sb-item-text { flex: 1; margin-left: 10px; }
+
+        .sb-item-badge {
+            font-size: 0.6rem; font-weight: 700; padding: 2px 6px;
+            border-radius: 4px; letter-spacing: 0.04em; text-transform: uppercase;
+            margin-right: 6px;
+        }
+        .badge-new  { background: rgba(10,179,156,0.2);  color: #0ab39c; }
+        .badge-hot  { background: rgba(240,101,72,0.2);  color: #f06548; }
+
+        .sb-arrow {
+            width: 14px; height: 14px; flex-shrink: 0;
+            transition: transform 0.2s;
+            opacity: 0.5;
+        }
+        .sb-item.open .sb-arrow { transform: rotate(90deg); }
+
+        /* Sub-menu */
+        .sb-sub {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.25s ease;
+        }
+        .sb-sub.open { max-height: 500px; }
+
+        .sb-sub-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 7px 16px 7px 44px;
+            margin: 1px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #7a84a8;
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s;
+        }
+        .sb-sub-item::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+            opacity: 0.4;
+            transition: opacity 0.15s, background 0.15s;
+        }
+        .sb-sub-item:hover { background: rgba(255,255,255,0.05); color: #c8cedf; }
+        .sb-sub-item:hover::before { opacity: 0.8; }
+        .sb-sub-item.active { color: #fff; font-weight: 500; }
+        .sb-sub-item.active::before { background: #fff; opacity: 1; }
+
+        /* User at bottom */
+        .sb-user {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 12px 10px;
+        }
+        .sb-user-card {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 10px; border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            margin-bottom: 4px;
+        }
+        .sb-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+        }
+        .sb-user-name { color: #c8cedf; font-size: 0.8rem; font-weight: 500; }
+        .sb-user-role { color: #5a6587; font-size: 0.7rem; }
+        .sb-logout {
+            display: flex; align-items: center; gap: 8px;
+            padding: 7px 10px; border-radius: 6px; margin: 0;
+            color: #7a84a8; font-size: 0.8rem; cursor: pointer;
+            background: none; border: none; width: 100%;
+            transition: background 0.15s, color 0.15s;
+        }
+        .sb-logout:hover { background: rgba(240,101,72,0.08); color: #f06548; }
+
+        /* ── TOPBAR ──────────────────────────────────── */
+        #topbar {
+            height: 60px;
+            background: #fff;
+            border-bottom: 1px solid #e9ebec;
+            box-shadow: 0 1px 10px rgba(58,53,65,0.06);
+            display: flex; align-items: center; padding: 0 24px; gap: 12px; flex-shrink: 0;
+        }
+        .tb-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #adb5bd; }
+        .tb-breadcrumb a { color: #adb5bd; text-decoration: none; }
+        .tb-breadcrumb a:hover { color: #405189; }
+        .tb-page-title { font-size: 0.875rem; font-weight: 600; color: #343a40; line-height: 1.2; }
+
+        /* ── CARDS & TABLE ───────────────────────────── */
+        .nf-card { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(56,65,74,0.12); border: 1px solid #e9ebec; }
+        .nf-card-header { padding: 14px 20px; border-bottom: 1px solid #e9ebec; font-size: 0.875rem; font-weight: 600; color: #343a40; display: flex; align-items: center; justify-content: space-between; }
+
+        .nf-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+        .nf-table thead th { padding: 10px 16px; background: #f8f9fa; border-bottom: 1px solid #e9ebec; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #6c757d; text-align: left; white-space: nowrap; }
+        .nf-table tbody td { padding: 12px 16px; border-bottom: 1px solid #f3f3f9; color: #495057; vertical-align: middle; }
+        .nf-table tbody tr:last-child td { border-bottom: none; }
+        .nf-table tbody tr:hover td { background: #fafafa; }
+
+        /* Badges */
+        .nf-badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 4px; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.02em; }
+        .badge-success  { background: rgba(10,179,156,0.12);  color: #0ab39c; }
+        .badge-warning  { background: rgba(247,184,75,0.12);  color: #c9920a; }
+        .badge-danger   { background: rgba(240,101,72,0.12);  color: #f06548; }
+        .badge-info     { background: rgba(41,156,219,0.12);  color: #299cdb; }
+        .badge-secondary{ background: rgba(108,117,125,0.12); color: #6c757d; }
+        .badge-primary  { background: rgba(64,81,137,0.12);   color: #405189; }
+        .badge-purple   { background: rgba(122,90,248,0.12);  color: #7a5af8; }
+
+        /* Buttons */
+        .btn-primary { display: inline-flex; align-items: center; gap: 5px; padding: 7px 16px; background: #405189; color: #fff; border: none; border-radius: 5px; font-size: 0.8125rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+        .btn-primary:hover { background: #374776; }
+        .btn-danger  { display: inline-flex; align-items: center; gap: 5px; padding: 7px 16px; background: #f06548; color: #fff; border: none; border-radius: 5px; font-size: 0.8125rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+        .btn-danger:hover  { background: #d9533a; }
+        .btn-ghost   { display: inline-flex; align-items: center; gap: 5px; padding: 7px 16px; background: transparent; color: #6c757d; border: 1px solid #ced4da; border-radius: 5px; font-size: 0.8125rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+        .btn-ghost:hover   { background: #f8f9fa; color: #343a40; }
+
+        /* Forms */
+        .nf-label  { display: block; font-size: 0.8125rem; font-weight: 500; color: #495057; margin-bottom: 5px; }
+        .nf-input  { display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 5px; font-size: 0.8125rem; color: #343a40; outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: #fff; }
+        .nf-input:focus  { border-color: #405189; box-shadow: 0 0 0 3px rgba(64,81,137,0.1); }
+        .nf-input.error  { border-color: #f06548; }
+        .nf-select { display: block; width: 100%; padding: 8px 12px; border: 1px solid #ced4da; border-radius: 5px; font-size: 0.8125rem; color: #343a40; outline: none; background: #fff; cursor: pointer; }
+        .nf-select:focus { border-color: #405189; box-shadow: 0 0 0 3px rgba(64,81,137,0.1); }
+        .nf-error  { font-size: 0.72rem; color: #f06548; margin-top: 3px; }
+
+        /* Alerts */
+        .alert-success { background: rgba(10,179,156,0.1); border: 1px solid rgba(10,179,156,0.25); color: #0a7564; border-radius: 6px; padding: 12px 16px; font-size: 0.8125rem; display: flex; align-items: center; gap: 8px; }
+        .alert-error   { background: rgba(240,101,72,0.1);  border: 1px solid rgba(240,101,72,0.25);  color: #c0432a; border-radius: 6px; padding: 12px 16px; font-size: 0.8125rem; }
+
+        /* Stat icon circle */
+        .stat-icon { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+        /* ── MODAL ───────────────────────────────────── */
+        .nf-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45); z-index: 1000;
+            align-items: flex-start; justify-content: center;
+            padding-top: 60px; padding-bottom: 40px;
+            overflow-y: auto;
+        }
+        .nf-overlay.open { display: flex; }
+        .nf-modal {
+            background: #fff; border-radius: 10px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+            width: 100%; max-width: 520px;
+            margin: auto;
+            animation: modalIn 0.18s ease;
+        }
+        .nf-modal-lg { max-width: 680px; }
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(-16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .nf-modal-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; border-bottom: 1px solid #e9ebec;
+        }
+        .nf-modal-title { font-size: 0.9375rem; font-weight: 600; color: #343a40; }
+        .nf-modal-close {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: #6c757d; transition: background 0.15s, color 0.15s;
+        }
+        .nf-modal-close:hover { background: #f3f3f9; color: #343a40; }
+        .nf-modal-body { padding: 20px; }
+        .nf-modal-footer {
+            display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+            padding: 14px 20px; border-top: 1px solid #e9ebec;
+        }
+        .btn-teal { display: inline-flex; align-items: center; gap: 5px; padding: 7px 20px; background: #0ab39c; color: #fff; border: none; border-radius: 5px; font-size: 0.8125rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+        .btn-teal:hover { background: #099d89; }
+
+        /* ── PAGINATION ──────────────────────────────── */
+        /* Pagination */
+        nav[aria-label="pagination"] { display: flex; justify-content: flex-end; }
+        .pagination { display: flex; gap: 3px; list-style: none; padding: 0; margin: 0; }
+        .pagination li span, .pagination li a { display: flex; align-items: center; justify-content: center; min-width: 32px; height: 32px; padding: 0 8px; border-radius: 4px; font-size: 0.8rem; border: 1px solid #e9ebec; color: #495057; text-decoration: none; }
+        .pagination li span[aria-current] { background: #405189; color: #fff; border-color: #405189; }
+        .pagination li a:hover { background: #f3f3f9; }
+        .pagination li span.cursor-default { color: #ced4da; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+<!-- ── SIDEBAR ─────────────────────────────────────────── -->
+<aside id="sidebar">
+
+    <!-- Brand -->
+    <a href="{{ route('admin.dashboard') }}" class="sb-brand" style="text-decoration:none">
+        <div class="sb-logo-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+        </div>
+        <span class="sb-brand-name">NationForge</span>
+    </a>
+
+    <!-- MENU section -->
+    <div class="sb-section">Menu</div>
+
+    <!-- Dashboard (single) -->
+    <a href="{{ route('admin.dashboard') }}"
+       class="sb-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        <span class="sb-item-text">Főoldal</span>
+    </a>
+
+    <!-- CRM group -->
+    @php $crmOpen = request()->routeIs('admin.people.*') || request()->routeIs('admin.groups.*'); @endphp
+    <div class="sb-item {{ $crmOpen ? 'open' : '' }}" onclick="toggleMenu('crm-sub')">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="sb-item-text">CRM</span>
+        <svg class="sb-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+    </div>
+    <div id="crm-sub" class="sb-sub {{ $crmOpen ? 'open' : '' }}">
+        <a href="{{ route('admin.people.index') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.people.*') ? 'active' : '' }}">Kapcsolatok</a>
+        <a href="{{ route('admin.groups.index') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.groups.*') ? 'active' : '' }}">Csoportok</a>
+    </div>
+
+    <!-- PAGES section -->
+    <div class="sb-section">Szervezés</div>
+
+    <!-- Events group -->
+    @php $evOpen = request()->routeIs('admin.events.*'); @endphp
+    <div class="sb-item {{ $evOpen ? 'open' : '' }}" onclick="toggleMenu('events-sub')">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="sb-item-text">Események</span>
+        <svg class="sb-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+    </div>
+    <div id="events-sub" class="sb-sub {{ $evOpen ? 'open' : '' }}">
+        <a href="{{ route('admin.events.index') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.events.index') ? 'active' : '' }}">Összes esemény</a>
+        <a href="{{ route('admin.events.create') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.events.create') ? 'active' : '' }}">Új esemény</a>
+    </div>
+
+    <!-- Donations (single) -->
+    <a href="{{ route('admin.donations.index') }}"
+       class="sb-item {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="sb-item-text">Adományok</span>
+    </a>
+
+    <!-- Feladatok (single) -->
+    <a href="{{ route('admin.tasks.index') }}"
+       class="sb-item {{ request()->routeIs('admin.tasks.*') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        <span class="sb-item-text">Feladatok</span>
+        @php $openTasks = \App\Models\Task::whereIn('status',['nyitott','folyamatban'])->count(); @endphp
+        @if($openTasks > 0)
+            <span class="sb-item-badge badge-new">{{ $openTasks }}</span>
+        @endif
+    </a>
+
+    <!-- ADMIN section -->
+    <div class="sb-section">Adminisztráció</div>
+
+    @php $adminOpen = request()->routeIs('admin.users.*') || request()->routeIs('admin.settings*') || request()->routeIs('admin.help*') || request()->routeIs('admin.sugo') || request()->routeIs('admin.changelog'); @endphp
+    <div class="sb-item {{ $adminOpen ? 'open' : '' }}" onclick="toggleMenu('admin-sub')">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="sb-item-text">Felhasználók</span>
+        <svg class="sb-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+    </div>
+    <div id="admin-sub" class="sb-sub {{ $adminOpen ? 'open' : '' }}">
+        <a href="{{ route('admin.users.index') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">Felhasználók</a>
+        <a href="{{ route('admin.settings') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">Beállítások</a>
+        <a href="{{ route('admin.changelog') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.changelog') ? 'active' : '' }}">Verziókövetés</a>
+        <a href="{{ route('admin.sugo') }}" target="_blank"
+           class="sb-sub-item {{ request()->routeIs('admin.sugo') ? 'active' : '' }}">Súgó (Útmutató)</a>
+        <a href="{{ route('admin.help.index') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.help*') ? 'active' : '' }}">Súgó kezelése</a>
+    </div>
+
+    <!-- User -->
+    <div class="sb-user">
+        <div class="sb-user-card">
+            <div class="sb-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+            <div style="min-width:0">
+                <div class="sb-user-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ auth()->user()->name }}</div>
+                <div class="sb-user-role">Admin</div>
+            </div>
+        </div>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="sb-logout">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                Kijelentkezés
+            </button>
+        </form>
+    </div>
+</aside>
+
+<!-- ── MAIN ────────────────────────────────────────────── -->
+<div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+
+    <!-- Topbar -->
+    <header id="topbar">
+        <div style="flex:1">
+            <div class="tb-breadcrumb">
+                <a href="{{ route('admin.dashboard') }}">Admin</a>
+                @hasSection('breadcrumb')
+                    <span style="color:#dee2e6">/</span>
+                    @yield('breadcrumb')
+                @endif
+            </div>
+            <div class="tb-page-title">@yield('header', 'Dashboard')</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+            @yield('header-actions')
+        </div>
+    </header>
+
+    <!-- Content -->
+    <main style="flex:1;overflow-y:auto;padding:24px">
+        @if(session('success'))
+            <div class="alert-success mb-5">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="alert-error mb-5">{{ session('error') }}</div>
+        @endif
+        @yield('content')
+    </main>
+</div>
+
+<script>
+// Modal helpers
+function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.nf-overlay.open').forEach(m=>{ m.classList.remove('open'); document.body.style.overflow=''; }); });
+
+function toggleMenu(id) {
+    const sub = document.getElementById(id);
+    const isOpen = sub.classList.contains('open');
+    // close all
+    document.querySelectorAll('.sb-sub').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('.sb-item[onclick]').forEach(el => el.classList.remove('open'));
+    if (!isOpen) {
+        sub.classList.add('open');
+        sub.previousElementSibling.classList.add('open');
+    }
+}
+</script>
+@stack('scripts')
+</body>
+</html>

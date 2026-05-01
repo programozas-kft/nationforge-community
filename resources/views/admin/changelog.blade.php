@@ -82,7 +82,7 @@
 
 <div class="timeline">
 
-    <!-- LATEST VERSION -->
+    <!-- v1.5.0 LATEST -->
     <div class="tl-item">
         <div class="tl-dot latest">
             <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
@@ -90,10 +90,97 @@
         <div class="tl-content">
             <div class="tl-header">
                 <div class="tl-title">
-                    v1.1.0 
-                    <span class="tl-badge badge-success" style="background:rgba(10,179,156,0.1);color:#0ab39c;">Aktuális, Legújabb</span>
+                    v1.5.0
+                    <span class="tl-badge" style="background:rgba(10,179,156,0.1);color:#0ab39c;">Aktuális, Legújabb</span>
                 </div>
-                <div class="tl-date">Frissítve: Ma</div>
+                <div class="tl-date">2026. május 1.</div>
+            </div>
+            <ul>
+                <li><strong>Sor kattintásra szerkesztés — Csoportok:</strong> Az egész táblázatsor kattintható, megnyitja a szerkesztő modalt. Új szemikon (👁) navigál a részletoldalra az akciósávban.</li>
+                <li><strong>Sor kattintásra szerkesztés — Események:</strong> Ugyanez a viselkedés az Események listában, külön Megnyitás gombbal a részletoldalhoz.</li>
+                <li><strong>Sor kattintásra szerkesztés — Feladatok:</strong> A feladatlista sorai kattinthatók; a státusz dropdown és a törlés gomb nem indítja el a szerkesztőt (stopPropagation).</li>
+                <li><strong>data-* attribútum alapú megközelítés:</strong> Az inline JS argumentumok helyett HTML data-attribútumok tárolják az adatokat — megbízhatóbb, speciális karakterek és ékezetek sem okoznak problémát.</li>
+                <li><strong>URL generálás javítása (feladatok):</strong> A szerkesztő form action URL-je Blade <code>url()</code> helperrel generálódik, így XAMPP al-könyvtárban is helyes az útvonal (<code>/nationforge/public/admin/tasks/{id}</code>).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.4.0 -->
+    <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.4.0
+                    <span class="tl-badge" style="background:rgba(64,81,137,0.1);color:#405189;">Új modul</span>
+                </div>
+                <div class="tl-date">2026. május 1.</div>
+            </div>
+            <ul>
+                <li><strong>Projektkezelő modul:</strong> Teljes CRUD — projektek létrehozása, szerkesztése, törlése. Státusz (tervezés / aktív / lezárt / felfüggesztve) és prioritás (alacsony / közepes / magas) kezeléssel.</li>
+                <li><strong>Projekt–Feladat kapcsolat:</strong> Feladatok projektekhez rendelhetők; a projekt részletoldalán látható az összes kapcsolódó feladat.</li>
+                <li><strong>Haladásjelző (Progress %):</strong> A projekt előrehaladása automatikusan számítódik a kész feladatok aránya alapján, vizuális progress bar-ral.</li>
+                <li><strong>Projekt részletoldal (show):</strong> Bal oszlop: metaadatok, haladás, statisztikák (nyitott / folyamatban / kész feladatszámok). Jobb oszlop: feladatlista inline státuszváltóval.</li>
+                <li><strong>Lejárt projekt jelzés:</strong> Ha a projekt határideje elmúlt és még nincs lezárva, piros „Lejárt" badge jelenik meg.</li>
+                <li><strong>Projekt szűrő a feladatlistában:</strong> A Feladatok oldalon projekt szerint is szűrhető a lista, beleértve a „Projekt nélküli" feladatok szűrőjét.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.3.0 -->
+    <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.3.0
+                    <span class="tl-badge" style="background:rgba(64,81,137,0.1);color:#405189;">Új modul</span>
+                </div>
+                <div class="tl-date">2026. május 1.</div>
+            </div>
+            <ul>
+                <li><strong>Feladatkezelő modul:</strong> Teljes CRUD — feladatok létrehozása, szerkesztése, törlése. Prioritás (alacsony / közepes / magas / sürgős) és státusz (nyitott / folyamatban / kész) kezeléssel.</li>
+                <li><strong>Inline státuszváltó:</strong> A feladatlista táblázatában közvetlenül váltható a státusz legördülő menüből, oldal-újratöltés nélkül (form submit).</li>
+                <li><strong>Felelős hozzárendelés:</strong> Minden feladathoz rendelhető felelős felhasználó; az admin panel felhasználói listájából választható.</li>
+                <li><strong>Határidő és lejárat jelzés:</strong> Lejárt feladatoknál piros dátumszín és „Lejárt" badge figyelmezteti az adminisztrátort.</li>
+                <li><strong>Statisztikai kártyák:</strong> A feladatlista tetején összesítők jelennek meg: összes / nyitott / folyamatban / kész darabszámokkal, amelyek szűrőként is működnek.</li>
+                <li><strong>Sidebar badge:</strong> A navigációs sávban a Feladatok menüpont mellett élő számláló mutatja az aktív (nyitott + folyamatban) feladatok számát.</li>
+                <li><strong>GitHub szinkronizáció:</strong> <code>gitupdate.bat</code> szkript a projekt automatikus feltöltéséhez a <em>programozas-kft/nationforge</em> GitHub repóba, XAMPP jogosultsági fix-szel.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.2.0 -->
+    <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.2.0
+                    <span class="tl-badge" style="background:rgba(247,184,75,0.12);color:#c9920a;">Fejlesztés</span>
+                </div>
+                <div class="tl-date">2026. május 1.</div>
+            </div>
+            <ul>
+                <li><strong>Magyar bejelentkezési felület:</strong> Az összes login oldal szövege (E-mail, Jelszó, Bejelentkezés, hibaüzenetek) teljes egészében magyarra lett fordítva JSON és PHP nyelvi fájlok segítségével.</li>
+                <li><strong>Jelszó megjelenítő szem ikon:</strong> A jelszó beviteli mező jobb szélén toggle gomb jelenik meg, amellyel a jelszó láthatóvá / elrejtetté tehető (Alpine.js <code>x-bind:type</code>).</li>
+                <li><strong>Különálló admin bejelentkezés:</strong> Az <code>/admin/login</code> route különálló Volt komponenssel rendelkezik; sikeres belépés után az admin dashboardra irányít, nem admin felhasználó esetén hibaüzenet jelenik meg.</li>
+                <li><strong>Admin login háttérkép:</strong> Az admin bejelentkezési oldalon teljes képernyős háttérkép látható, a bejelentkezési panel a jobb oldalon félátlátszó, blur-hatású kártyában helyezkedik el.</li>
+                <li><strong>AdminMiddleware javítás:</strong> Nem bejelentkezett felhasználó esetén a middleware az <code>admin.login</code> route-ra irányít (korábban 403 hibát dobott).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.1.0 -->
+    <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.1.0
+                    <span class="tl-badge" style="background:rgba(247,184,75,0.12);color:#c9920a;">Fejlesztés</span>
+                </div>
+                <div class="tl-date">2026. április</div>
             </div>
             <ul>
                 <li><strong>Önálló Súgó oldal kialakítása:</strong> A súgó popup rendszert leváltotta egy elegáns, teljes oldalas megjelenítés.</li>
@@ -104,14 +191,14 @@
         </div>
     </div>
 
-    <!-- PREVIOUS VERSION -->
+    <!-- v1.0.0 -->
     <div class="tl-item">
         <div class="tl-dot"></div>
         <div class="tl-content">
             <div class="tl-header">
                 <div class="tl-title">
                     v1.0.0
-                    <span class="tl-badge badge-primary" style="background:rgba(64,81,137,0.1);color:#405189;">Mérföldkő</span>
+                    <span class="tl-badge" style="background:rgba(64,81,137,0.1);color:#405189;">Mérföldkő</span>
                 </div>
                 <div class="tl-date">Indulás, Alaprendszer</div>
             </div>

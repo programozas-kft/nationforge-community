@@ -84,6 +84,16 @@
                 @endforeach
             </select>
         </div>
+        <div>
+            <label class="nf-label">Projekt</label>
+            <select name="project_id" class="nf-select" style="width:180px">
+                <option value="">Összes projekt</option>
+                <option value="none" {{ request('project_id') === 'none' ? 'selected' : '' }}>— Projekt nélkül</option>
+                @foreach($projects as $proj)
+                    <option value="{{ $proj->id }}" {{ request('project_id') == $proj->id ? 'selected' : '' }}>{{ $proj->title }}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="flex gap-2">
             <button type="submit" class="btn-primary">Szűrés</button>
             <a href="{{ route('admin.tasks.index') }}" class="btn-ghost">Törlés</a>
@@ -112,11 +122,11 @@
             <thead>
                 <tr>
                     <th>Feladat</th>
+                    <th>Projekt</th>
                     <th>Prioritás</th>
                     <th>Státusz</th>
                     <th>Határidő</th>
                     <th>Felelős</th>
-                    <th>Létrehozta</th>
                     <th></th>
                 </tr>
             </thead>
@@ -137,15 +147,36 @@
                     [$priClass, $priLabel] = $priorityMap[$task->priority] ?? ['badge-secondary', $task->priority];
                     [$stClass,  $stLabel]  = $statusMap[$task->status]    ?? ['badge-secondary', $task->status];
                 @endphp
-                <tr>
+                <tr onclick="openEditModalRow(this)"
+                    style="cursor:pointer"
+                    onmouseover="this.style.background='#f8f9ff'"
+                    onmouseout="this.style.background=''"
+                    data-id="{{ $task->id }}"
+                    data-title="{{ $task->title }}"
+                    data-desc="{{ $task->description ?? '' }}"
+                    data-status="{{ $task->status }}"
+                    data-priority="{{ $task->priority }}"
+                    data-due="{{ $task->due_date?->format('Y-m-d') ?? '' }}"
+                    data-assigned="{{ $task->assigned_to ?? '' }}"
+                    data-project="{{ $task->project_id ?? '' }}">
                     <td style="max-width:280px">
                         <p class="font-medium text-gray-800 truncate" style="font-size:0.8125rem">{{ $task->title }}</p>
                         @if($task->description)
                             <p class="text-xs text-gray-400 truncate mt-0.5">{{ $task->description }}</p>
                         @endif
                     </td>
-                    <td><span class="nf-badge {{ $priClass }}">{{ $priLabel }}</span></td>
                     <td>
+                        @if($task->project)
+                            <a href="{{ route('admin.projects.show', $task->project) }}"
+                               class="nf-badge badge-primary" style="text-decoration:none;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block">
+                                {{ $task->project->title }}
+                            </a>
+                        @else
+                            <span class="text-gray-300">—</span>
+                        @endif
+                    </td>
+                    <td><span class="nf-badge {{ $priClass }}">{{ $priLabel }}</span></td>
+                    <td onclick="event.stopPropagation()">
                         <form method="POST" action="{{ route('admin.tasks.status', $task) }}" style="display:inline">
                             @csrf @method('PATCH')
                             <select name="status" onchange="this.form.submit()" class="nf-select" style="width:130px;padding:4px 8px;font-size:0.75rem">
@@ -178,9 +209,9 @@
                         @endif
                     </td>
                     <td style="font-size:0.78rem;color:#adb5bd">{{ $task->creator->name ?? '—' }}</td>
-                    <td>
+                    <td onclick="event.stopPropagation()">
                         <div class="flex items-center gap-2">
-                            <button onclick="openEditModal({{ $task->id }}, {{ json_encode($task->title) }}, {{ json_encode($task->description) }}, '{{ $task->status }}', '{{ $task->priority }}', '{{ $task->due_date?->format('Y-m-d') }}', {{ $task->assigned_to ?? 'null' }})"
+                            <button onclick="openEditModalRow(this.closest('tr'))"
                                     class="btn-ghost" style="padding:4px 10px;font-size:0.75rem">
                                 Szerkesztés
                             </button>
@@ -268,6 +299,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div style="grid-column:1/-1">
+                    <label class="nf-label">Projekt</label>
+                    <select name="project_id" class="nf-select">
+                        <option value="">— Projekt nélkül —</option>
+                        @foreach($projects as $proj)
+                            <option value="{{ $proj->id }}">{{ $proj->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="nf-modal-footer">
                 <button type="button" onclick="closeModal('task-create-modal')" class="btn-ghost">Mégse</button>
@@ -325,6 +365,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div style="grid-column:1/-1">
+                    <label class="nf-label">Projekt</label>
+                    <select name="project_id" id="edit-project" class="nf-select">
+                        <option value="">— Projekt nélkül —</option>
+                        @foreach($projects as $proj)
+                            <option value="{{ $proj->id }}">{{ $proj->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="nf-modal-footer">
                 <button type="button" onclick="closeModal('task-edit-modal')" class="btn-ghost">Mégse</button>
@@ -338,14 +387,16 @@
 
 @push('scripts')
 <script>
-function openEditModal(id, title, description, status, priority, dueDate, assignedTo) {
-    document.getElementById('edit-form').action = '/admin/tasks/' + id;
-    document.getElementById('edit-title').value = title;
-    document.getElementById('edit-description').value = description || '';
-    document.getElementById('edit-status').value = status;
-    document.getElementById('edit-priority').value = priority;
-    document.getElementById('edit-due-date').value = dueDate || '';
-    document.getElementById('edit-assigned').value = assignedTo || '';
+function openEditModalRow(el) {
+    const d = el.dataset;
+    document.getElementById('edit-form').action = '{{ url("admin/tasks") }}/' + d.id;
+    document.getElementById('edit-title').value       = d.title;
+    document.getElementById('edit-description').value = d.desc || '';
+    document.getElementById('edit-status').value      = d.status;
+    document.getElementById('edit-priority').value    = d.priority;
+    document.getElementById('edit-due-date').value    = d.due || '';
+    document.getElementById('edit-assigned').value    = d.assigned || '';
+    document.getElementById('edit-project').value     = d.project || '';
     openModal('task-edit-modal');
 }
 </script>

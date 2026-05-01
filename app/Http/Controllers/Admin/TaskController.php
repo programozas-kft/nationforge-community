@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Task::with(['assignedUser', 'creator'])
+        $query = Task::with(['assignedUser', 'creator', 'project'])
             ->orderByRaw("FIELD(priority, 'surgos', 'magas', 'kozepes', 'alacsony')")
             ->orderBy('due_date');
 
@@ -25,8 +26,13 @@ class TaskController extends Controller
             $query->where('assigned_to', $request->assigned_to);
         }
 
+        if ($request->filled('project_id')) {
+            $query->where('project_id', $request->project_id);
+        }
+
         $tasks = $query->paginate(25)->withQueryString();
-        $users = User::orderBy('name')->get();
+        $users    = User::orderBy('name')->get();
+        $projects = Project::orderBy('title')->get();
 
         $counts = [
             'osszes'      => Task::count(),
@@ -35,7 +41,7 @@ class TaskController extends Controller
             'kesz'        => Task::where('status', 'kesz')->count(),
         ];
 
-        return view('admin.tasks.index', compact('tasks', 'users', 'counts'));
+        return view('admin.tasks.index', compact('tasks', 'users', 'projects', 'counts'));
     }
 
     public function store(Request $request)
@@ -47,6 +53,7 @@ class TaskController extends Controller
             'priority'    => 'required|in:alacsony,kozepes,magas,surgos',
             'due_date'    => 'nullable|date',
             'assigned_to' => 'nullable|exists:users,id',
+            'project_id'  => 'nullable|exists:projects,id',
         ]);
 
         $data['created_by'] = auth()->id();
@@ -69,6 +76,7 @@ class TaskController extends Controller
             'priority'    => 'required|in:alacsony,kozepes,magas,surgos',
             'due_date'    => 'nullable|date',
             'assigned_to' => 'nullable|exists:users,id',
+            'project_id'  => 'nullable|exists:projects,id',
         ]);
 
         if ($data['status'] === 'kesz' && $task->status !== 'kesz') {

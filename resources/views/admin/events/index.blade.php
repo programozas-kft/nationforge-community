@@ -26,11 +26,26 @@
         </thead>
         <tbody>
             @forelse($events as $event)
-            <tr>
+            <tr onclick="openEventEditRow(this)"
+                style="cursor:pointer"
+                onmouseover="this.style.background='#f8f9ff'"
+                onmouseout="this.style.background=''"
+                data-id="{{ $event->id }}"
+                data-title="{{ $event->title }}"
+                data-type="{{ $event->type }}"
+                data-status="{{ $event->status }}"
+                data-starts="{{ $event->starts_at->format('Y-m-d\TH:i') }}"
+                data-ends="{{ $event->ends_at?->format('Y-m-d\TH:i') ?? '' }}"
+                data-online="{{ $event->is_online ? '1' : '0' }}"
+                data-url="{{ $event->online_url ?? '' }}"
+                data-venue="{{ $event->venue_name ?? '' }}"
+                data-city="{{ $event->city ?? '' }}"
+                data-address="{{ $event->address ?? '' }}"
+                data-capacity="{{ $event->capacity ?? '' }}"
+                data-price="{{ $event->ticket_price ?? '' }}"
+                data-desc="{{ $event->description ?? '' }}">
                 <td>
-                    <a href="{{ route('admin.events.show', $event) }}" style="font-weight:500;color:#343a40;text-decoration:none" onmouseover="this.style.color='#405189'" onmouseout="this.style.color='#343a40'">
-                        {{ $event->title }}
-                    </a>
+                    <span style="font-weight:500;color:#343a40">{{ $event->title }}</span>
                 </td>
                 <td><span class="nf-badge badge-info">{{ $event->type }}</span></td>
                 <td>
@@ -39,24 +54,12 @@
                 </td>
                 <td style="color:#6c757d">{{ $event->starts_at->format('d M, Y H:i') }}</td>
                 <td style="color:#6c757d">{{ $event->is_online ? 'Online' : ($event->city ?? $event->venue_name ?? '—') }}</td>
-                <td style="text-align:right">
-                    <button
-                        onclick="openEventEdit(
-                            {{ $event->id }},
-                            @json($event->title),
-                            '{{ $event->type }}',
-                            '{{ $event->status }}',
-                            '{{ $event->starts_at->format('Y-m-d\TH:i') }}',
-                            '{{ $event->ends_at?->format('Y-m-d\TH:i') ?? '' }}',
-                            {{ $event->is_online ? 'true' : 'false' }},
-                            @json($event->online_url ?? ''),
-                            @json($event->venue_name ?? ''),
-                            @json($event->city ?? ''),
-                            @json($event->address ?? ''),
-                            '{{ $event->capacity ?? '' }}',
-                            '{{ $event->ticket_price ?? '' }}',
-                            @json($event->description ?? '')
-                        )"
+                <td style="text-align:right" onclick="event.stopPropagation()">
+                    <a href="{{ route('admin.events.show', $event) }}"
+                       style="background:none;border:none;cursor:pointer;color:#0ab39c;margin-right:4px;text-decoration:none;display:inline-flex;align-items:center" title="Megnyitás">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </a>
+                    <button onclick="openEventEditRow(this.closest('tr'))"
                         style="background:none;border:none;cursor:pointer;color:#405189;margin-right:6px" title="Szerkesztés">
                         <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     </button>
@@ -249,22 +252,23 @@
 
 @push('scripts')
 <script>
-function openEventEdit(id, title, type, status, starts, ends, online, url, venue, city, address, cap, price, desc) {
+function openEventEditRow(el) {
+    const d = el.dataset;
     const form = document.getElementById('edit-event-form');
-    form.action = form.dataset.base + '/' + id;
-    document.getElementById('ev_title').value    = title;
-    document.getElementById('ev_type').value     = type;
-    document.getElementById('ev_status').value   = status;
-    document.getElementById('ev_starts').value   = starts;
-    document.getElementById('ev_ends').value     = ends;
-    document.getElementById('ev_online').checked = online;
-    document.getElementById('ev_url').value      = url;
-    document.getElementById('ev_venue').value    = venue;
-    document.getElementById('ev_city').value     = city;
-    document.getElementById('ev_address').value  = address;
-    document.getElementById('ev_capacity').value = cap;
-    document.getElementById('ev_price').value    = price;
-    document.getElementById('ev_desc').value     = desc;
+    form.action = form.dataset.base + '/' + d.id;
+    document.getElementById('ev_title').value    = d.title;
+    document.getElementById('ev_type').value     = d.type;
+    document.getElementById('ev_status').value   = d.status;
+    document.getElementById('ev_starts').value   = d.starts;
+    document.getElementById('ev_ends').value     = d.ends;
+    document.getElementById('ev_online').checked = d.online === '1';
+    document.getElementById('ev_url').value      = d.url;
+    document.getElementById('ev_venue').value    = d.venue;
+    document.getElementById('ev_city').value     = d.city;
+    document.getElementById('ev_address').value  = d.address;
+    document.getElementById('ev_capacity').value = d.capacity;
+    document.getElementById('ev_price').value    = d.price;
+    document.getElementById('ev_desc').value     = d.desc;
     openModal('modal-edit');
 }
 </script>

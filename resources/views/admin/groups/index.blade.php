@@ -25,11 +25,18 @@
         </thead>
         <tbody>
             @forelse($groups as $group)
-            <tr>
+            <tr onclick="openGroupEditRow(this)"
+                style="cursor:pointer"
+                onmouseover="this.style.background='#f8f9ff'"
+                onmouseout="this.style.background=''"
+                data-id="{{ $group->id }}"
+                data-name="{{ $group->name }}"
+                data-type="{{ $group->type }}"
+                data-privacy="{{ $group->privacy }}"
+                data-active="{{ $group->is_active ? '1' : '0' }}"
+                data-desc="{{ $group->description ?? '' }}">
                 <td>
-                    <a href="{{ route('admin.groups.show', $group) }}" style="font-weight:500;color:#343a40;text-decoration:none" onmouseover="this.style.color='#405189'" onmouseout="this.style.color='#343a40'">
-                        {{ $group->name }}
-                    </a>
+                    <span style="font-weight:500;color:#343a40">{{ $group->name }}</span>
                 </td>
                 <td><span class="nf-badge badge-purple">{{ $group->type }}</span></td>
                 <td><span class="nf-badge badge-secondary">{{ $group->privacy }}</span></td>
@@ -38,11 +45,12 @@
                         {{ $group->is_active ? 'Aktív' : 'Inaktív' }}
                     </span>
                 </td>
-                <td style="text-align:right">
-                    <button onclick="openGroupEdit({{ $group->id }},
-                        '{{ addslashes($group->name) }}','{{ $group->type }}',
-                        '{{ $group->privacy }}',{{ $group->is_active ? 'true' : 'false' }},
-                        '{{ addslashes($group->description ?? '') }}')"
+                <td style="text-align:right" onclick="event.stopPropagation()">
+                    <a href="{{ route('admin.groups.show', $group) }}"
+                       style="background:none;border:none;cursor:pointer;color:#0ab39c;margin-right:4px;text-decoration:none;display:inline-flex;align-items:center" title="Megnyitás">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </a>
+                    <button onclick="openGroupEditRow(this.closest('tr'))"
                         style="background:none;border:none;cursor:pointer;color:#405189;margin-right:6px" title="Szerkesztés">
                         <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     </button>
@@ -171,14 +179,15 @@
 
 @push('scripts')
 <script>
-function openGroupEdit(id, name, type, privacy, active, desc) {
+function openGroupEditRow(el) {
+    const d = el.dataset;
     const form = document.getElementById('edit-group-form');
-    form.action = form.dataset.base + '/' + id;
-    document.getElementById('g_name').value    = name;
-    document.getElementById('g_type').value    = type;
-    document.getElementById('g_privacy').value = privacy;
-    document.getElementById('g_active').checked = active;
-    document.getElementById('g_desc').value    = desc;
+    form.action = form.dataset.base + '/' + d.id;
+    document.getElementById('g_name').value     = d.name;
+    document.getElementById('g_type').value     = d.type;
+    document.getElementById('g_privacy').value  = d.privacy;
+    document.getElementById('g_active').checked = d.active === '1';
+    document.getElementById('g_desc').value     = d.desc;
     openModal('modal-edit');
 }
 </script>

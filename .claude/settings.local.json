@@ -1,5 +1,10 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(php -l app/Http/Controllers/Admin/TaskController.php)",
+      "Bash(php -l app/Http/Controllers/Admin/ProjectController.php)",
+      "Bash(Get-Content c:/xampp/htdocs/nationforge/storage/logs/laravel.log -Tail 30)"
+    ],
     "additionalDirectories": [
       "c:\\xampp\\htdocs\\nationforge\\lang"
     ]

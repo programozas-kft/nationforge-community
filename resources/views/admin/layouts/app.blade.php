@@ -293,9 +293,15 @@
     </div>
     <div id="crm-sub" class="sb-sub {{ $crmOpen ? 'open' : '' }}">
         <a href="{{ route('admin.people.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.people.*') ? 'active' : '' }}">Kapcsolatok</a>
+           class="sb-sub-item {{ request()->routeIs('admin.people.*') ? 'active' : '' }}">
+            <span style="flex:1">Kapcsolatok</span>
+            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\Person::count() }}</span>
+        </a>
         <a href="{{ route('admin.groups.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.groups.*') ? 'active' : '' }}">Csoportok</a>
+           class="sb-sub-item {{ request()->routeIs('admin.groups.*') ? 'active' : '' }}">
+            <span style="flex:1">Csoportok</span>
+            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\Group::count() }}</span>
+        </a>
     </div>
 
     <!-- PAGES section -->
@@ -310,7 +316,10 @@
     </div>
     <div id="events-sub" class="sb-sub {{ $evOpen ? 'open' : '' }}">
         <a href="{{ route('admin.events.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.events.index') ? 'active' : '' }}">Összes esemény</a>
+           class="sb-sub-item {{ request()->routeIs('admin.events.index') ? 'active' : '' }}">
+            <span style="flex:1">Összes esemény</span>
+            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\Event::count() }}</span>
+        </a>
         <a href="{{ route('admin.events.create') }}"
            class="sb-sub-item {{ request()->routeIs('admin.events.create') ? 'active' : '' }}">Új esemény</a>
     </div>
@@ -320,6 +329,15 @@
        class="sb-item {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         <span class="sb-item-text">Adományok</span>
+        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Donation::count() }}</span>
+    </a>
+
+    <!-- Projektek (single) -->
+    <a href="{{ route('admin.projects.index') }}"
+       class="sb-item {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+        <span class="sb-item-text">Projektek</span>
+        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Project::count() }}</span>
     </a>
 
     <!-- Feladatok (single) -->
@@ -329,8 +347,9 @@
         <span class="sb-item-text">Feladatok</span>
         @php $openTasks = \App\Models\Task::whereIn('status',['nyitott','folyamatban'])->count(); @endphp
         @if($openTasks > 0)
-            <span class="sb-item-badge badge-new">{{ $openTasks }}</span>
+            <span class="sb-item-badge badge-new" style="margin-right:0;">{{ $openTasks }} nyitott</span>
         @endif
+        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf; margin-left:6px;">{{ \App\Models\Task::count() }}</span>
     </a>
 
     <!-- ADMIN section -->
@@ -344,7 +363,10 @@
     </div>
     <div id="admin-sub" class="sb-sub {{ $adminOpen ? 'open' : '' }}">
         <a href="{{ route('admin.users.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">Felhasználók</a>
+           class="sb-sub-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+            <span style="flex:1">Felhasználók</span>
+            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\User::count() }}</span>
+        </a>
         <a href="{{ route('admin.settings') }}"
            class="sb-sub-item {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">Beállítások</a>
         <a href="{{ route('admin.changelog') }}"
@@ -352,7 +374,10 @@
         <a href="{{ route('admin.sugo') }}" target="_blank"
            class="sb-sub-item {{ request()->routeIs('admin.sugo') ? 'active' : '' }}">Súgó (Útmutató)</a>
         <a href="{{ route('admin.help.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.help*') ? 'active' : '' }}">Súgó kezelése</a>
+           class="sb-sub-item {{ request()->routeIs('admin.help*') ? 'active' : '' }}">
+            <span style="flex:1">Súgó kezelése</span>
+            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\HelpArticle::count() }}</span>
+        </a>
     </div>
 
     <!-- User -->
@@ -375,7 +400,7 @@
 </aside>
 
 <!-- ── MAIN ────────────────────────────────────────────── -->
-<div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+<div style="flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;min-width:0;">
 
     <!-- Topbar -->
     <header id="topbar">
@@ -395,7 +420,7 @@
     </header>
 
     <!-- Content -->
-    <main style="flex:1;overflow-y:auto;padding:24px">
+    <main style="display:block;overflow-y:auto;padding:24px;height:calc(100vh - 60px);">
         @if(session('success'))
             <div class="alert-success mb-5">
                 <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>

@@ -8,7 +8,7 @@ class Task extends Model
 {
     protected $fillable = [
         'title', 'description', 'status', 'priority',
-        'due_date', 'assigned_to', 'created_by', 'completed_at',
+        'due_date', 'assigned_to', 'created_by', 'completed_at', 'project_id',
     ];
 
     protected $casts = [
@@ -24,6 +24,11 @@ class Task extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
 
     public function isOverdue(): bool

@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'asset_url' => env('APP_URL') . '/vendor',
+    'asset_url' => '/vendor/livewire/livewire.js',
 
     /*
     |---------------------------------------------------------------------------

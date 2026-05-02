@@ -45,7 +45,7 @@
                 @endphp
                 <td><span class="nf-badge badge-purple">{{ $types[$group->type] ?? $group->type }}</span></td>
                 <td><span class="nf-badge badge-secondary">{{ $privacies[$group->privacy] ?? $group->privacy }}</span></td>
-                <td style="color:#6c757d">{{ $group->people_count }} fő</td>
+                <td style="color:#6c757d">{{ $group->people_count + $group->users_count }} fő</td>
                 <td>
                     <span class="nf-badge {{ $group->is_active ? 'badge-success' : 'badge-secondary' }}">
                         {{ $group->is_active ? 'Aktív' : 'Inaktív' }}

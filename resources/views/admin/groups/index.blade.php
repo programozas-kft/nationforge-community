@@ -19,6 +19,7 @@
                 <th>Csoport neve</th>
                 <th>Típus</th>
                 <th>Láthatóság</th>
+                <th>Tagok</th>
                 <th>Státusz</th>
                 <th style="width:100px"></th>
             </tr>
@@ -38,8 +39,13 @@
                 <td>
                     <span style="font-weight:500;color:#343a40">{{ $group->name }}</span>
                 </td>
-                <td><span class="nf-badge badge-purple">{{ $group->type }}</span></td>
-                <td><span class="nf-badge badge-secondary">{{ $group->privacy }}</span></td>
+                @php
+                    $types = ['community'=>'Közösség','campaign'=>'Kampány','chapter'=>'Tagozat','committee'=>'Bizottság','team'=>'Csapat'];
+                    $privacies = ['public'=>'Nyilvános','private'=>'Zárt','secret'=>'Titkos'];
+                @endphp
+                <td><span class="nf-badge badge-purple">{{ $types[$group->type] ?? $group->type }}</span></td>
+                <td><span class="nf-badge badge-secondary">{{ $privacies[$group->privacy] ?? $group->privacy }}</span></td>
+                <td style="color:#6c757d">{{ $group->people_count }} fő</td>
                 <td>
                     <span class="nf-badge {{ $group->is_active ? 'badge-success' : 'badge-secondary' }}">
                         {{ $group->is_active ? 'Aktív' : 'Inaktív' }}
@@ -63,7 +69,7 @@
                 </td>
             </tr>
             @empty
-            <tr><td colspan="5" style="text-align:center;padding:40px;color:#adb5bd">Nincs még csoport.</td></tr>
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:#adb5bd">Nincs még csoport.</td></tr>
             @endforelse
         </tbody>
     </table>

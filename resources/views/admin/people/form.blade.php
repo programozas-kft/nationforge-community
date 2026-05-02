@@ -66,15 +66,20 @@
 
             <div>
                 <label class="nf-label">Csoportok</label>
-                <select name="groups[]" class="nf-input" multiple size="4" style="padding: 8px;">
-                    @foreach($groups as $group)
-                        <option value="{{ $group->id }}" 
-                            {{ collect(old('groups', $person->exists ? $person->groups->pluck('id')->toArray() : []))->contains($group->id) ? 'selected' : '' }}>
+                @php $selectedGroups = collect(old('groups', $person->exists ? $person->groups->pluck('id')->toArray() : [])); @endphp
+                <div class="group-chip-wrap">
+                    @forelse($groups as $group)
+                        @php $checked = $selectedGroups->contains($group->id); @endphp
+                        <label class="group-chip {{ $checked ? 'active' : '' }}">
+                            <input type="checkbox" name="groups[]" value="{{ $group->id }}"
+                                   {{ $checked ? 'checked' : '' }}
+                                   onchange="this.closest('.group-chip').classList.toggle('active',this.checked)">
                             {{ $group->name }}
-                        </option>
-                    @endforeach
-                </select>
-                <p class="text-[11px] text-gray-500 mt-1">Több csoport kiválasztásához tartsd lenyomva a Ctrl (Windows) vagy Cmd (Mac) gombot.</p>
+                        </label>
+                    @empty
+                        <span style="font-size:0.78rem;color:#adb5bd">Nincs csoport.</span>
+                    @endforelse
+                </div>
             </div>
 
             <div>

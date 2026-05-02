@@ -259,6 +259,10 @@
         .pagination li span[aria-current] { background: #405189; color: #fff; border-color: #405189; }
         .pagination li a:hover { background: #f3f3f9; }
         .pagination li span.cursor-default { color: #ced4da; }
+        .group-chip { display:inline-flex;align-items:center;padding:5px 12px;border-radius:20px;border:1.5px solid #dee2e6;cursor:pointer;font-size:0.78rem;font-weight:500;color:#6c757d;background:#fff;user-select:none;transition:background 0.15s,color 0.15s,border-color 0.15s; }
+        .group-chip input[type=checkbox] { display:none; }
+        .group-chip:has(input:checked), .group-chip.active { background:#405189;border-color:#405189;color:#fff; }
+        .group-chip-wrap { display:flex;flex-wrap:wrap;gap:6px;padding:4px 0; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">

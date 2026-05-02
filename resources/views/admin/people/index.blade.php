@@ -156,12 +156,16 @@
                 </div>
                 <div style="grid-column:span 2">
                     <label class="nf-label">Csoportok</label>
-                    <select name="groups[]" class="nf-input" multiple size="4" style="padding: 8px;">
-                        @foreach($groups as $group)
-                            <option value="{{ $group->id }}">{{ $group->name }}</option>
-                        @endforeach
-                    </select>
-                    <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">Több kiválasztásához tartsd lenyomva a Ctrl/Cmd gombot.</p>
+                    <div class="group-chip-wrap">
+                        @forelse($groups as $group)
+                            <label class="group-chip">
+                                <input type="checkbox" name="groups[]" value="{{ $group->id }}" onchange="this.closest('.group-chip').classList.toggle('active',this.checked)">
+                                {{ $group->name }}
+                            </label>
+                        @empty
+                            <span style="font-size:0.78rem;color:#adb5bd">Nincs csoport.</span>
+                        @endforelse
+                    </div>
                 </div>
                 <div style="grid-column:span 2">
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
@@ -249,12 +253,16 @@
                 </div>
                 <div style="grid-column:span 2">
                     <label class="nf-label">Csoportok</label>
-                    <select name="groups[]" id="e_groups" class="nf-input" multiple size="4" style="padding: 8px;">
-                        @foreach($groups as $group)
-                            <option value="{{ $group->id }}">{{ $group->name }}</option>
-                        @endforeach
-                    </select>
-                    <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">Több kiválasztásához tartsd lenyomva a Ctrl/Cmd gombot.</p>
+                    <div class="group-chip-wrap" id="e_groups">
+                        @forelse($groups as $group)
+                            <label class="group-chip">
+                                <input type="checkbox" name="groups[]" value="{{ $group->id }}" onchange="this.closest('.group-chip').classList.toggle('active',this.checked)">
+                                {{ $group->name }}
+                            </label>
+                        @empty
+                            <span style="font-size:0.78rem;color:#adb5bd">Nincs csoport.</span>
+                        @endforelse
+                    </div>
                 </div>
                 <div style="grid-column:span 2">
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
@@ -305,12 +313,11 @@ function openEdit(id, first, last, email, phone, city, status, subscribed, sourc
     document.getElementById('e_notes').value      = notes;
     document.getElementById('e_subscribed').checked = subscribed;
 
-    const select = document.getElementById('e_groups');
-    if (select) {
-        Array.from(select.options).forEach(opt => {
-            opt.selected = groupIds.includes(parseInt(opt.value));
-        });
-    }
+    document.querySelectorAll('#e_groups .group-chip input[type=checkbox]').forEach(cb => {
+        const active = groupIds.includes(parseInt(cb.value));
+        cb.checked = active;
+        cb.closest('.group-chip').classList.toggle('active', active);
+    });
 
     const img  = document.getElementById('e-preview-img');
     const icon = document.getElementById('e-preview-icon');

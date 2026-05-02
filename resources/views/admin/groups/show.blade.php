@@ -39,7 +39,7 @@
                 </div>
                 <div class="flex justify-between">
                     <span class="text-gray-500">Tagok száma</span>
-                    <span class="font-semibold text-gray-800">{{ $group->people->count() }} fő</span>
+                    <span class="font-semibold text-gray-800">{{ $group->people->count() + $group->users->count() }} fő</span>
                 </div>
                 <div class="flex justify-between">
                     <span class="text-gray-500">Létrehozva</span>
@@ -57,23 +57,29 @@
     </div>
 
     <div class="lg:col-span-2 space-y-5">
+        @php
+            $totalMembers = $group->people->count() + $group->users->count();
+            $sc = ['member'=>'badge-primary','supporter'=>'badge-success','donor'=>'badge-warning','volunteer'=>'badge-info','vip'=>'badge-purple','prospect'=>'badge-secondary','inactive'=>'badge-secondary'];
+            $sl = ['prospect'=>'Érdeklődő','supporter'=>'Támogató','member'=>'Tag','volunteer'=>'Önkéntes','donor'=>'Adományozó','vip'=>'VIP','inactive'=>'Inaktív'];
+        @endphp
         <div class="nf-card overflow-hidden">
-            <div class="nf-card-header">Tagok ({{ $group->people->count() }})</div>
+            <div class="nf-card-header">Tagok ({{ $totalMembers }})</div>
             <table class="nf-table">
                 <thead>
                     <tr>
                         <th>Név</th>
                         <th>Email</th>
-                        <th>Státusz</th>
+                        <th>Státusz / Szerepkör</th>
+                        <th>Típus</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($group->people as $person)
+                    @foreach($group->people as $person)
                     <tr>
                         <td>
                             <div class="flex items-center gap-2">
                                 @if($person->photo)
-                                    <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 shadow-sm border border-gray-100">
+                                    <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
                                         <img src="{{ asset('storage/' . $person->photo) }}" class="w-full h-full object-cover">
                                     </div>
                                 @else
@@ -88,17 +94,42 @@
                             </div>
                         </td>
                         <td class="text-gray-500">{{ $person->email ?? '—' }}</td>
-                        <td>
-                            @php
-                            $sc=['member'=>'badge-primary','supporter'=>'badge-success','donor'=>'badge-warning','volunteer'=>'badge-info','vip'=>'badge-purple','prospect'=>'badge-secondary','inactive'=>'badge-secondary'];
-                            $sl=['prospect'=>'Érdeklődő','supporter'=>'Támogató','member'=>'Tag','volunteer'=>'Önkéntes','donor'=>'Adományozó','vip'=>'VIP','inactive'=>'Inaktív'];
-                        @endphp
-                            <span class="nf-badge {{ $sc[$person->status] ?? 'badge-secondary' }}">{{ $sl[$person->status] ?? $person->status }}</span>
-                        </td>
+                        <td><span class="nf-badge {{ $sc[$person->status] ?? 'badge-secondary' }}">{{ $sl[$person->status] ?? $person->status }}</span></td>
+                        <td><span class="nf-badge badge-secondary">Kapcsolat</span></td>
                     </tr>
-                    @empty
-                    <tr><td colspan="3" class="py-8 text-center text-gray-400">Nincs tag.</td></tr>
-                    @endforelse
+                    @endforeach
+
+                    @foreach($group->users as $user)
+                    <tr>
+                        <td>
+                            <div class="flex items-center gap-2">
+                                @if($user->photo)
+                                    <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
+                                        <img src="{{ asset('storage/' . $user->photo) }}" class="w-full h-full object-cover">
+                                    </div>
+                                @else
+                                    <div class="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                                         style="background:linear-gradient(135deg,#f97316,#ea580c)">
+                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                                <span class="font-medium text-gray-800">{{ $user->name }}</span>
+                            </div>
+                        </td>
+                        <td class="text-gray-500">{{ $user->email }}</td>
+                        <td>
+                            @php $roleColors=['super-admin'=>'badge-danger','admin'=>'badge-primary','editor'=>'badge-warning','member'=>'badge-secondary']; @endphp
+                            @foreach($user->roles as $role)
+                                <span class="nf-badge {{ $roleColors[$role->name] ?? 'badge-secondary' }}">{{ $role->name }}</span>
+                            @endforeach
+                        </td>
+                        <td><span class="nf-badge badge-info">Felhasználó</span></td>
+                    </tr>
+                    @endforeach
+
+                    @if($totalMembers === 0)
+                    <tr><td colspan="4" class="py-8 text-center text-gray-400">Nincs tag.</td></tr>
+                    @endif
                 </tbody>
             </table>
         </div>

@@ -40,7 +40,7 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
-        $group->load('people');
+        $group->load(['people', 'users.roles']);
         return view('admin.groups.show', compact('group'));
     }
 

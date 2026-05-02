@@ -24,6 +24,7 @@
                 <th>Név</th>
                 <th>Email</th>
                 <th>Szerepkör</th>
+                <th>Csoportok</th>
                 <th>Regisztrált</th>
                 <th style="width:80px"></th>
             </tr>
@@ -69,6 +70,13 @@
                         <span class="nf-badge {{ $roleColors[$role->name] ?? 'badge-secondary' }}">{{ $role->name }}</span>
                     @endforeach
                 </td>
+                <td>
+                    @forelse($user->groups as $group)
+                        <span class="nf-badge badge-info" style="margin-bottom:2px">{{ $group->name }}</span>
+                    @empty
+                        <span style="color:#ced4da;font-size:0.75rem">—</span>
+                    @endforelse
+                </td>
                 <td style="color:#adb5bd">{{ $user->created_at->format('d M, Y') }}</td>
                 <td style="text-align:right" onclick="event.stopPropagation()">
                     @if($user->id !== auth()->id())
@@ -83,7 +91,7 @@
                 </td>
             </tr>
             @empty
-            <tr><td colspan="6" style="text-align:center;padding:40px;color:#adb5bd">Nincs felhasználó.</td></tr>
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:#adb5bd">Nincs felhasználó.</td></tr>
             @endforelse
         </tbody>
     </table>
@@ -122,11 +130,17 @@
                 </div>
                 <div>
                     <label class="nf-label">Jelszó <span style="color:#f06548">*</span></label>
-                    <input type="password" name="password" class="nf-input" required>
+                    <div style="position:relative">
+                        <input type="password" name="password" class="nf-input" required style="padding-right:38px">
+                        <button type="button" onclick="togglePwd(this)" tabindex="-1" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#adb5bd;padding:0;line-height:0"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                    </div>
                 </div>
                 <div>
                     <label class="nf-label">Jelszó megerősítés <span style="color:#f06548">*</span></label>
-                    <input type="password" name="password_confirmation" class="nf-input" required>
+                    <div style="position:relative">
+                        <input type="password" name="password_confirmation" class="nf-input" required style="padding-right:38px">
+                        <button type="button" onclick="togglePwd(this)" tabindex="-1" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#adb5bd;padding:0;line-height:0"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                    </div>
                 </div>
                 <div style="grid-column:span 2">
                     <label class="nf-label">Szerepkör <span style="color:#f06548">*</span></label>
@@ -138,12 +152,16 @@
                 </div>
                 <div style="grid-column:span 2">
                     <label class="nf-label">Csoportok</label>
-                    <select name="groups[]" class="nf-input" multiple size="3" style="padding: 8px;">
-                        @foreach($groups as $group)
-                            <option value="{{ $group->id }}">{{ $group->name }}</option>
-                        @endforeach
-                    </select>
-                    <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">Több kiválasztásához tartsd lenyomva a Ctrl/Cmd gombot.</p>
+                    <div class="group-chip-wrap">
+                        @forelse($groups as $group)
+                            <label class="group-chip">
+                                <input type="checkbox" name="groups[]" value="{{ $group->id }}" onchange="this.closest('.group-chip').classList.toggle('active',this.checked)">
+                                {{ $group->name }}
+                            </label>
+                        @empty
+                            <span style="font-size:0.78rem;color:#adb5bd">Nincs csoport.</span>
+                        @endforelse
+                    </div>
                 </div>
             </div>
             <div class="nf-modal-footer">
@@ -188,11 +206,17 @@
                 </div>
                 <div>
                     <label class="nf-label">Új jelszó</label>
-                    <input type="password" name="password" class="nf-input" placeholder="Hagyd üresen ha nem változtatod">
+                    <div style="position:relative">
+                        <input type="password" name="password" class="nf-input" placeholder="Hagyd üresen ha nem változtatod" style="padding-right:38px">
+                        <button type="button" onclick="togglePwd(this)" tabindex="-1" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#adb5bd;padding:0;line-height:0"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                    </div>
                 </div>
                 <div>
                     <label class="nf-label">Jelszó megerősítés</label>
-                    <input type="password" name="password_confirmation" class="nf-input">
+                    <div style="position:relative">
+                        <input type="password" name="password_confirmation" class="nf-input" style="padding-right:38px">
+                        <button type="button" onclick="togglePwd(this)" tabindex="-1" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#adb5bd;padding:0;line-height:0"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></button>
+                    </div>
                 </div>
                 <div style="grid-column:span 2">
                     <label class="nf-label">Szerepkör <span style="color:#f06548">*</span></label>
@@ -204,12 +228,16 @@
                 </div>
                 <div style="grid-column:span 2">
                     <label class="nf-label">Csoportok</label>
-                    <select name="groups[]" id="u_groups" class="nf-input" multiple size="3" style="padding: 8px;">
-                        @foreach($groups as $group)
-                            <option value="{{ $group->id }}">{{ $group->name }}</option>
-                        @endforeach
-                    </select>
-                    <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">Több kiválasztásához tartsd lenyomva a Ctrl/Cmd gombot.</p>
+                    <div class="group-chip-wrap" id="u_groups">
+                        @forelse($groups as $group)
+                            <label class="group-chip">
+                                <input type="checkbox" name="groups[]" value="{{ $group->id }}" onchange="this.closest('.group-chip').classList.toggle('active',this.checked)">
+                                {{ $group->name }}
+                            </label>
+                        @empty
+                            <span style="font-size:0.78rem;color:#adb5bd">Nincs csoport.</span>
+                        @endforelse
+                    </div>
                 </div>
             </div>
             <div class="nf-modal-footer">
@@ -222,6 +250,16 @@
 
 @push('scripts')
 <script>
+const EYE_OPEN = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>';
+const EYE_OFF  = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>';
+
+function togglePwd(btn) {
+    const inp = btn.previousElementSibling;
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    btn.innerHTML = show ? EYE_OFF : EYE_OPEN;
+}
+
 function previewUserPhoto(input, prefix) {
     const img = document.getElementById(prefix + '_photo_img');
     const initial = document.getElementById(prefix + '_photo_initial');
@@ -251,12 +289,11 @@ function openEditUser(id, name, email, role, photoUrl, groupIds = []) {
     document.getElementById('u_email').value = email;
     document.getElementById('u_role').value  = role;
 
-    const select = document.getElementById('u_groups');
-    if (select) {
-        Array.from(select.options).forEach(opt => {
-            opt.selected = groupIds.includes(parseInt(opt.value));
-        });
-    }
+    document.querySelectorAll('#u_groups .group-chip input[type=checkbox]').forEach(cb => {
+        const active = groupIds.includes(parseInt(cb.value));
+        cb.checked = active;
+        cb.closest('.group-chip').classList.toggle('active', active);
+    });
 
     const img = document.getElementById('e_photo_img');
     const initial = document.getElementById('e_photo_initial');

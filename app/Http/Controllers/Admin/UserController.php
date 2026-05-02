@@ -59,7 +59,7 @@ class UserController extends Controller
         $request->validate([
             'name'      => 'required|string|max:100',
             'email'     => 'required|email|unique:users,email,' . $user->id,
-            'password'  => 'nullable|string|min:8|confirmed',
+            'password'  => $request->filled('password') ? 'string|min:8|confirmed' : 'nullable',
             'role'      => 'required|exists:roles,name',
             'photo'     => 'nullable|image|max:2048',
             'groups'    => 'nullable|array',
@@ -87,12 +87,9 @@ class UserController extends Controller
 
         $user->update($userData);
         $user->syncRoles([$request->role]);
-        
-        if ($request->has('groups')) {
-            $user->groups()->sync($request->groups);
-        } else {
-            $user->groups()->sync([]);
-        }
+
+        $groups = $request->input('groups', []);
+        $user->groups()->sync($groups);
 
         return redirect()->route('admin.users.index')->with('success', 'Felhasználó frissítve!');
     }

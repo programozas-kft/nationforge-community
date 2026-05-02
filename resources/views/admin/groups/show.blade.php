@@ -72,10 +72,16 @@
                     <tr>
                         <td>
                             <div class="flex items-center gap-2">
-                                <div class="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                                     style="background:linear-gradient(135deg,#405189,#7a5af8)">
-                                    {{ strtoupper(substr($person->first_name, 0, 1)) }}
-                                </div>
+                                @if($person->photo)
+                                    <div class="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 shadow-sm border border-gray-100">
+                                        <img src="{{ asset('storage/' . $person->photo) }}" class="w-full h-full object-cover">
+                                    </div>
+                                @else
+                                    <div class="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                                         style="background:linear-gradient(135deg,#405189,#7a5af8)">
+                                        {{ strtoupper(substr($person->first_name, 0, 1)) }}
+                                    </div>
+                                @endif
                                 <a href="{{ route('admin.people.show', $person) }}" class="font-medium text-gray-800 hover:text-indigo-700">
                                     {{ $person->last_name }} {{ $person->first_name }}
                                 </a>

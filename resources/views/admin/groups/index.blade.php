@@ -91,16 +91,16 @@
                 <div>
                     <label class="nf-label">Típus <span style="color:#f06548">*</span></label>
                     <select name="type" class="nf-select">
-                        @foreach(['community','campaign','chapter','committee','team'] as $t)
-                        <option value="{{ $t }}">{{ ucfirst($t) }}</option>
+                        @foreach(['community'=>'Közösség','campaign'=>'Kampány','chapter'=>'Tagozat','committee'=>'Bizottság','team'=>'Csapat'] as $val => $label)
+                        <option value="{{ $val }}">{{ $label }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
                     <label class="nf-label">Láthatóság <span style="color:#f06548">*</span></label>
                     <select name="privacy" class="nf-select">
-                        @foreach(['public','private','secret'] as $p)
-                        <option value="{{ $p }}">{{ ucfirst($p) }}</option>
+                        @foreach(['public'=>'Nyilvános','private'=>'Zárt','secret'=>'Titkos'] as $val => $label)
+                        <option value="{{ $val }}">{{ $label }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -144,16 +144,16 @@
                 <div>
                     <label class="nf-label">Típus</label>
                     <select name="type" id="g_type" class="nf-select">
-                        @foreach(['community','campaign','chapter','committee','team'] as $t)
-                        <option value="{{ $t }}">{{ ucfirst($t) }}</option>
+                        @foreach(['community'=>'Közösség','campaign'=>'Kampány','chapter'=>'Tagozat','committee'=>'Bizottság','team'=>'Csapat'] as $val => $label)
+                        <option value="{{ $val }}">{{ $label }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
                     <label class="nf-label">Láthatóság</label>
                     <select name="privacy" id="g_privacy" class="nf-select">
-                        @foreach(['public','private','secret'] as $p)
-                        <option value="{{ $p }}">{{ ucfirst($p) }}</option>
+                        @foreach(['public'=>'Nyilvános','private'=>'Zárt','secret'=>'Titkos'] as $val => $label)
+                        <option value="{{ $val }}">{{ $label }}</option>
                         @endforeach
                     </select>
                 </div>

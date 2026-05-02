@@ -307,22 +307,13 @@
     <!-- PAGES section -->
     <div class="sb-section">Szervezés</div>
 
-    <!-- Events group -->
-    @php $evOpen = request()->routeIs('admin.events.*'); @endphp
-    <div class="sb-item {{ $evOpen ? 'open' : '' }}" onclick="toggleMenu('events-sub')">
+    <!-- Events (single) -->
+    <a href="{{ route('admin.events.index') }}"
+       class="sb-item {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         <span class="sb-item-text">Események</span>
-        <svg class="sb-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-    </div>
-    <div id="events-sub" class="sb-sub {{ $evOpen ? 'open' : '' }}">
-        <a href="{{ route('admin.events.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.events.index') ? 'active' : '' }}">
-            <span style="flex:1">Összes esemény</span>
-            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\Event::count() }}</span>
-        </a>
-        <a href="{{ route('admin.events.create') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.events.create') ? 'active' : '' }}">Új esemény</a>
-    </div>
+        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Event::count() }}</span>
+    </a>
 
     <!-- Donations (single) -->
     <a href="{{ route('admin.donations.index') }}"

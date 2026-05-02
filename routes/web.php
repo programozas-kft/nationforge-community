@@ -27,7 +27,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('people', PeopleController::class);
     Route::resource('events', EventController::class);
     Route::resource('groups', GroupController::class);
-    Route::resource('donations', DonationController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('donations', DonationController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
 
     // Admin kezelő
     Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);

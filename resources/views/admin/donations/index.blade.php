@@ -4,6 +4,13 @@
 @section('header', 'Adományok')
 @section('breadcrumb') <span class="text-gray-700">Adományok</span> @endsection
 
+@section('header-actions')
+    <a href="#" class="btn-primary" onclick="openModal('modal-create-donation');return false;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        Új adomány
+    </a>
+@endsection
+
 @section('content')
 
 <div class="nf-card p-5 mb-5 flex items-center justify-between">
@@ -33,14 +40,31 @@
         </thead>
         <tbody>
             @forelse($donations as $donation)
-            <tr>
-                <td>
+            <tr onclick="openDonationEditRow(this)"
+                style="cursor:pointer"
+                onmouseover="this.style.background='#f8f9ff'" onmouseout="this.style.background=''"
+                data-id="{{ $donation->id }}"
+                data-person="{{ $donation->person_id ?? '' }}"
+                data-amount="{{ $donation->amount }}"
+                data-currency="{{ $donation->currency }}"
+                data-status="{{ $donation->status }}"
+                data-method="{{ $donation->payment_method ?? '' }}"
+                data-campaign="{{ $donation->campaign ?? '' }}"
+                data-message="{{ $donation->message ?? '' }}"
+                data-recurring="{{ $donation->is_recurring ? '1' : '0' }}">
+                <td onclick="event.stopPropagation()">
                     @if($donation->person)
                     <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                             style="background:linear-gradient(135deg,#405189,#7a5af8)">
-                            {{ strtoupper(substr($donation->person->first_name, 0, 1)) }}
-                        </div>
+                        @if($donation->person->photo)
+                            <div style="width:28px;height:28px;border-radius:50%;overflow:hidden;flex-shrink:0">
+                                <img src="{{ asset('storage/' . $donation->person->photo) }}" style="width:100%;height:100%;object-fit:cover" alt="">
+                            </div>
+                        @else
+                            <div class="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                                 style="background:linear-gradient(135deg,#405189,#7a5af8);flex-shrink:0">
+                                {{ strtoupper(substr($donation->person->first_name, 0, 1)) }}
+                            </div>
+                        @endif
                         <a href="{{ route('admin.people.show', $donation->person) }}" class="font-medium text-gray-800 hover:text-indigo-700">
                             {{ $donation->person->last_name }} {{ $donation->person->first_name }}
                         </a>
@@ -53,8 +77,11 @@
                     {{ number_format($donation->amount, 0, ',', ' ') }} {{ $donation->currency }}
                 </td>
                 <td>
-                    @php $sc=['completed'=>'badge-success','pending'=>'badge-warning','failed'=>'badge-danger','refunded'=>'badge-secondary']; @endphp
-                    <span class="nf-badge {{ $sc[$donation->status] ?? 'badge-secondary' }}">{{ $donation->status }}</span>
+                    @php
+                        $sc=['completed'=>'badge-success','pending'=>'badge-warning','failed'=>'badge-danger','refunded'=>'badge-secondary'];
+                        $sl=['completed'=>'Teljesítve','pending'=>'Függőben','failed'=>'Sikertelen','refunded'=>'Visszatérítve'];
+                    @endphp
+                    <span class="nf-badge {{ $sc[$donation->status] ?? 'badge-secondary' }}">{{ $sl[$donation->status] ?? $donation->status }}</span>
                 </td>
                 <td class="text-gray-500">{{ $donation->payment_method ?? '—' }}</td>
                 <td class="text-center">
@@ -65,7 +92,7 @@
                     @endif
                 </td>
                 <td class="text-gray-400">{{ $donation->created_at->format('Y. m. d.') }}</td>
-                <td class="text-right">
+                <td class="text-right" onclick="event.stopPropagation()">
                     <a href="{{ route('admin.donations.show', $donation) }}" class="text-xs font-medium mr-3" style="color:#405189">Részletek</a>
                     <form method="POST" action="{{ route('admin.donations.destroy', $donation) }}" class="inline"
                           onsubmit="return confirm('Biztosan törli?')">
@@ -87,4 +114,175 @@
     </div>
     @endif
 </div>
+
+{{-- CREATE MODAL --}}
+<div id="modal-create-donation" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-create-donation')">
+    <div class="nf-modal">
+        <div class="nf-modal-header">
+            <span class="nf-modal-title">Új adomány rögzítése</span>
+            <button class="nf-modal-close" onclick="closeModal('modal-create-donation')">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <form method="POST" action="{{ route('admin.donations.store') }}">
+            @csrf
+            <div class="nf-modal-body" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div style="grid-column:span 2">
+                    <label class="nf-label">Adományozó</label>
+                    <select name="person_id" class="nf-select">
+                        <option value="">— Névtelen / ismeretlen —</option>
+                        @foreach($people as $person)
+                            <option value="{{ $person->id }}">{{ $person->last_name }} {{ $person->first_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="nf-label">Összeg <span style="color:#f06548">*</span></label>
+                    <input type="number" name="amount" class="nf-input" min="1" step="1" required placeholder="pl. 5000">
+                </div>
+                <div>
+                    <label class="nf-label">Pénznem <span style="color:#f06548">*</span></label>
+                    <select name="currency" class="nf-select" required>
+                        <option value="HUF" selected>HUF</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="nf-label">Státusz <span style="color:#f06548">*</span></label>
+                    <select name="status" class="nf-select" required>
+                        <option value="completed">Teljesítve</option>
+                        <option value="pending">Függőben</option>
+                        <option value="failed">Sikertelen</option>
+                        <option value="refunded">Visszatérítve</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="nf-label">Fizetési mód</label>
+                    <select name="payment_method" class="nf-select">
+                        <option value="">— Nincs megadva —</option>
+                        <option value="cash">Készpénz</option>
+                        <option value="transfer">Átutalás</option>
+                        <option value="card">Bankkártya</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="stripe">Stripe</option>
+                        <option value="other">Egyéb</option>
+                    </select>
+                </div>
+                <div style="grid-column:span 2">
+                    <label class="nf-label">Kampány</label>
+                    <input type="text" name="campaign" class="nf-input" placeholder="pl. Tavaszi gyűjtés">
+                </div>
+                <div style="grid-column:span 2">
+                    <label class="nf-label">Megjegyzés</label>
+                    <textarea name="message" class="nf-input" rows="2" style="resize:vertical"></textarea>
+                </div>
+                <div style="grid-column:span 2;display:flex;align-items:center;gap:8px">
+                    <input type="checkbox" name="is_recurring" id="is_recurring" value="1" style="width:16px;height:16px;cursor:pointer">
+                    <label for="is_recurring" class="nf-label" style="margin:0;cursor:pointer">Visszatérő adomány</label>
+                </div>
+            </div>
+            <div class="nf-modal-footer">
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-create-donation')">Mégse</button>
+                <button type="submit" class="btn-teal">Rögzítés</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- EDIT MODAL --}}
+<div id="modal-edit-donation" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-edit-donation')">
+    <div class="nf-modal">
+        <div class="nf-modal-header">
+            <span class="nf-modal-title">Adomány szerkesztése</span>
+            <button class="nf-modal-close" onclick="closeModal('modal-edit-donation')">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <form id="edit-donation-form" method="POST" action="" data-base="{{ url('admin/donations') }}">
+            @csrf
+            <input type="hidden" name="_method" value="PUT">
+            <div class="nf-modal-body" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div style="grid-column:span 2">
+                    <label class="nf-label">Adományozó</label>
+                    <select name="person_id" id="ed_person" class="nf-select">
+                        <option value="">— Névtelen / ismeretlen —</option>
+                        @foreach($people as $person)
+                            <option value="{{ $person->id }}">{{ $person->last_name }} {{ $person->first_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="nf-label">Összeg <span style="color:#f06548">*</span></label>
+                    <input type="number" name="amount" id="ed_amount" class="nf-input" min="1" step="1" required>
+                </div>
+                <div>
+                    <label class="nf-label">Pénznem <span style="color:#f06548">*</span></label>
+                    <select name="currency" id="ed_currency" class="nf-select" required>
+                        <option value="HUF">HUF</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="nf-label">Státusz <span style="color:#f06548">*</span></label>
+                    <select name="status" id="ed_status" class="nf-select" required>
+                        <option value="completed">Teljesítve</option>
+                        <option value="pending">Függőben</option>
+                        <option value="failed">Sikertelen</option>
+                        <option value="refunded">Visszatérítve</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="nf-label">Fizetési mód</label>
+                    <select name="payment_method" id="ed_method" class="nf-select">
+                        <option value="">— Nincs megadva —</option>
+                        <option value="cash">Készpénz</option>
+                        <option value="transfer">Átutalás</option>
+                        <option value="card">Bankkártya</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="stripe">Stripe</option>
+                        <option value="other">Egyéb</option>
+                    </select>
+                </div>
+                <div style="grid-column:span 2">
+                    <label class="nf-label">Kampány</label>
+                    <input type="text" name="campaign" id="ed_campaign" class="nf-input">
+                </div>
+                <div style="grid-column:span 2">
+                    <label class="nf-label">Megjegyzés</label>
+                    <textarea name="message" id="ed_message" class="nf-input" rows="2" style="resize:vertical"></textarea>
+                </div>
+                <div style="grid-column:span 2;display:flex;align-items:center;gap:8px">
+                    <input type="checkbox" name="is_recurring" id="ed_recurring" value="1" style="width:16px;height:16px;cursor:pointer">
+                    <label for="ed_recurring" class="nf-label" style="margin:0;cursor:pointer">Visszatérő adomány</label>
+                </div>
+            </div>
+            <div class="nf-modal-footer">
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-edit-donation')">Mégse</button>
+                <button type="submit" class="btn-teal">Mentés</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+function openDonationEditRow(el) {
+    const d = el.dataset;
+    const form = document.getElementById('edit-donation-form');
+    form.action = form.dataset.base + '/' + d.id;
+    document.getElementById('ed_person').value   = d.person;
+    document.getElementById('ed_amount').value   = d.amount;
+    document.getElementById('ed_currency').value = d.currency;
+    document.getElementById('ed_status').value   = d.status;
+    document.getElementById('ed_method').value   = d.method;
+    document.getElementById('ed_campaign').value = d.campaign;
+    document.getElementById('ed_message').value  = d.message;
+    document.getElementById('ed_recurring').checked = d.recurring === '1';
+    openModal('modal-edit-donation');
+}
+</script>
+@endpush
+
 @endsection

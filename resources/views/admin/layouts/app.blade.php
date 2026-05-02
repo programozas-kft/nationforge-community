@@ -35,8 +35,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.08);
         }
         .sb-logo-icon {
-            width: 30px; height: 30px; border-radius: 6px;
-            background: linear-gradient(135deg, #f97316, #ea580c);
+            width: 34px; height: 34px;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .sb-brand-name { color: #fff; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.02em; }
@@ -273,7 +272,10 @@
     <!-- Brand -->
     <a href="{{ route('admin.dashboard') }}" class="sb-brand" style="text-decoration:none">
         <div class="sb-logo-icon">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="17,2 31,9.5 31,24.5 17,32 3,24.5 3,9.5" fill="#1a2a5e" stroke="#6b8cda" stroke-width="1.5"/>
+                <text x="17" y="23" text-anchor="middle" font-family="Inter,sans-serif" font-size="16" font-weight="700" fill="white">N</text>
+            </svg>
         </div>
         <span class="sb-brand-name">NationForge</span>
     </a>
@@ -288,25 +290,21 @@
         <span class="sb-item-text">Főoldal</span>
     </a>
 
-    <!-- CRM group -->
-    @php $crmOpen = request()->routeIs('admin.people.*') || request()->routeIs('admin.groups.*'); @endphp
-    <div class="sb-item {{ $crmOpen ? 'open' : '' }}" onclick="toggleMenu('crm-sub')">
+    <!-- Kapcsolatok (single) -->
+    <a href="{{ route('admin.people.index') }}"
+       class="sb-item {{ request()->routeIs('admin.people.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        <span class="sb-item-text">CRM</span>
-        <svg class="sb-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-    </div>
-    <div id="crm-sub" class="sb-sub {{ $crmOpen ? 'open' : '' }}">
-        <a href="{{ route('admin.people.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.people.*') ? 'active' : '' }}">
-            <span style="flex:1">Kapcsolatok</span>
-            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\Person::count() }}</span>
-        </a>
-        <a href="{{ route('admin.groups.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.groups.*') ? 'active' : '' }}">
-            <span style="flex:1">Csoportok</span>
-            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\Group::count() }}</span>
-        </a>
-    </div>
+        <span class="sb-item-text">Kapcsolatok</span>
+        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Person::count() }}</span>
+    </a>
+
+    <!-- Csoportok (single) -->
+    <a href="{{ route('admin.groups.index') }}"
+       class="sb-item {{ request()->routeIs('admin.groups.*') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        <span class="sb-item-text">Csoportok</span>
+        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Group::count() }}</span>
+    </a>
 
     <!-- PAGES section -->
     <div class="sb-section">Szervezés</div>
@@ -350,30 +348,35 @@
     <!-- ADMIN section -->
     <div class="sb-section">Adminisztráció</div>
 
-    @php $adminOpen = request()->routeIs('admin.users.*') || request()->routeIs('admin.settings*') || request()->routeIs('admin.help*') || request()->routeIs('admin.sugo') || request()->routeIs('admin.changelog'); @endphp
-    <div class="sb-item {{ $adminOpen ? 'open' : '' }}" onclick="toggleMenu('admin-sub')">
-        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    <!-- Felhasználók (single) -->
+    <a href="{{ route('admin.users.index') }}"
+       class="sb-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
         <span class="sb-item-text">Felhasználók</span>
-        <svg class="sb-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-    </div>
-    <div id="admin-sub" class="sb-sub {{ $adminOpen ? 'open' : '' }}">
-        <a href="{{ route('admin.users.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-            <span style="flex:1">Felhasználók</span>
-            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\User::count() }}</span>
-        </a>
-        <a href="{{ route('admin.settings') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">Beállítások</a>
-        <a href="{{ route('admin.changelog') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.changelog') ? 'active' : '' }}">Verziókövetés</a>
-        <a href="{{ route('admin.sugo') }}" target="_blank"
-           class="sb-sub-item {{ request()->routeIs('admin.sugo') ? 'active' : '' }}">Súgó (Útmutató)</a>
-        <a href="{{ route('admin.help.index') }}"
-           class="sb-sub-item {{ request()->routeIs('admin.help*') ? 'active' : '' }}">
-            <span style="flex:1">Súgó kezelése</span>
-            <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">{{ \App\Models\HelpArticle::count() }}</span>
-        </a>
-    </div>
+        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\User::count() }}</span>
+    </a>
+
+    <!-- Beállítások (single) -->
+    <a href="{{ route('admin.settings') }}"
+       class="sb-item {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="sb-item-text">Beállítások</span>
+    </a>
+
+    <!-- Verziókövetés (single) -->
+    <a href="{{ route('admin.changelog') }}"
+       class="sb-item {{ request()->routeIs('admin.changelog') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        <span class="sb-item-text">Verziókövetés</span>
+    </a>
+
+    <!-- Súgó kezelése (single) -->
+    <a href="{{ route('admin.help.index') }}"
+       class="sb-item {{ request()->routeIs('admin.help*') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="sb-item-text">Súgó kezelése</span>
+        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\HelpArticle::count() }}</span>
+    </a>
 
     <!-- User -->
     <div class="sb-user">

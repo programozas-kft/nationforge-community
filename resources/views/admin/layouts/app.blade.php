@@ -383,7 +383,13 @@
     <!-- User -->
     <div class="sb-user">
         <div class="sb-user-card">
-            <div class="sb-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+            @if(auth()->user()->photo)
+                <div class="sb-avatar" style="padding:0;overflow:hidden">
+                    <img src="{{ asset('storage/' . auth()->user()->photo) }}" style="width:100%;height:100%;object-fit:cover" alt="">
+                </div>
+            @else
+                <div class="sb-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+            @endif
             <div style="min-width:0">
                 <div class="sb-user-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ auth()->user()->name }}</div>
                 <div class="sb-user-role">Admin</div>

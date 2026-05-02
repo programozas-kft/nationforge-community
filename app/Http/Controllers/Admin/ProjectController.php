@@ -50,7 +50,7 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        $project->load(['responsible', 'creator']);
+        $project->load(['responsible', 'creator', 'members']);
 
         $tasks = $project->tasks()
             ->with(['assignedUser'])
@@ -68,6 +68,19 @@ class ProjectController extends Controller
         ];
 
         return view('admin.projects.show', compact('project', 'tasks', 'users', 'taskCounts'));
+    }
+
+    public function addMember(Request $request, Project $project)
+    {
+        $request->validate(['user_id' => 'required|exists:users,id']);
+        $project->members()->syncWithoutDetaching([$request->user_id]);
+        return back()->with('success', 'Tag hozzáadva!');
+    }
+
+    public function removeMember(Project $project, User $user)
+    {
+        $project->members()->detach($user->id);
+        return back()->with('success', 'Tag eltávolítva!');
     }
 
     public function update(Request $request, Project $project)

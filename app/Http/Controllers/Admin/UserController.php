@@ -13,9 +13,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('roles')->orderBy('name')->get();
+        $users = User::with(['roles', 'groups'])->orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
-        return view('admin.users.index', compact('users', 'roles'));
+        $groups = \App\Models\Group::orderBy('name')->get();
+        return view('admin.users.index', compact('users', 'roles', 'groups'));
     }
 
     public function store(Request $request)
@@ -26,6 +27,8 @@ class UserController extends Controller
             'password'  => 'required|string|min:8|confirmed',
             'role'      => 'required|exists:roles,name',
             'photo'     => 'nullable|image|max:2048',
+            'groups'    => 'nullable|array',
+            'groups.*'  => 'exists:groups,id',
         ]);
 
         $userData = [
@@ -43,6 +46,10 @@ class UserController extends Controller
 
         $user = User::create($userData);
         $user->assignRole($request->role);
+        
+        if ($request->has('groups')) {
+            $user->groups()->sync($request->groups);
+        }
 
         return redirect()->route('admin.users.index')->with('success', 'Felhasználó létrehozva!');
     }
@@ -55,6 +62,8 @@ class UserController extends Controller
             'password'  => 'nullable|string|min:8|confirmed',
             'role'      => 'required|exists:roles,name',
             'photo'     => 'nullable|image|max:2048',
+            'groups'    => 'nullable|array',
+            'groups.*'  => 'exists:groups,id',
         ]);
 
         $userData = [
@@ -78,6 +87,12 @@ class UserController extends Controller
 
         $user->update($userData);
         $user->syncRoles([$request->role]);
+        
+        if ($request->has('groups')) {
+            $user->groups()->sync($request->groups);
+        } else {
+            $user->groups()->sync([]);
+        }
 
         return redirect()->route('admin.users.index')->with('success', 'Felhasználó frissítve!');
     }

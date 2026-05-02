@@ -44,4 +44,10 @@ class Group extends Model
     {
         return $this->hasMany(GroupMessage::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'group_user')
+            ->withPivot('role');
+    }
 }

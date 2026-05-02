@@ -37,6 +37,7 @@
                     json_encode($user->email),
                     json_encode($user->roles->first()?->name ?? ''),
                     json_encode($user->photo ? asset('storage/' . $user->photo) : ''),
+                    json_encode($user->groups->pluck('id')->toArray()),
                 ]);
             @endphp
             <tr onclick="openEditUser({{ $uArgs }})"
@@ -135,6 +136,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div style="grid-column:span 2">
+                    <label class="nf-label">Csoportok</label>
+                    <select name="groups[]" class="nf-input" multiple size="3" style="padding: 8px;">
+                        @foreach($groups as $group)
+                            <option value="{{ $group->id }}">{{ $group->name }}</option>
+                        @endforeach
+                    </select>
+                    <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">Több kiválasztásához tartsd lenyomva a Ctrl/Cmd gombot.</p>
+                </div>
             </div>
             <div class="nf-modal-footer">
                 <button type="button" class="btn-ghost" onclick="closeModal('modal-create')">Mégse</button>
@@ -192,6 +202,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div style="grid-column:span 2">
+                    <label class="nf-label">Csoportok</label>
+                    <select name="groups[]" id="u_groups" class="nf-input" multiple size="3" style="padding: 8px;">
+                        @foreach($groups as $group)
+                            <option value="{{ $group->id }}">{{ $group->name }}</option>
+                        @endforeach
+                    </select>
+                    <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">Több kiválasztásához tartsd lenyomva a Ctrl/Cmd gombot.</p>
+                </div>
             </div>
             <div class="nf-modal-footer">
                 <button type="button" class="btn-ghost" onclick="closeModal('modal-edit')">Mégse</button>
@@ -225,12 +244,19 @@ function updateInitial(prefix, name) {
     }
 }
 
-function openEditUser(id, name, email, role, photoUrl) {
+function openEditUser(id, name, email, role, photoUrl, groupIds = []) {
     const form = document.getElementById('edit-user-form');
     form.action = form.dataset.base + '/' + id;
     document.getElementById('u_name').value  = name;
     document.getElementById('u_email').value = email;
     document.getElementById('u_role').value  = role;
+
+    const select = document.getElementById('u_groups');
+    if (select) {
+        Array.from(select.options).forEach(opt => {
+            opt.selected = groupIds.includes(parseInt(opt.value));
+        });
+    }
 
     const img = document.getElementById('e_photo_img');
     const initial = document.getElementById('e_photo_initial');

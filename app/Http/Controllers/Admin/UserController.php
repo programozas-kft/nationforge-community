@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -37,7 +37,7 @@ class UserController extends Controller
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = uniqid('u_') . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/users'), $filename);
+            $file->storeAs('uploads/users', $filename, 'public');
             $userData['photo'] = 'uploads/users/' . $filename;
         }
 
@@ -67,12 +67,12 @@ class UserController extends Controller
         }
 
         if ($request->hasFile('photo')) {
-            if ($user->photo && file_exists(public_path($user->photo))) {
-                File::delete(public_path($user->photo));
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
             }
             $file = $request->file('photo');
             $filename = uniqid('u_') . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/users'), $filename);
+            $file->storeAs('uploads/users', $filename, 'public');
             $userData['photo'] = 'uploads/users/' . $filename;
         }
 
@@ -87,8 +87,8 @@ class UserController extends Controller
         if ($user->id === auth()->id()) {
             return redirect()->route('admin.users.index')->with('error', 'Saját magadat nem törölheted!');
         }
-        if ($user->photo && file_exists(public_path($user->photo))) {
-            File::delete(public_path($user->photo));
+        if ($user->photo) {
+            Storage::disk('public')->delete($user->photo);
         }
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'Felhasználó törölve!');

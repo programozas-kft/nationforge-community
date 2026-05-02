@@ -40,7 +40,7 @@
                     $person->is_subscribed ? 'true' : 'false',
                     json_encode($person->source ?? ''),
                     json_encode($person->notes ?? ''),
-                    json_encode($person->photo ? asset($person->photo) : ''),
+                    json_encode($person->photo ? asset('storage/' . $person->photo) : ''),
                 ]);
             @endphp
             <tr onclick="openEdit({{ $editArgs }})"
@@ -50,7 +50,7 @@
                 <td onclick="event.stopPropagation()">
                     <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,#405189,#7a5af8);display:flex;align-items:center;justify-content:center;">
                         @if($person->photo)
-                            <img src="{{ asset($person->photo) }}" style="width:34px;height:34px;object-fit:cover;display:block;flex-shrink:0">
+                            <img src="{{ asset('storage/' . $person->photo) }}" style="width:34px;height:34px;object-fit:cover;display:block;flex-shrink:0">
                         @else
                             <span style="color:#fff;font-size:0.75rem;font-weight:700">{{ strtoupper(substr($person->first_name,0,1)) }}</span>
                         @endif

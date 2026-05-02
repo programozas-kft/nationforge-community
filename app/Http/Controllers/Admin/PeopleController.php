@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Person;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class PeopleController extends Controller
 {
@@ -40,7 +40,7 @@ class PeopleController extends Controller
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = uniqid('p_') . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/people'), $filename);
+            $file->storeAs('uploads/people', $filename, 'public');
             $data['photo'] = 'uploads/people/' . $filename;
         }
 
@@ -78,12 +78,12 @@ class PeopleController extends Controller
         $data['is_subscribed'] = $request->boolean('is_subscribed');
 
         if ($request->hasFile('photo')) {
-            if ($person->photo && file_exists(public_path($person->photo))) {
-                File::delete(public_path($person->photo));
+            if ($person->photo) {
+                Storage::disk('public')->delete($person->photo);
             }
             $file = $request->file('photo');
             $filename = uniqid('p_') . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/people'), $filename);
+            $file->storeAs('uploads/people', $filename, 'public');
             $data['photo'] = 'uploads/people/' . $filename;
         }
 
@@ -94,8 +94,8 @@ class PeopleController extends Controller
 
     public function destroy(Person $person)
     {
-        if ($person->photo && file_exists(public_path($person->photo))) {
-            File::delete(public_path($person->photo));
+        if ($person->photo) {
+            Storage::disk('public')->delete($person->photo);
         }
         $person->delete();
         return redirect()->route('admin.people.index')->with('success', 'Kapcsolat törölve!');

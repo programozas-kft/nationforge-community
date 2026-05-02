@@ -36,7 +36,7 @@
                     json_encode($user->name),
                     json_encode($user->email),
                     json_encode($user->roles->first()?->name ?? ''),
-                    json_encode($user->photo ? asset($user->photo) : ''),
+                    json_encode($user->photo ? asset('storage/' . $user->photo) : ''),
                 ]);
             @endphp
             <tr onclick="openEditUser({{ $uArgs }})"
@@ -45,7 +45,7 @@
                 <td>
                     @if($user->photo)
                         <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;flex-shrink:0">
-                            <img src="{{ asset($user->photo) }}" style="width:100%;height:100%;object-fit:cover" alt="">
+                            <img src="{{ asset('storage/' . $user->photo) }}" style="width:100%;height:100%;object-fit:cover" alt="">
                         </div>
                     @else
                         <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.75rem;font-weight:700;flex-shrink:0">

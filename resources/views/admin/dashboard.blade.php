@@ -71,7 +71,7 @@
         </div>
         <div class="divide-y" style="border-color:#f3f3f9">
             @forelse($recent_people as $person)
-            <div class="px-5 py-3 flex items-center gap-3">
+            <div class="px-5 py-3 flex items-center gap-3" style="padding-left:20px; padding-right:20px;">
                 @if($person->photo)
                     <div style="width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0">
                         <img src="{{ asset('storage/' . $person->photo) }}" style="width:100%;height:100%;object-fit:cover" alt="">
@@ -90,9 +90,10 @@
                     <p class="text-xs text-gray-400 truncate">{{ $person->email ?? '—' }}</p>
                 </div>
                 @php
-                    $sc = ['member'=>'badge-primary','supporter'=>'badge-success','donor'=>'badge-warning','vip'=>'badge-purple','inactive'=>'badge-secondary'];
+                    $sc = ['member'=>'badge-primary','supporter'=>'badge-success','donor'=>'badge-warning','vip'=>'badge-purple','inactive'=>'badge-secondary','prospect'=>'badge-info','volunteer'=>'badge-success'];
+                    $sl = ['member'=>'Tag','supporter'=>'Támogató','donor'=>'Adományozó','vip'=>'VIP','inactive'=>'Inaktív','prospect'=>'Érdeklődő','volunteer'=>'Önkéntes'];
                 @endphp
-                <span class="nf-badge {{ $sc[$person->status] ?? 'badge-secondary' }}">{{ $person->status }}</span>
+                <span class="nf-badge {{ $sc[$person->status] ?? 'badge-secondary' }}" style="white-space:nowrap;flex-shrink:0">{{ $sl[$person->status] ?? $person->status }}</span>
             </div>
             @empty
             <div class="px-5 py-6 text-center text-sm text-gray-400">Nincs kapcsolat.</div>

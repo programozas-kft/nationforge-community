@@ -82,7 +82,7 @@
 
 <div class="timeline">
 
-    <!-- v1.5.1 LATEST -->
+    <!-- v1.5.2 LATEST -->
     <div class="tl-item">
         <div class="tl-dot latest">
             <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
@@ -90,8 +90,26 @@
         <div class="tl-content">
             <div class="tl-header">
                 <div class="tl-title">
-                    v1.5.1
+                    v1.5.2
                     <span class="tl-badge" style="background:rgba(10,179,156,0.1);color:#0ab39c;">Aktuális, Legújabb</span>
+                </div>
+                <div class="tl-date">2026. május 2.</div>
+            </div>
+            <ul>
+                <li><strong>Főoldal (Dashboard) vizuális finomítása:</strong> A "Legújabb kapcsolatok" listájának igazítása, a megjelenített tartalmak megfelelő bal oldali belső margót (padding) kaptak a szebb elrendezés érdekében.</li>
+                <li><strong>Súgó - Dinamikus képmegjelenítés:</strong> A súgó cikkekhez integrálásra került egy teljes képernyős képnézegető (lightbox) funkció.</li>
+                <li><strong>Képnagyítás élmény javítása:</strong> A lightbox finomhangolása, így a feltöltött képek (mint pl. a beillesztett főoldal képernyőkép) kattintáskor a képernyő 90%-át dinamikusan kitöltve jelennek meg, megtartva az eredeti méretarányokat.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.5.1 -->
+    <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.5.1
                 </div>
                 <div class="tl-date">2026. május 1.</div>
             </div>

@@ -86,6 +86,16 @@
         .help-content ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
         .help-content ol { list-style-type: decimal; padding-left: 1.5em; margin-bottom: 1em; }
         .help-content strong { font-weight: 700; color: #1e293b; }
+        
+        /* ── IMAGE VIEWER ────────────────────────────── */
+        .img-viewer-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000;
+            align-items: center; justify-content: center; padding: 20px; cursor: zoom-out;
+        }
+        .img-viewer-overlay.active { display: flex; }
+        .img-viewer-img { width: 90vw; height: 90vh; object-fit: contain; border-radius: 8px; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3)); }
+        .help-content img { cursor: zoom-in; max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #e9ebec; transition: opacity 0.2s; }
+        .help-content img:hover { opacity: 0.9; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
@@ -161,6 +171,27 @@ function showHelpTab(id) {
         }
     });
 }
+
+// Képnézegető (fullscreen)
+const overlay = document.createElement('div');
+overlay.className = 'img-viewer-overlay';
+const imgViewerEl = document.createElement('img');
+imgViewerEl.className = 'img-viewer-img';
+overlay.appendChild(imgViewerEl);
+document.body.appendChild(overlay);
+
+overlay.addEventListener('click', () => {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+});
+
+document.querySelectorAll('.help-content img').forEach(img => {
+    img.addEventListener('click', () => {
+        imgViewerEl.src = img.src;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+});
 </script>
 </body>
 </html>

@@ -22,7 +22,7 @@
     <div class="space-y-5">
         <div class="nf-card">
             <div class="nf-card-header">Adatok</div>
-            <div class="px-5 py-4 space-y-3 text-sm">
+            <div class="py-4 space-y-3 text-sm" style="padding-left: 24px; padding-right: 24px;">
                 <div class="flex justify-between">
                     <span class="text-gray-500">Típus</span>
                     <span class="nf-badge badge-purple">{{ $group->type }}</span>
@@ -56,7 +56,7 @@
         @endif
     </div>
 
-    <div class="lg:col-span-2">
+    <div class="lg:col-span-2 space-y-5">
         <div class="nf-card overflow-hidden">
             <div class="nf-card-header">Tagok ({{ $group->people->count() }})</div>
             <table class="nf-table">
@@ -96,6 +96,9 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Belső Chat -->
+        @livewire('admin.groups.group-chat', ['group' => $group])
     </div>
 </div>
 @endsection

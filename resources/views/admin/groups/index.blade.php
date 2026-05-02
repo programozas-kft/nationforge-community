@@ -25,7 +25,7 @@
         </thead>
         <tbody>
             @forelse($groups as $group)
-            <tr onclick="openGroupEditRow(this)"
+            <tr onclick="window.location='{{ route('admin.groups.show', $group) }}'"
                 style="cursor:pointer"
                 onmouseover="this.style.background='#f8f9ff'"
                 onmouseout="this.style.background=''"

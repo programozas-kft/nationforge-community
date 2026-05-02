@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Person::class);
     }
+
+    public function groupMessages()
+    {
+        return $this->hasMany(GroupMessage::class);
+    }
 }

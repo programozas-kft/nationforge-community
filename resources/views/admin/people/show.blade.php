@@ -23,10 +23,16 @@
     <!-- Profile card -->
     <div class="space-y-5">
         <div class="nf-card p-6 text-center">
-            <div class="w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl font-bold mx-auto mb-3"
-                 style="background:linear-gradient(135deg,#405189,#7a5af8)">
-                {{ strtoupper(substr($person->first_name, 0, 1)) }}
-            </div>
+            @if($person->photo)
+                <div class="w-20 h-20 rounded-full mx-auto mb-3 overflow-hidden shadow-sm border-2 border-white">
+                    <img src="{{ asset('storage/' . $person->photo) }}" class="w-full h-full object-cover">
+                </div>
+            @else
+                <div class="w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl font-bold mx-auto mb-3"
+                     style="background:linear-gradient(135deg,#405189,#7a5af8)">
+                    {{ strtoupper(substr($person->first_name, 0, 1)) }}
+                </div>
+            @endif
             <h2 class="text-base font-semibold text-gray-800">{{ $person->last_name }} {{ $person->first_name }}</h2>
             <p class="text-sm text-gray-500">{{ $person->email ?? '—' }}</p>
             @php
@@ -40,7 +46,7 @@
 
         <div class="nf-card">
             <div class="nf-card-header">Adatok</div>
-            <div class="px-5 py-4 space-y-3">
+            <div class="py-4 space-y-3" style="padding-left: 24px; padding-right: 24px;">
                 @foreach([
                     ['Telefon', $person->phone],
                     ['Város', $person->city],
@@ -59,7 +65,7 @@
                 </div>
             </div>
             @if($person->notes)
-            <div class="px-5 pb-4">
+            <div class="pb-4" style="padding-left: 24px; padding-right: 24px;">
                 <p class="text-xs text-gray-400 mb-1">Megjegyzés</p>
                 <p class="text-sm text-gray-600">{{ $person->notes }}</p>
             </div>

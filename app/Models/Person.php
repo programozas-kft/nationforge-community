@@ -43,8 +43,7 @@ class Person extends Model implements HasMedia
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'group_person')
-            ->withPivot('role', 'joined_at')
-            ->withTimestamps();
+            ->withPivot('role', 'joined_at');
     }
 
     public function donations()

@@ -65,6 +65,19 @@
             </div>
 
             <div>
+                <label class="nf-label">Csoportok</label>
+                <select name="groups[]" class="nf-input" multiple size="4" style="padding: 8px;">
+                    @foreach($groups as $group)
+                        <option value="{{ $group->id }}" 
+                            {{ collect(old('groups', $person->exists ? $person->groups->pluck('id')->toArray() : []))->contains($group->id) ? 'selected' : '' }}>
+                            {{ $group->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <p class="text-[11px] text-gray-500 mt-1">Több csoport kiválasztásához tartsd lenyomva a Ctrl (Windows) vagy Cmd (Mac) gombot.</p>
+            </div>
+
+            <div>
                 <label class="flex items-center gap-2 cursor-pointer">
                     <input type="hidden" name="is_subscribed" value="0">
                     <input type="checkbox" name="is_subscribed" value="1"

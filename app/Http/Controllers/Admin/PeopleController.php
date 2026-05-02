@@ -11,13 +11,15 @@ class PeopleController extends Controller
 {
     public function index()
     {
-        $people = Person::orderBy('last_name')->paginate(25);
-        return view('admin.people.index', compact('people'));
+        $people = Person::with('groups')->orderBy('last_name')->paginate(25);
+        $groups = \App\Models\Group::orderBy('name')->get();
+        return view('admin.people.index', compact('people', 'groups'));
     }
 
     public function create()
     {
-        return view('admin.people.form', ['person' => new Person()]);
+        $groups = \App\Models\Group::orderBy('name')->get();
+        return view('admin.people.form', ['person' => new Person(), 'groups' => $groups]);
     }
 
     public function store(Request $request)
@@ -33,6 +35,8 @@ class PeopleController extends Controller
             'notes'         => 'nullable|string',
             'source'        => 'nullable|string|max:100',
             'photo'         => 'nullable|image|max:2048',
+            'groups'        => 'nullable|array',
+            'groups.*'      => 'exists:groups,id',
         ]);
 
         $data['is_subscribed'] = $request->boolean('is_subscribed');
@@ -44,7 +48,11 @@ class PeopleController extends Controller
             $data['photo'] = 'uploads/people/' . $filename;
         }
 
-        Person::create($data);
+        $person = Person::create($data);
+        
+        if (isset($data['groups'])) {
+            $person->groups()->sync($data['groups']);
+        }
 
         return redirect()->route('admin.people.index')->with('success', 'Kapcsolat sikeresen létrehozva!');
     }
@@ -57,7 +65,8 @@ class PeopleController extends Controller
 
     public function edit(Person $person)
     {
-        return view('admin.people.form', compact('person'));
+        $groups = \App\Models\Group::orderBy('name')->get();
+        return view('admin.people.form', compact('person', 'groups'));
     }
 
     public function update(Request $request, Person $person)
@@ -73,6 +82,8 @@ class PeopleController extends Controller
             'notes'         => 'nullable|string',
             'source'        => 'nullable|string|max:100',
             'photo'         => 'nullable|image|max:2048',
+            'groups'        => 'nullable|array',
+            'groups.*'      => 'exists:groups,id',
         ]);
 
         $data['is_subscribed'] = $request->boolean('is_subscribed');
@@ -88,6 +99,12 @@ class PeopleController extends Controller
         }
 
         $person->update($data);
+
+        if (isset($data['groups'])) {
+            $person->groups()->sync($data['groups']);
+        } else {
+            $person->groups()->sync([]);
+        }
 
         return redirect()->route('admin.people.index')->with('success', 'Kapcsolat frissítve!');
     }

@@ -39,4 +39,9 @@ class Group extends Model
     {
         return $this->morphToMany(Tag::class, 'taggable');
     }
+
+    public function messages()
+    {
+        return $this->hasMany(GroupMessage::class);
+    }
 }

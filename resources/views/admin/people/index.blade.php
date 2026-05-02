@@ -41,6 +41,7 @@
                     json_encode($person->source ?? ''),
                     json_encode($person->notes ?? ''),
                     json_encode($person->photo ? asset('storage/' . $person->photo) : ''),
+                    json_encode($person->groups->pluck('id')->toArray()),
                 ]);
             @endphp
             <tr onclick="openEdit({{ $editArgs }})"
@@ -154,6 +155,15 @@
                     <input type="text" name="source" class="nf-input">
                 </div>
                 <div style="grid-column:span 2">
+                    <label class="nf-label">Csoportok</label>
+                    <select name="groups[]" class="nf-input" multiple size="4" style="padding: 8px;">
+                        @foreach($groups as $group)
+                            <option value="{{ $group->id }}">{{ $group->name }}</option>
+                        @endforeach
+                    </select>
+                    <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">Több kiválasztásához tartsd lenyomva a Ctrl/Cmd gombot.</p>
+                </div>
+                <div style="grid-column:span 2">
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
                         <input type="hidden" name="is_subscribed" value="0">
                         <input type="checkbox" name="is_subscribed" value="1" style="width:15px;height:15px;accent-color:#405189">
@@ -238,6 +248,15 @@
                     <input type="text" name="source" id="e_source" class="nf-input">
                 </div>
                 <div style="grid-column:span 2">
+                    <label class="nf-label">Csoportok</label>
+                    <select name="groups[]" id="e_groups" class="nf-input" multiple size="4" style="padding: 8px;">
+                        @foreach($groups as $group)
+                            <option value="{{ $group->id }}">{{ $group->name }}</option>
+                        @endforeach
+                    </select>
+                    <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">Több kiválasztásához tartsd lenyomva a Ctrl/Cmd gombot.</p>
+                </div>
+                <div style="grid-column:span 2">
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
                         <input type="hidden" name="is_subscribed" value="0">
                         <input type="checkbox" name="is_subscribed" id="e_subscribed" value="1" style="width:15px;height:15px;accent-color:#405189">
@@ -273,7 +292,7 @@ function previewPhoto(input, imgId, iconId) {
     }
 }
 
-function openEdit(id, first, last, email, phone, city, status, subscribed, source, notes, photoUrl) {
+function openEdit(id, first, last, email, phone, city, status, subscribed, source, notes, photoUrl, groupIds = []) {
     const form = document.getElementById('edit-form');
     form.action = form.dataset.base + '/' + id;
     document.getElementById('e_first').value      = first;
@@ -285,6 +304,13 @@ function openEdit(id, first, last, email, phone, city, status, subscribed, sourc
     document.getElementById('e_source').value     = source;
     document.getElementById('e_notes').value      = notes;
     document.getElementById('e_subscribed').checked = subscribed;
+
+    const select = document.getElementById('e_groups');
+    if (select) {
+        Array.from(select.options).forEach(opt => {
+            opt.selected = groupIds.includes(parseInt(opt.value));
+        });
+    }
 
     const img  = document.getElementById('e-preview-img');
     const icon = document.getElementById('e-preview-icon');

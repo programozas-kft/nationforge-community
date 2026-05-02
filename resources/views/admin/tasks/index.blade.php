@@ -199,9 +199,15 @@
                     <td>
                         @if($task->assignedUser)
                             <div class="flex items-center gap-2">
-                                <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#405189,#7a5af8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.65rem;font-weight:700;flex-shrink:0">
-                                    {{ strtoupper(substr($task->assignedUser->name, 0, 1)) }}
-                                </div>
+                                @if($task->assignedUser->photo)
+                                    <div style="width:24px;height:24px;border-radius:50%;overflow:hidden;flex-shrink:0">
+                                        <img src="{{ asset('storage/' . $task->assignedUser->photo) }}" style="width:100%;height:100%;object-fit:cover" alt="">
+                                    </div>
+                                @else
+                                    <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#405189,#7a5af8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.65rem;font-weight:700;flex-shrink:0">
+                                        {{ strtoupper(substr($task->assignedUser->name, 0, 1)) }}
+                                    </div>
+                                @endif
                                 <span style="font-size:0.8rem">{{ $task->assignedUser->name }}</span>
                             </div>
                         @else

@@ -72,10 +72,16 @@
         <div class="divide-y" style="border-color:#f3f3f9">
             @forelse($recent_people as $person)
             <div class="px-5 py-3 flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                     style="background:linear-gradient(135deg,#405189,#7a5af8)">
-                    {{ strtoupper(substr($person->first_name, 0, 1)) }}
-                </div>
+                @if($person->photo)
+                    <div style="width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0">
+                        <img src="{{ asset('storage/' . $person->photo) }}" style="width:100%;height:100%;object-fit:cover" alt="">
+                    </div>
+                @else
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                         style="background:linear-gradient(135deg,#405189,#7a5af8)">
+                        {{ strtoupper(substr($person->first_name, 0, 1)) }}
+                    </div>
+                @endif
                 <div class="flex-1 min-w-0">
                     <a href="{{ route('admin.people.show', $person) }}"
                        class="text-sm font-medium text-gray-800 hover:text-indigo-700 truncate block">

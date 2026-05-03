@@ -22,7 +22,7 @@
     <div class="space-y-5">
         <div class="nf-card">
             <div class="nf-card-header">Részletek</div>
-            <div class="px-5 py-4 space-y-3 text-sm">
+            <div class="space-y-3 text-sm" style="padding: 16px 20px;">
                 @php $sc=['draft'=>'badge-secondary','published'=>'badge-success','cancelled'=>'badge-danger','completed'=>'badge-primary']; @endphp
                 <div class="flex justify-between">
                     <span class="text-gray-500">Státusz</span>

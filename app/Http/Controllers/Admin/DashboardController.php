@@ -15,13 +15,13 @@ class DashboardController extends Controller
         $stats = [
             'people'      => Person::count(),
             'new_people'  => Person::whereMonth('created_at', now()->month)->count(),
-            'events'      => Event::where('status', 'published')->where('starts_at', '>', now())->count(),
+            'events'      => Event::whereNotIn('status', ['cancelled', 'completed'])->where('starts_at', '>', now())->count(),
             'donations'   => Donation::where('status', 'completed')->sum('amount'),
             'subscribed'  => Person::where('is_subscribed', true)->count(),
         ];
 
         $recent_people = Person::latest()->limit(5)->get();
-        $upcoming_events = Event::where('status', 'published')
+        $upcoming_events = Event::whereNotIn('status', ['cancelled', 'completed'])
             ->where('starts_at', '>', now())
             ->orderBy('starts_at')
             ->limit(5)

@@ -4,7 +4,10 @@
       "Bash(php -l app/Http/Controllers/Admin/TaskController.php)",
       "Bash(php -l app/Http/Controllers/Admin/ProjectController.php)",
       "Bash(Get-Content c:/xampp/htdocs/nationforge/storage/logs/laravel.log -Tail 30)",
-      "PowerShell(cd C:\\\\xampp\\\\htdocs\\\\nationforge; php artisan tinker --execute=\"$u = App\\\\Models\\\\User::first\\(\\); $u->groups\\(\\)->sync\\([1]\\); echo 'count: ' . DB::table\\('group_user'\\)->count\\(\\);\")"
+      "PowerShell(cd C:\\\\xampp\\\\htdocs\\\\nationforge; php artisan tinker --execute=\"$u = App\\\\Models\\\\User::first\\(\\); $u->groups\\(\\)->sync\\([1]\\); echo 'count: ' . DB::table\\('group_user'\\)->count\\(\\);\")",
+      "PowerShell(cd c:\\\\xampp\\\\htdocs\\\\nationforge; php artisan tinker --execute=\"App\\\\Models\\\\Group::select\\('id','name','type','icon'\\)->get\\(\\)->each\\(fn\\(\\\\$g\\) => print\\(\\\\$g->id.' | '.\\\\$g->name.' | '.\\\\$g->type.' | '.\\(\\\\$g->icon??'NULL'\\).PHP_EOL\\)\\);\")",
+      "PowerShell(cd c:\\\\xampp\\\\htdocs\\\\nationforge; php artisan tinker --execute=\"DB::table\\('groups'\\)->select\\('id','name','type','icon'\\)->whereNull\\('deleted_at'\\)->get\\(\\)->each\\(function\\(\\\\$g\\){ echo \\\\$g->id.' | '.\\\\$g->name.' | '.\\\\$g->type.' | '.\\(\\\\$g->icon??'NULL'\\).PHP_EOL; }\\);\")",
+      "PowerShell(cd c:\\\\xampp\\\\htdocs\\\\nationforge; php -r \"define\\('LARAVEL_START', microtime\\(true\\)\\); require 'vendor/autoload.php'; \\\\$app = require 'bootstrap/app.php'; \\\\$app->make\\('Illuminate\\\\Contracts\\\\Console\\\\Kernel'\\)->bootstrap\\(\\); \\\\$groups = DB::table\\('groups'\\)->whereNull\\('deleted_at'\\)->get\\(['id','name','type','icon']\\); foreach\\(\\\\$groups as \\\\$g\\) echo \\\\$g->id.' | '.\\\\$g->name.' | '.\\\\$g->type.' | '.\\(\\\\$g->icon??'NULL'\\).PHP_EOL;\")"
     ],
     "additionalDirectories": [
       "c:\\xampp\\htdocs\\nationforge\\lang"

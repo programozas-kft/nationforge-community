@@ -19,16 +19,33 @@
 
 @section('content')
 @php
+    $groupIcons = require resource_path('views/admin/groups/icon_map.php');
     $totalMembers = $group->people->count() + $group->users->count();
     $sc = ['member'=>'badge-primary','supporter'=>'badge-success','donor'=>'badge-warning','volunteer'=>'badge-info','vip'=>'badge-purple','prospect'=>'badge-secondary','inactive'=>'badge-secondary'];
     $sl = ['prospect'=>'Érdeklődő','supporter'=>'Támogató','member'=>'Tag','volunteer'=>'Önkéntes','donor'=>'Adományozó','vip'=>'VIP','inactive'=>'Inaktív'];
+    $typeColors = [
+        'community' => ['bg'=>'rgba(64,81,137,0.12)',  'color'=>'#405189'],
+        'campaign'  => ['bg'=>'rgba(240,101,72,0.12)', 'color'=>'#f06548'],
+        'chapter'   => ['bg'=>'rgba(10,179,156,0.12)', 'color'=>'#0ab39c'],
+        'committee' => ['bg'=>'rgba(122,90,248,0.12)', 'color'=>'#7a5af8'],
+        'team'      => ['bg'=>'rgba(247,184,75,0.12)', 'color'=>'#f7b84b'],
+    ];
+    $defaultTypeIcons = ['community'=>'users','campaign'=>'megaphone','chapter'=>'bookmark','committee'=>'building','team'=>'bolt'];
+    $tc      = $typeColors[$group->type] ?? ['bg'=>'rgba(108,117,125,0.12)','color'=>'#6c757d'];
+    $iconKey = $group->icon ?: ($defaultTypeIcons[$group->type] ?? 'users');
+    $ti      = $groupIcons[$iconKey] ?? $groupIcons['users'];
 @endphp
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
     {{-- Bal oszlop: Adatok + Leírás + Tagok --}}
     <div class="space-y-5">
         <div class="nf-card">
-            <div class="nf-card-header">Adatok</div>
+            <div class="nf-card-header" style="gap:10px">
+                <div style="width:32px;height:32px;border-radius:7px;background:{{ $tc['bg'] }};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <svg width="15" height="15" fill="none" stroke="{{ $tc['color'] }}" viewBox="0 0 24 24">{!! $ti !!}</svg>
+                </div>
+                Adatok
+            </div>
             <div class="py-4 space-y-3 text-sm" style="padding-left: 24px; padding-right: 24px;">
                 <div class="flex justify-between">
                     <span class="text-gray-500">Típus</span>

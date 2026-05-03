@@ -45,7 +45,7 @@
             background: linear-gradient(180deg, #405189 0%, #364474 100%);
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: calc(100vh - 38px);
             overflow-y: auto;
             overflow-x: hidden;
             scrollbar-width: thin;

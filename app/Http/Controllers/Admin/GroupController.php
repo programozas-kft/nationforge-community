@@ -28,6 +28,7 @@ class GroupController extends Controller
             'type'        => 'required|in:community,campaign,chapter,committee,team',
             'privacy'     => 'required|in:public,private,secret',
             'is_active'   => 'boolean',
+            'icon'        => 'nullable|string|max:50',
         ]);
 
         $data['slug'] = Str::slug($data['name']) . '-' . Str::random(5);
@@ -57,6 +58,7 @@ class GroupController extends Controller
             'type'        => 'required|in:community,campaign,chapter,committee,team',
             'privacy'     => 'required|in:public,private,secret',
             'is_active'   => 'boolean',
+            'icon'        => 'nullable|string|max:50',
         ]);
 
         $data['is_active'] = $request->boolean('is_active');

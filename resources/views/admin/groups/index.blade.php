@@ -12,6 +12,25 @@
 @endsection
 
 @section('content')
+@php
+    $groupIcons = require resource_path('views/admin/groups/icon_map.php');
+    $types     = ['community'=>'Közösség','campaign'=>'Kampány','chapter'=>'Tagozat','committee'=>'Bizottság','team'=>'Csapat'];
+    $privacies = ['public'=>'Nyilvános','private'=>'Zárt','secret'=>'Titkos'];
+    $typeColors = [
+        'community' => ['bg'=>'rgba(64,81,137,0.12)',  'color'=>'#405189'],
+        'campaign'  => ['bg'=>'rgba(240,101,72,0.12)', 'color'=>'#f06548'],
+        'chapter'   => ['bg'=>'rgba(10,179,156,0.12)', 'color'=>'#0ab39c'],
+        'committee' => ['bg'=>'rgba(122,90,248,0.12)', 'color'=>'#7a5af8'],
+        'team'      => ['bg'=>'rgba(247,184,75,0.12)', 'color'=>'#f7b84b'],
+    ];
+    $defaultTypeIcons = [
+        'community' => 'users',
+        'campaign'  => 'megaphone',
+        'chapter'   => 'bookmark',
+        'committee' => 'building',
+        'team'      => 'bolt',
+    ];
+@endphp
 <div class="nf-card" style="overflow:hidden">
     <table class="nf-table">
         <thead>
@@ -26,6 +45,11 @@
         </thead>
         <tbody>
             @forelse($groups as $group)
+            @php
+                $tc      = $typeColors[$group->type] ?? ['bg'=>'rgba(108,117,125,0.12)','color'=>'#6c757d'];
+                $iconKey = $group->icon ?: ($defaultTypeIcons[$group->type] ?? 'users');
+                $iconPath= $groupIcons[$iconKey] ?? $groupIcons['users'];
+            @endphp
             <tr onclick="window.location='{{ route('admin.groups.show', $group) }}'"
                 style="cursor:pointer"
                 onmouseover="this.style.background='#f8f9ff'"
@@ -35,15 +59,17 @@
                 data-type="{{ $group->type }}"
                 data-privacy="{{ $group->privacy }}"
                 data-active="{{ $group->is_active ? '1' : '0' }}"
+                data-icon="{{ $group->icon ?? '' }}"
                 data-desc="{{ $group->description ?? '' }}">
                 <td>
-                    <span style="font-weight:500;color:#343a40">{{ $group->name }}</span>
+                    <div style="display:flex;align-items:center;gap:10px">
+                        <div style="width:34px;height:34px;border-radius:8px;background:{{ $tc['bg'] }};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                            <svg width="16" height="16" fill="none" stroke="{{ $tc['color'] }}" viewBox="0 0 24 24">{!! $iconPath !!}</svg>
+                        </div>
+                        <span style="font-weight:500;color:#343a40">{{ $group->name }}</span>
+                    </div>
                 </td>
-                @php
-                    $types = ['community'=>'Közösség','campaign'=>'Kampány','chapter'=>'Tagozat','committee'=>'Bizottság','team'=>'Csapat'];
-                    $privacies = ['public'=>'Nyilvános','private'=>'Zárt','secret'=>'Titkos'];
-                @endphp
-                <td><span class="nf-badge badge-purple">{{ $types[$group->type] ?? $group->type }}</span></td>
+                <td><span class="nf-badge badge-purple" style="border-left:3px solid {{ $tc['color'] }}">{{ $types[$group->type] ?? $group->type }}</span></td>
                 <td><span class="nf-badge badge-secondary">{{ $privacies[$group->privacy] ?? $group->privacy }}</span></td>
                 <td style="color:#6c757d">{{ $group->people_count + $group->users_count }} fő</td>
                 <td>
@@ -78,9 +104,27 @@
     @endif
 </div>
 
+{{-- Ikonválasztó közös stílus --}}
+<style>
+.icon-picker { display:flex; flex-wrap:wrap; gap:6px; padding:6px 0; }
+.icon-opt { position:relative; }
+.icon-opt input[type=radio] { position:absolute; opacity:0; width:0; height:0; }
+.icon-opt label {
+    display:flex; align-items:center; justify-content:center;
+    width:36px; height:36px; border-radius:7px; cursor:pointer;
+    border:2px solid #e9ebec; background:#f8f9fa;
+    transition:border-color 0.15s, background 0.15s;
+}
+.icon-opt input[type=radio]:checked + label,
+.icon-opt label.active {
+    border-color:#405189; background:rgba(64,81,137,0.1);
+}
+.icon-opt label:hover { border-color:#405189; background:rgba(64,81,137,0.07); }
+</style>
+
 {{-- CREATE MODAL --}}
 <div id="modal-create" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-create')">
-    <div class="nf-modal">
+    <div class="nf-modal" style="max-width:540px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">Új csoport</span>
             <button class="nf-modal-close" onclick="closeModal('modal-create')">
@@ -111,6 +155,19 @@
                     </select>
                 </div>
                 <div style="grid-column:span 2">
+                    <label class="nf-label">Ikon</label>
+                    <div class="icon-picker">
+                        @foreach($groupIcons as $key => $path)
+                        <div class="icon-opt">
+                            <input type="radio" name="icon" id="ci_{{ $key }}" value="{{ $key }}">
+                            <label for="ci_{{ $key }}" title="{{ $key }}">
+                                <svg width="18" height="18" fill="none" stroke="#405189" viewBox="0 0 24 24">{!! $path !!}</svg>
+                            </label>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div style="grid-column:span 2">
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
                         <input type="hidden" name="is_active" value="0">
                         <input type="checkbox" name="is_active" value="1" checked style="width:15px;height:15px;accent-color:#405189">
@@ -132,7 +189,7 @@
 
 {{-- EDIT MODAL --}}
 <div id="modal-edit" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-edit')">
-    <div class="nf-modal">
+    <div class="nf-modal" style="max-width:540px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">Csoport szerkesztése</span>
             <button class="nf-modal-close" onclick="closeModal('modal-edit')">
@@ -162,6 +219,19 @@
                         <option value="{{ $val }}">{{ $label }}</option>
                         @endforeach
                     </select>
+                </div>
+                <div style="grid-column:span 2">
+                    <label class="nf-label">Ikon</label>
+                    <div class="icon-picker">
+                        @foreach($groupIcons as $key => $path)
+                        <div class="icon-opt">
+                            <input type="radio" name="icon" id="gi_{{ $key }}" value="{{ $key }}">
+                            <label for="gi_{{ $key }}" title="{{ $key }}">
+                                <svg width="18" height="18" fill="none" stroke="#405189" viewBox="0 0 24 24">{!! $path !!}</svg>
+                            </label>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
                 <div style="grid-column:span 2">
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
@@ -194,6 +264,12 @@ function openGroupEditRow(el) {
     document.getElementById('g_privacy').value  = d.privacy;
     document.getElementById('g_active').checked = d.active === '1';
     document.getElementById('g_desc').value     = d.desc;
+
+    // Ikon előre kijelölése
+    document.querySelectorAll('#modal-edit input[name=icon]').forEach(r => {
+        r.checked = (r.value === d.icon);
+    });
+
     openModal('modal-edit');
 }
 </script>

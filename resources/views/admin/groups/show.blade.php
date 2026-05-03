@@ -133,7 +133,7 @@
     </div>
 
     {{-- Jobb oszlop: Chat --}}
-    <div class="lg:col-span-2" style="position:sticky; top:0; height:calc(100vh - 108px);">
+    <div class="lg:col-span-2" style="position:sticky; top:0; height:calc(100vh - 108px); margin-right:-24px;">
         @livewire('admin.groups.group-chat', ['group' => $group])
     </div>
 

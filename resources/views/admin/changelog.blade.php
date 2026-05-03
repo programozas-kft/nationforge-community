@@ -99,6 +99,8 @@
                 <li><strong>Oldalsáv menü egyszerűsítése:</strong> A CRM és Adminisztráció legördülő almenük megszűntek. A Kapcsolatok, Csoportok, Felhasználók, Beállítások, Verziókövetés és Súgó kezelése mostantól közvetlen, önálló menüpontokként érhetők el — a navigáció egyetlen kattintással elérhető.</li>
                 <li><strong>Csoport részletoldal átrendezése:</strong> Az oldal bal oszlopába kerültek az Adatok és a Tagok panel egymás alatt, míg a Chat ablak a jobb oldali (kétharmados) oszlopot tölti ki — áttekinthetőbb, kétpaneles elrendezés.</li>
                 <li><strong>Chat ablak viewport-kitöltés:</strong> A csoport chat ablaka mostantól a böngészőablak teljes magasságát kitölti (topbartól az aljáig), és a jobb szélre van igazítva. JavaScript alapú <code>position: fixed</code> elhelyezés gondoskodik arról, hogy a Livewire poll-frissítés sem állítja vissza a pozíciót.</li>
+                <li><strong>Szerepkörök magyar megnevezése:</strong> A Felhasználók létrehozás/szerkesztés modalban és a Csoport részletoldalon a szerepkör nevek angolról magyarra váltottak: <em>super-admin → Főadmin, admin → Admin, editor → Szerkesztő, member → Tag</em>.</li>
+                <li><strong>Dashboard grafikonok (Chart.js):</strong> A főoldalra három látványos grafikon került: <em>Havi adományok</em> oszlopdiagram (teljes sor, utolsó 12 hónap), <em>Kapcsolatok növekedése</em> kettős-tengelyes vonaldiagram (kapcsolatok + adományok párhuzamosan), és <em>Kapcsolatok megoszlása</em> fánkdiagram státusz szerint, egyedi százalékos legendával. A grafikonok valós adatbázis-adatokat jelenítenek meg.</li>
             </ul>
         </div>
     </div>

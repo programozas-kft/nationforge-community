@@ -60,6 +60,17 @@
     </div>
 </div>
 
+<!-- Oszlopdiagram: havi adományok (teljes sor) -->
+<div class="nf-card p-5 mb-6">
+    <div class="flex items-center justify-between mb-4">
+        <div>
+            <p class="text-sm font-semibold text-gray-800">Havi adományok</p>
+            <p class="text-xs text-gray-400">Utolsó 12 hónap (Ft)</p>
+        </div>
+    </div>
+    <canvas id="donationChart" height="60"></canvas>
+</div>
+
 <!-- Two columns -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
@@ -130,5 +141,175 @@
         </div>
     </div>
 </div>
+
+<!-- Charts row: kapcsolatok növekedése + megoszlás (legalul) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-6">
+
+    <!-- Vonaldiagram: kapcsolatok növekedése (2/3) -->
+    <div class="nf-card p-5 lg:col-span-2">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <p class="text-sm font-semibold text-gray-800">Kapcsolatok növekedése</p>
+                <p class="text-xs text-gray-400">Utolsó 12 hónap</p>
+            </div>
+            <div class="flex items-center gap-4 text-xs text-gray-500">
+                <span class="flex items-center gap-1"><span style="display:inline-block;width:12px;height:3px;background:#405189;border-radius:2px"></span> Kapcsolatok</span>
+                <span class="flex items-center gap-1"><span style="display:inline-block;width:12px;height:3px;background:#0ab39c;border-radius:2px"></span> Adományok (Ft)</span>
+            </div>
+        </div>
+        <canvas id="growthChart" height="100"></canvas>
+    </div>
+
+    <!-- Kördiagram: státusz megoszlás (1/3) -->
+    <div class="nf-card p-5">
+        <div class="mb-4">
+            <p class="text-sm font-semibold text-gray-800">Kapcsolatok megoszlása</p>
+            <p class="text-xs text-gray-400">Státusz szerint</p>
+        </div>
+        <canvas id="statusChart" height="200"></canvas>
+        <div id="statusLegend" class="mt-4 space-y-1"></div>
+    </div>
+
+</div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+const monthLabels      = @json($monthLabels);
+const monthlyPeople    = @json($monthlyPeople);
+const monthlyDonations = @json($monthlyDonations);
+const statusNames      = @json($statusNames);
+const statusData       = @json($statusData);
+
+const statusColors = ['#405189','#0ab39c','#f7b84b','#7a5af8','#f06548','#299cdb','#adb5bd'];
+
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size   = 11;
+Chart.defaults.color       = '#6c757d';
+
+// 1. Vonaldiagram – kapcsolatok + adományok
+new Chart(document.getElementById('growthChart'), {
+    type: 'line',
+    data: {
+        labels: monthLabels,
+        datasets: [
+            {
+                label: 'Kapcsolatok',
+                data: monthlyPeople,
+                borderColor: '#405189',
+                backgroundColor: 'rgba(64,81,137,0.08)',
+                borderWidth: 2.5,
+                pointRadius: 3,
+                pointBackgroundColor: '#405189',
+                tension: 0.4,
+                fill: true,
+                yAxisID: 'yPeople',
+            },
+            {
+                label: 'Adományok (Ft)',
+                data: monthlyDonations,
+                borderColor: '#0ab39c',
+                backgroundColor: 'rgba(10,179,156,0.07)',
+                borderWidth: 2.5,
+                pointRadius: 3,
+                pointBackgroundColor: '#0ab39c',
+                tension: 0.4,
+                fill: true,
+                yAxisID: 'yDonations',
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { maxTicksLimit: 6 } },
+            yPeople: {
+                type: 'linear', position: 'left',
+                grid: { color: 'rgba(0,0,0,0.04)' },
+                ticks: { stepSize: 1 },
+                title: { display: true, text: 'Kapcsolatok (fő)', color: '#405189', font: { size: 10 } }
+            },
+            yDonations: {
+                type: 'linear', position: 'right',
+                grid: { drawOnChartArea: false },
+                ticks: { callback: v => v.toLocaleString('hu-HU') + ' Ft' },
+                title: { display: true, text: 'Adományok (Ft)', color: '#0ab39c', font: { size: 10 } }
+            }
+        }
+    }
+});
+
+// 2. Kördiagram – státusz megoszlás
+new Chart(document.getElementById('statusChart'), {
+    type: 'doughnut',
+    data: {
+        labels: statusNames,
+        datasets: [{
+            data: statusData,
+            backgroundColor: statusColors.slice(0, statusData.length),
+            borderWidth: 2,
+            borderColor: '#fff',
+            hoverOffset: 6,
+        }]
+    },
+    options: {
+        responsive: true,
+        cutout: '65%',
+        plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.parsed + ' fő' } }
+        }
+    }
+});
+
+// Egyedi legenda a kördiagramhoz
+const legend = document.getElementById('statusLegend');
+const total  = statusData.reduce((a, b) => a + b, 0);
+statusNames.forEach((name, i) => {
+    const pct = total ? Math.round(statusData[i] / total * 100) : 0;
+    legend.innerHTML += `
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.75rem;margin-bottom:4px">
+            <span style="display:flex;align-items:center;gap:6px">
+                <span style="width:10px;height:10px;border-radius:50%;background:${statusColors[i]};flex-shrink:0"></span>
+                ${name}
+            </span>
+            <span style="color:#343a40;font-weight:600">${statusData[i]} fő <span style="color:#adb5bd;font-weight:400">(${pct}%)</span></span>
+        </div>`;
+});
+
+// 3. Oszlopdiagram – havi adományok
+new Chart(document.getElementById('donationChart'), {
+    type: 'bar',
+    data: {
+        labels: monthLabels,
+        datasets: [{
+            label: 'Adományok (Ft)',
+            data: monthlyDonations,
+            backgroundColor: 'rgba(247,184,75,0.75)',
+            borderColor: '#f7b84b',
+            borderWidth: 1.5,
+            borderRadius: 5,
+            borderSkipped: false,
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => ' ' + ctx.parsed.y.toLocaleString('hu-HU') + ' Ft' } }
+        },
+        scales: {
+            x: { grid: { display: false } },
+            y: {
+                grid: { color: 'rgba(0,0,0,0.04)' },
+                ticks: { callback: v => v.toLocaleString('hu-HU') + ' Ft' }
+            }
+        }
+    }
+});
+</script>
+@endpush
 
 @endsection

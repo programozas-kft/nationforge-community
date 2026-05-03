@@ -40,6 +40,7 @@ class EventController extends Controller
 
         $data['slug'] = Str::slug($data['title']) . '-' . Str::random(5);
         $data['is_online'] = $request->boolean('is_online');
+        $data['ticket_price'] = $data['ticket_price'] ?? 0;
         $data['created_by'] = auth()->id();
 
         Event::create($data);
@@ -76,6 +77,7 @@ class EventController extends Controller
         ]);
 
         $data['is_online'] = $request->boolean('is_online');
+        $data['ticket_price'] = $data['ticket_price'] ?? 0;
         $event->update($data);
         return redirect()->route('admin.events.show', $event)->with('success', 'Esemény frissítve!');
     }

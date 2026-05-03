@@ -82,7 +82,7 @@
 
 <div class="timeline">
 
-    <!-- v1.5.2 LATEST -->
+    <!-- v1.6.0 LATEST -->
     <div class="tl-item">
         <div class="tl-dot latest">
             <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
@@ -90,8 +90,30 @@
         <div class="tl-content">
             <div class="tl-header">
                 <div class="tl-title">
-                    v1.5.2
+                    v1.6.0
                     <span class="tl-badge" style="background:rgba(10,179,156,0.1);color:#0ab39c;">Aktuális, Legújabb</span>
+                </div>
+                <div class="tl-date">2026. május 2.</div>
+            </div>
+            <ul>
+                <li><strong>Felhasználók ↔ Csoportok hozzárendelés:</strong> A rendszer felhasználói (bejelentkezési fiókkal rendelkezők) mostantól csoportokhoz rendelhetők — külön <code>group_user</code> pivot tábla és M:N kapcsolat a <code>User</code> és <code>Group</code> modellek között.</li>
+                <li><strong>Csoportok részletoldala — Felhasználók megjelenítése:</strong> A csoport tagok listájában mostantól a Felhasználók is szerepelnek a Kapcsolatok mellett, megjelölve a típusukat (Kapcsolat / Felhasználó), szerepkörük badge-dzsel ellátva.</li>
+                <li><strong>Chip/pill csoport-választó:</strong> A Kapcsolatok és Felhasználók szerkesztő modaljaiban a nehézkes többválasztós listát letisztult, kattintható chip-gombok váltják fel — egyetlen kattintással aktiválható/deaktiválható minden csoport.</li>
+                <li><strong>Jelszó szem ikon (Felhasználók):</strong> A Felhasználók létrehozás és szerkesztés modalokban a jelszó- és jelszó-megerősítés mezők mellé szem ikon került, amellyel a beírt jelszó láthatóvá tehető.</li>
+                <li><strong>Jelszó validációs javítás:</strong> Felhasználó szerkesztésekor az üres jelszó mezők már nem okoznak validációs hibát — a <code>confirmed</code> szabály csak akkor fut le, ha ténylegesen van megadott jelszó.</li>
+                <li><strong>Oldalsáv logo csere:</strong> A bal felső sarokbeli ikon lecserélve a NationForge márkaképnek megfelelő sötétkék hatszög alapú „N" logóra, világoskék szegéllyel.</li>
+                <li><strong>Oldalsáv menü egyszerűsítése:</strong> A CRM és Adminisztráció legördülő almenük megszűntek — a Kapcsolatok, Csoportok, Felhasználók, Beállítások, Verziókövetés és Súgó kezelése mostantól közvetlen, önálló menüpontokként érhetők el.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.5.2 -->
+    <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.5.2
                 </div>
                 <div class="tl-date">2026. május 2.</div>
             </div>

@@ -133,9 +133,32 @@
     </div>
 
     {{-- Jobb oszlop: Chat --}}
-    <div class="lg:col-span-2" style="position:sticky; top:0; height:calc(100vh - 108px); margin-right:-24px;">
+    <div class="lg:col-span-2" id="chat-col" style="min-height:calc(100vh - 108px);">
         @livewire('admin.groups.group-chat', ['group' => $group])
     </div>
 
 </div>
+
+@push('scripts')
+<script>
+function fitChatPanel() {
+    const col = document.getElementById('chat-col');
+    if (!col) return;
+    const rect = col.getBoundingClientRect();
+    col.style.position = 'fixed';
+    col.style.left     = Math.round(rect.left) + 'px';
+    col.style.right    = '0';
+    col.style.top      = '60px';
+    col.style.bottom   = '0';
+    col.style.height   = 'auto';
+    col.style.zIndex   = '10';
+}
+document.addEventListener('DOMContentLoaded', fitChatPanel);
+window.addEventListener('resize', function() {
+    const col = document.getElementById('chat-col');
+    if (col) { col.style.position = 'static'; }
+    fitChatPanel();
+});
+</script>
+@endpush
 @endsection

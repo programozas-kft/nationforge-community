@@ -1,4 +1,4 @@
-<div class="nf-card flex flex-col" style="height: 100%; border-radius: 8px 0 0 8px;">
+<div class="nf-card flex flex-col" style="height: 100%; border-radius: 8px 0 0 0;">
     <div class="nf-card-header flex justify-between items-center bg-gray-50 border-b">
         <h3 class="font-semibold text-gray-800">Szakmai Társalgás</h3>
         <span class="text-xs text-gray-500">Belső kommunikáció</span>

@@ -136,7 +136,7 @@
     </div>
 
     {{-- Jobb oszlop: Chat --}}
-    <div class="lg:col-span-2" id="chat-col" style="min-height:calc(100vh - 108px);">
+    <div class="lg:col-span-2" id="chat-col" style="min-height:calc(100vh - 146px);">
         @livewire('admin.groups.group-chat', ['group' => $group])
     </div>
 
@@ -151,7 +151,7 @@ function fitChatPanel() {
     col.style.position = 'fixed';
     col.style.left     = Math.round(rect.left) + 'px';
     col.style.right    = '0';
-    col.style.top      = '60px';
+    col.style.top      = '98px'; /* 38px quicklinks + 60px topbar */
     col.style.bottom   = '0';
     col.style.height   = 'auto';
     col.style.zIndex   = '10';

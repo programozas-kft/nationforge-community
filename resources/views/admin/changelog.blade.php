@@ -82,7 +82,7 @@
 
 <div class="timeline">
 
-    <!-- v1.6.0 LATEST -->
+    <!-- v1.7.0 LATEST -->
     <div class="tl-item">
         <div class="tl-dot latest">
             <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
@@ -90,8 +90,28 @@
         <div class="tl-content">
             <div class="tl-header">
                 <div class="tl-title">
-                    v1.6.0
+                    v1.7.0
                     <span class="tl-badge" style="background:rgba(10,179,156,0.1);color:#0ab39c;">Aktuális, Legújabb</span>
+                </div>
+                <div class="tl-date">2026. május 3.</div>
+            </div>
+            <ul>
+                <li><strong>Oldalsáv menü egyszerűsítése:</strong> A CRM és Adminisztráció legördülő almenük megszűntek. A Kapcsolatok, Csoportok, Felhasználók, Beállítások, Verziókövetés és Súgó kezelése mostantól közvetlen, önálló menüpontokként érhetők el — a navigáció egyetlen kattintással elérhető.</li>
+                <li><strong>Csoport részletoldal átrendezése:</strong> Az oldal bal oszlopába kerültek az Adatok és a Tagok panel egymás alatt, míg a Chat ablak a jobb oldali (kétharmados) oszlopot tölti ki — áttekinthetőbb, kétpaneles elrendezés.</li>
+                <li><strong>Chat ablak viewport-kitöltés:</strong> A csoport chat ablaka mostantól a böngészőablak teljes magasságát kitölti (topbartól az aljáig), és a jobb szélre van igazítva. JavaScript alapú <code>position: fixed</code> elhelyezés gondoskodik arról, hogy a Livewire poll-frissítés sem állítja vissza a pozíciót.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.6.0 -->
+    <div class="tl-item">
+        <div class="tl-dot">
+            <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.6.0
                 </div>
                 <div class="tl-date">2026. május 2.</div>
             </div>

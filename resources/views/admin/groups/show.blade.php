@@ -115,9 +115,12 @@
                             </div>
                         </td>
                         <td>
-                            @php $roleColors=['super-admin'=>'badge-danger','admin'=>'badge-primary','editor'=>'badge-warning','member'=>'badge-secondary']; @endphp
+                            @php
+                                $roleColors = ['super-admin'=>'badge-danger','admin'=>'badge-primary','editor'=>'badge-warning','member'=>'badge-secondary'];
+                                $roleLabels = ['super-admin'=>'Főadmin','admin'=>'Admin','editor'=>'Szerkesztő','member'=>'Tag'];
+                            @endphp
                             @foreach($user->roles as $role)
-                                <span class="nf-badge {{ $roleColors[$role->name] ?? 'badge-secondary' }}">{{ $role->name }}</span>
+                                <span class="nf-badge {{ $roleColors[$role->name] ?? 'badge-secondary' }}">{{ $roleLabels[$role->name] ?? $role->name }}</span>
                             @endforeach
                         </td>
                         <td><span class="nf-badge badge-info">Felhasználó</span></td>

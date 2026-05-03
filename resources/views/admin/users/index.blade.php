@@ -65,9 +65,12 @@
                 </td>
                 <td style="color:#6c757d">{{ $user->email }}</td>
                 <td>
-                    @php $roleColors=['super-admin'=>'badge-danger','admin'=>'badge-primary','editor'=>'badge-warning','member'=>'badge-secondary']; @endphp
+                    @php
+                        $roleColors  = ['super-admin'=>'badge-danger','admin'=>'badge-primary','editor'=>'badge-warning','member'=>'badge-secondary'];
+                        $roleLabels  = ['super-admin'=>'Főadmin','admin'=>'Admin','editor'=>'Szerkesztő','member'=>'Tag'];
+                    @endphp
                     @foreach($user->roles as $role)
-                        <span class="nf-badge {{ $roleColors[$role->name] ?? 'badge-secondary' }}">{{ $role->name }}</span>
+                        <span class="nf-badge {{ $roleColors[$role->name] ?? 'badge-secondary' }}">{{ $roleLabels[$role->name] ?? $role->name }}</span>
                     @endforeach
                 </td>
                 <td>
@@ -145,8 +148,9 @@
                 <div style="grid-column:span 2">
                     <label class="nf-label">Szerepkör <span style="color:#f06548">*</span></label>
                     <select name="role" class="nf-select" required>
+                        @php $roleLabels = ['super-admin'=>'Főadmin','admin'=>'Admin','editor'=>'Szerkesztő','member'=>'Tag']; @endphp
                         @foreach($roles as $role)
-                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                        <option value="{{ $role->name }}">{{ $roleLabels[$role->name] ?? $role->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -221,8 +225,9 @@
                 <div style="grid-column:span 2">
                     <label class="nf-label">Szerepkör <span style="color:#f06548">*</span></label>
                     <select name="role" id="u_role" class="nf-select" required>
+                        @php $roleLabels = ['super-admin'=>'Főadmin','admin'=>'Admin','editor'=>'Szerkesztő','member'=>'Tag']; @endphp
                         @foreach($roles as $role)
-                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                        <option value="{{ $role->name }}">{{ $roleLabels[$role->name] ?? $role->name }}</option>
                         @endforeach
                     </select>
                 </div>

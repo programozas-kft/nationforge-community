@@ -295,32 +295,32 @@
 
 <!-- ── QUICK LINKS BAR ──────────────────────────────────── -->
 <div id="quicklinks-bar">
-    <a href="#" class="ql-link" title="YouTube">
+    <a href="https://www.youtube.com/@programozaskft.7617" class="ql-link" title="YouTube" target="_blank" rel="noopener">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="color:#ff4444"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         YouTube
     </a>
     <div class="ql-sep"></div>
-    <a href="#" class="ql-link" title="Google Drive">
+    <a href="https://drive.google.com/drive/home" class="ql-link" title="Google Drive" target="_blank" rel="noopener">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6.28 15.5L2 21h20l-4.28-5.5H6.28z" fill="#34a853"/><path d="M12 3L6.28 15.5h11.44L12 3z" fill="#4285f4"/><path d="M2 21l4.28-5.5L9.5 10.25 6 3.5 2 21z" fill="#ea4335"/><path d="M22 21l-4.28-5.5L14.5 10.25 18 3.5 22 21z" fill="#fbbc05"/></svg>
         Google Drive
     </a>
     <div class="ql-sep"></div>
-    <a href="#" class="ql-link" title="Instagram">
+    <a href="https://www.instagram.com/" class="ql-link" title="Instagram" target="_blank" rel="noopener">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/><stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><rect width="24" height="24" rx="5" fill="url(#ig)"/><circle cx="12" cy="12" r="4" stroke="white" stroke-width="1.8" fill="none"/><circle cx="17.5" cy="6.5" r="1.2" fill="white"/></svg>
         Instagram
     </a>
     <div class="ql-sep"></div>
-    <a href="#" class="ql-link" title="Linkgyűjtemény">
+    <a href="{{ route('admin.links.index') }}" class="ql-link" title="Linkgyűjtemény">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
         Linkgyűjtemény
     </a>
     <div class="ql-sep"></div>
-    <a href="#" class="ql-link" title="Hírek">
+    <a href="https://www.google.com/search?sca_esv=251dd46310ce0ad5&sxsrf=ANbL-n6CmNz351akdfQzcO5UJULZ6sqnIQ:1778018034720&q=politika&tbm=nws&source=lnms&fbs=ADc_l-akmJ9clyHhwEynr9YRwEo_tYQUWp-_aNxOcHgKpLE-YakERkcbs6Kn6Gcb3l6NkpKNzdhKBzjJMiz30jhymdjvVskm-pN0JMxNkIz3eFGoXlKh4mWojQ-wyW8oHkvbANGh_pTu9t0VlzYEU5uSy7lVCoG8AOh8hc-akVwIGhCfgOr-8hQQ21mOm7q3J2q-7yb7xyt98J8ddCbrba6fngPkBKDfzw&sa=X&ved=2ahUKEwjllvSqkaOUAxWjLhAIHRUUJ-QQ0pQJegQIFBAB&biw=2327&bih=835&dpr=1.1" class="ql-link" title="Hírek" target="_blank" rel="noopener">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
         Hírek
     </a>
     <div class="ql-sep"></div>
-    <a href="#" class="ql-link" title="Infografikonok">
+    <a href="https://www.google.com/search?sca_esv=251dd46310ce0ad5&sxsrf=ANbL-n7JyXyV5Tb7Lk-02vfx5nf93qU6KA:1778018159078&udm=2&fbs=ADc_l-akmJ9clyHhwEynr9YRwEo_tYQUWp-_aNxOcHgKpLE-YUy1rF_kA3bn_mrSgXcgNhn0lG9RN80gRMxP-A2NGIg7J5gdlXV5DDIdWAtC8_mhvQnkIxyhtygqnoA_m3HeMsLSHOwfkzZM2HV80UYo_RGTOT837TXzL51f_J7HTRRFPNXaGhMgIgtGDYL0incoudsXW1kq&q=Infografika&sa=X&ved=2ahUKEwiHsprmkaOUAxVxFBAIHb3GJ3EQtKgLegQILBAB&biw=2327&bih=835&dpr=1.1" class="ql-link" title="Infografikonok" target="_blank" rel="noopener">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
         Infografikonok
     </a>
@@ -467,7 +467,7 @@
 </aside>
 
 <!-- ── MAIN ────────────────────────────────────────────── -->
-<div style="flex:1;display:flex;flex-direction:column;height:100%;overflow:hidden;min-width:0;">
+<div style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;height:calc(100vh - 38px);">
 
     <!-- Topbar -->
     <header id="topbar">
@@ -487,7 +487,7 @@
     </header>
 
     <!-- Content -->
-    <main style="display:block;overflow-y:auto;padding:24px;height:calc(100% - 60px);">
+    <main style="flex:1;min-height:0;overflow-y:auto;padding:24px;">
         @if(session('success'))
             <div class="alert-success mb-5">
                 <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>

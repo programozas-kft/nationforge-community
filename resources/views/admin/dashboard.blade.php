@@ -120,7 +120,7 @@
         </div>
         <div class="divide-y" style="border-color:#f3f3f9">
             @forelse($upcoming_events as $event)
-            <div class="px-5 py-3 flex items-center gap-3">
+            <div style="padding:12px 20px;display:flex;align-items:center;gap:12px">
                 <div class="w-10 h-10 rounded-lg flex flex-col items-center justify-center flex-shrink-0 text-white"
                      style="background:linear-gradient(135deg,#0ab39c,#0a8c7a)">
                     <span class="text-xs font-bold leading-none">{{ $event->starts_at->format('d') }}</span>
@@ -136,7 +136,7 @@
                 <span class="nf-badge badge-info">{{ $event->type }}</span>
             </div>
             @empty
-            <div class="px-5 py-6 text-center text-sm text-gray-400">Nincs közelgő esemény.</div>
+            <div style="padding:24px 20px;text-align:center;font-size:0.875rem;color:#adb5bd">Nincs közelgő esemény.</div>
             @endforelse
         </div>
     </div>

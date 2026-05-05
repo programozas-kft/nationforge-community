@@ -82,7 +82,7 @@
 
 <div class="timeline">
 
-    <!-- v1.7.0 LATEST -->
+    <!-- v1.8.0 LATEST -->
     <div class="tl-item">
         <div class="tl-dot latest">
             <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
@@ -90,8 +90,30 @@
         <div class="tl-content">
             <div class="tl-header">
                 <div class="tl-title">
-                    v1.7.0
+                    v1.8.0
                     <span class="tl-badge" style="background:rgba(10,179,156,0.1);color:#0ab39c;">Aktuális, Legújabb</span>
+                </div>
+                <div class="tl-date">2026. május 5.</div>
+            </div>
+            <ul>
+                <li><strong>Esemény 500-as hiba javítása (EventRsvp model):</strong> Az esemény részletoldal és a szerkesztés utáni átirányítás 500-as szerverhibával végződött, mert a <code>App\Models\EventRsvp</code> osztály hiányzott, noha az <code>event_rsvps</code> tábla az adatbázisban már létezett. A modell létrehozása megszüntette a hibát.</li>
+                <li><strong>Esemény létrehozás/módosítás 500-as hiba javítása (ticket_price):</strong> Production MySQL strict módban az üres jegyár mező <code>NULL</code> értékként jutott a <code>NOT NULL</code> oszlopba, ami szerverhibát okozott. A vezérlőben bevezetett <code>?? 0</code> visszavezető érték mind a <code>store()</code>, mind az <code>update()</code> metódusban megoldja a problémát.</li>
+                <li><strong>Közelgő események helyes számlálása:</strong> A főoldal „Közelgő esemény" számlálója korábban csak a <em>published</em> státuszú eseményeket vette figyelembe, holott az újonnan létrehozott események alapértelmezetten <em>draft</em> státusszal jönnek létre. Mostantól a <em>cancelled</em> és <em>completed</em> kivételével minden jövőbeli esemény beleszámít.</li>
+                <li><strong>Főoldal görgetés javítása:</strong> A dashboard tartalom nem volt görgethetőÍ. A layout főoszlopa explicit <code>height: calc(100vh - 38px)</code> magasságot kapott, a <code>&lt;main&gt;</code> elem pedig <code>flex:1; min-height:0</code> kombinációval tölti ki a maradék területet — így a hosszabb tartalmak helyesen görgethetők.</li>
+                <li><strong>Panel padding egységesítés (Esemény részletek, Közelgő események):</strong> Az Esemény részletoldal Részletek panelén és a főoldal Közelgő események listáján a Tailwind <code>px-5</code> osztályok helyett garantáltan érvényesülő inline <code>padding: 20px</code> stílusok kerültek be, így a szövegek nem érnek a panel széleihez.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.7.0 -->
+    <div class="tl-item">
+        <div class="tl-dot">
+            <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.7.0
                 </div>
                 <div class="tl-date">2026. május 3.</div>
             </div>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\DonationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\HelpController;
+use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('settings', [SettingsController::class, 'index'])->name('settings');
     Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
+
+    Route::get('links', [LinkController::class, 'index'])->name('links.index');
+    Route::post('links', [LinkController::class, 'store'])->name('links.store');
+    Route::put('links/{link}', [LinkController::class, 'update'])->name('links.update');
+    Route::delete('links/{link}', [LinkController::class, 'destroy'])->name('links.destroy');
 
     Route::resource('projects', \App\Http\Controllers\Admin\ProjectController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::post('projects/{project}/members', [\App\Http\Controllers\Admin\ProjectController::class, 'addMember'])->name('projects.members.add');

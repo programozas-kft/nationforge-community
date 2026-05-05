@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
@@ -17,7 +18,8 @@ class SettingsController extends Controller
             'mail_from'   => config('mail.from.address'),
             'mail_name'   => config('mail.from.name'),
         ];
-        return view('admin.settings.index', compact('settings'));
+        $links = Link::orderBy('sort_order')->orderBy('title')->get();
+        return view('admin.settings.index', compact('settings', 'links'));
     }
 
     public function update(Request $request)

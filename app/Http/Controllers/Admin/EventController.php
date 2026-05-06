@@ -49,7 +49,7 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
-        $event->load('rsvps.person');
+        $event->load('rsvps.person', 'registrations');
         return view('admin.events.show', compact('event'));
     }
 

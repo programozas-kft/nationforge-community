@@ -43,6 +43,11 @@ class Event extends Model
         return $this->hasMany(EventRsvp::class);
     }
 
+    public function registrations()
+    {
+        return $this->hasMany(EventRegistration::class);
+    }
+
     public function shifts()
     {
         return $this->hasMany(VolunteerShift::class);

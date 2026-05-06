@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\EventRegistrationController;
 use App\Http\Controllers\Admin\PeopleController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\GroupController;
@@ -12,6 +13,11 @@ use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
+
+// Public event registration
+Route::get('/e/{slug}', [EventRegistrationController::class, 'show'])->name('events.public');
+Route::post('/e/{slug}/register', [EventRegistrationController::class, 'register'])->name('events.register');
+Route::get('/e/{slug}/confirmed', [EventRegistrationController::class, 'confirmed'])->name('events.confirmed');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

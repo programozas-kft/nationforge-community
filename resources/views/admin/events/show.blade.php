@@ -9,6 +9,13 @@
 @endsection
 
 @section('header-actions')
+    @if($event->status === 'published')
+    <a href="{{ route('events.public', $event->slug) }}" target="_blank" class="btn-ghost"
+       style="display:inline-flex;align-items:center;gap:5px">
+        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        Publikus oldal
+    </a>
+    @endif
     <a href="{{ route('admin.events.edit', $event) }}" class="btn-primary">Szerkesztés</a>
     <form method="POST" action="{{ route('admin.events.destroy', $event) }}" class="inline"
           onsubmit="return confirm('Biztosan törli?')">
@@ -87,9 +94,49 @@
         @endif
     </div>
 
-    <div class="lg:col-span-2">
+    <div class="lg:col-span-2" style="display:flex;flex-direction:column;gap:20px">
+
+        {{-- Nyilvános regisztrációk --}}
         <div class="nf-card overflow-hidden">
-            <div class="nf-card-header">Résztvevők ({{ $event->rsvps->count() }})</div>
+            <div class="nf-card-header" style="display:flex;align-items:center;justify-content:space-between">
+                <span>Nyilvános regisztrációk ({{ $event->registrations->count() }})</span>
+                @if($event->status === 'published')
+                <a href="{{ route('events.public', $event->slug) }}" target="_blank"
+                   style="font-size:0.75rem;color:#405189;display:inline-flex;align-items:center;gap:4px">
+                    Regisztrációs link
+                    <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+                @endif
+            </div>
+            <table class="nf-table">
+                <thead>
+                    <tr>
+                        <th>Név</th>
+                        <th>E-mail</th>
+                        <th>Telefon</th>
+                        <th>Kísérők</th>
+                        <th>Regisztrált</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($event->registrations as $reg)
+                    <tr>
+                        <td style="font-weight:500;color:#343a40">{{ $reg->name }}</td>
+                        <td style="color:#405189;font-size:0.82rem">{{ $reg->email }}</td>
+                        <td style="color:#6c757d;font-size:0.82rem">{{ $reg->phone ?? '—' }}</td>
+                        <td style="color:#6c757d">{{ $reg->guests }}</td>
+                        <td style="color:#adb5bd;font-size:0.8rem">{{ $reg->created_at->format('Y. m. d. H:i') }}</td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="5" style="text-align:center;padding:32px;color:#adb5bd">Még nincs regisztráló.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- RSVP-k (belső) --}}
+        <div class="nf-card overflow-hidden">
+            <div class="nf-card-header">Belső RSVP ({{ $event->rsvps->count() }})</div>
             <table class="nf-table">
                 <thead>
                     <tr>
@@ -114,11 +161,12 @@
                         <td class="text-gray-400">{{ $rsvp->created_at->format('Y. m. d.') }}</td>
                     </tr>
                     @empty
-                    <tr><td colspan="3" class="py-8 text-center text-gray-400">Nincs jelentkező.</td></tr>
+                    <tr><td colspan="3" style="text-align:center;padding:32px;color:#adb5bd">Nincs belső RSVP.</td></tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+
     </div>
 </div>
 @endsection

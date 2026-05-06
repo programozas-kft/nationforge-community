@@ -198,6 +198,7 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 - [ ] Email campaign sender (Mailgun / SMTP)
 - [ ] Volunteer shift scheduling
 - [ ] REST API for mobile clients
+- [ ] Multi-language support (English / Hungarian)
 - [ ] SMS / push notification integration
 - [ ] Multi-tenant support *(Pro)*
 - [ ] Advanced reporting & export *(Pro)*

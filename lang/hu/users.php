@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title'          => 'Felhasználók',
+    'new'            => 'Új felhasználó',
+    'edit_title'     => 'Felhasználó szerkesztése',
+    'col_photo'      => 'Kép',
+    'col_name'       => 'Név',
+    'col_email'      => 'Email',
+    'col_role'       => 'Szerepkör',
+    'col_groups'     => 'Csoportok',
+    'col_registered' => 'Regisztrált',
+    'empty'          => 'Nincs felhasználó.',
+    'you'            => 'Te',
+    'full_name'      => 'Teljes név',
+    'password'       => 'Jelszó',
+    'new_password'   => 'Új jelszó',
+    'password_confirm' => 'Jelszó megerősítés',
+    'password_placeholder' => 'Hagyd üresen ha nem változtatod',
+    'role'           => 'Szerepkör',
+    'groups'         => 'Csoportok',
+    'no_groups'      => 'Nincs csoport.',
+    'photo_upload'   => 'Kép feltöltése',
+    'roles' => [
+        'super-admin' => 'Főadmin',
+        'admin'       => 'Admin',
+        'editor'      => 'Szerkesztő',
+        'member'      => 'Tag',
+    ],
+];

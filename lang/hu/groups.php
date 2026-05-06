@@ -1,0 +1,29 @@
+<?php
+
+return [
+    'title'        => 'Csoportok',
+    'new'          => 'Új csoport',
+    'edit_title'   => 'Csoport szerkesztése',
+    'create_title' => 'Új csoport',
+    'col_name'     => 'Csoport',
+    'col_type'     => 'Típus',
+    'col_privacy'  => 'Láthatóság',
+    'col_members'  => 'Tagok',
+    'empty'        => 'Nincs még csoport.',
+    'members'      => 'Tagok',
+    'chat'         => 'Chat',
+    'description'  => 'Leírás',
+    'active_group' => 'Aktív csoport',
+    'privacy' => [
+        'public'  => 'Nyilvános',
+        'private' => 'Privát',
+        'secret'  => 'Titkos',
+    ],
+    'type' => [
+        'community' => 'Közösség',
+        'campaign'  => 'Kampány',
+        'chapter'   => 'Tagozat',
+        'committee' => 'Bizottság',
+        'team'      => 'Csapat',
+    ],
+];

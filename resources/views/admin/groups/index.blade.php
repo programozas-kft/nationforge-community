@@ -1,21 +1,19 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Csoportok')
-@section('header', 'Csoportok')
-@section('breadcrumb') <span style="color:#495057">Csoportok</span> @endsection
+@section('title', __('groups.title'))
+@section('header', __('groups.title'))
+@section('breadcrumb') <span style="color:#495057">{{ __('groups.title') }}</span> @endsection
 
 @section('header-actions')
     <a href="#" class="btn-primary" onclick="openModal('modal-create');return false;">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-        Új csoport
+        {{ __('groups.new') }}
     </a>
 @endsection
 
 @section('content')
 @php
     $groupIcons = require resource_path('views/admin/groups/icon_map.php');
-    $types     = ['community'=>'Közösség','campaign'=>'Kampány','chapter'=>'Tagozat','committee'=>'Bizottság','team'=>'Csapat'];
-    $privacies = ['public'=>'Nyilvános','private'=>'Zárt','secret'=>'Titkos'];
     $typeColors = [
         'community' => ['bg'=>'rgba(64,81,137,0.12)',  'color'=>'#405189'],
         'campaign'  => ['bg'=>'rgba(240,101,72,0.12)', 'color'=>'#f06548'],
@@ -35,11 +33,11 @@
     <table class="nf-table">
         <thead>
             <tr>
-                <th>Csoport neve</th>
-                <th>Típus</th>
-                <th>Láthatóság</th>
-                <th>Tagok</th>
-                <th>Státusz</th>
+                <th>{{ __('groups.col_name') }}</th>
+                <th>{{ __('groups.col_type') }}</th>
+                <th>{{ __('groups.col_privacy') }}</th>
+                <th>{{ __('groups.col_members') }}</th>
+                <th>{{ __('common.status') }}</th>
                 <th style="width:100px"></th>
             </tr>
         </thead>
@@ -69,33 +67,33 @@
                         <span style="font-weight:500;color:#343a40">{{ $group->name }}</span>
                     </div>
                 </td>
-                <td><span class="nf-badge badge-purple" style="border-left:3px solid {{ $tc['color'] }}">{{ $types[$group->type] ?? $group->type }}</span></td>
-                <td><span class="nf-badge badge-secondary">{{ $privacies[$group->privacy] ?? $group->privacy }}</span></td>
-                <td style="color:#6c757d">{{ $group->people_count + $group->users_count }} fő</td>
+                <td><span class="nf-badge badge-purple" style="border-left:3px solid {{ $tc['color'] }}">{{ __('groups.type.' . $group->type, [], null) ?: $group->type }}</span></td>
+                <td><span class="nf-badge badge-secondary">{{ __('groups.privacy.' . $group->privacy, [], null) ?: $group->privacy }}</span></td>
+                <td style="color:#6c757d">{{ $group->people_count + $group->users_count }}</td>
                 <td>
                     <span class="nf-badge {{ $group->is_active ? 'badge-success' : 'badge-secondary' }}">
-                        {{ $group->is_active ? 'Aktív' : 'Inaktív' }}
+                        {{ $group->is_active ? __('common.active') : __('common.inactive') }}
                     </span>
                 </td>
                 <td style="text-align:right" onclick="event.stopPropagation()">
                     <a href="{{ route('admin.groups.show', $group) }}"
-                       style="background:none;border:none;cursor:pointer;color:#0ab39c;margin-right:4px;text-decoration:none;display:inline-flex;align-items:center" title="Megnyitás">
+                       style="background:none;border:none;cursor:pointer;color:#0ab39c;margin-right:4px;text-decoration:none;display:inline-flex;align-items:center" title="{{ __('common.details') }}">
                         <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                     </a>
                     <button onclick="openGroupEditRow(this.closest('tr'))"
-                        style="background:none;border:none;cursor:pointer;color:#405189;margin-right:6px" title="Szerkesztés">
+                        style="background:none;border:none;cursor:pointer;color:#405189;margin-right:6px" title="{{ __('common.edit') }}">
                         <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     </button>
-                    <form method="POST" action="{{ route('admin.groups.destroy', $group) }}" style="display:inline" onsubmit="return confirm('Biztosan törli?')">
+                    <form method="POST" action="{{ route('admin.groups.destroy', $group) }}" style="display:inline" onsubmit="return confirm('{{ __('common.confirm_delete') }}')">
                         @csrf @method('DELETE')
-                        <button type="submit" style="background:none;border:none;cursor:pointer;color:#f06548" title="Törlés">
+                        <button type="submit" style="background:none;border:none;cursor:pointer;color:#f06548" title="{{ __('common.delete') }}">
                             <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
                     </form>
                 </td>
             </tr>
             @empty
-            <tr><td colspan="6" style="text-align:center;padding:40px;color:#adb5bd">Nincs még csoport.</td></tr>
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:#adb5bd">{{ __('groups.empty') }}</td></tr>
             @endforelse
         </tbody>
     </table>
@@ -104,7 +102,6 @@
     @endif
 </div>
 
-{{-- Ikonválasztó közös stílus --}}
 <style>
 .icon-picker { display:flex; flex-wrap:wrap; gap:6px; padding:6px 0; }
 .icon-opt { position:relative; }
@@ -126,7 +123,7 @@
 <div id="modal-create" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-create')">
     <div class="nf-modal" style="max-width:540px">
         <div class="nf-modal-header">
-            <span class="nf-modal-title">Új csoport</span>
+            <span class="nf-modal-title">{{ __('groups.create_title') }}</span>
             <button class="nf-modal-close" onclick="closeModal('modal-create')">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -135,22 +132,22 @@
             @csrf
             <div class="nf-modal-body" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Csoport neve <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('groups.col_name') }} <span style="color:#f06548">*</span></label>
                     <input type="text" name="name" class="nf-input" required>
                 </div>
                 <div>
-                    <label class="nf-label">Típus <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('groups.col_type') }} <span style="color:#f06548">*</span></label>
                     <select name="type" class="nf-select">
-                        @foreach(['community'=>'Közösség','campaign'=>'Kampány','chapter'=>'Tagozat','committee'=>'Bizottság','team'=>'Csapat'] as $val => $label)
-                        <option value="{{ $val }}">{{ $label }}</option>
+                        @foreach(['community','campaign','chapter','committee','team'] as $val)
+                        <option value="{{ $val }}">{{ __('groups.type.' . $val) }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
-                    <label class="nf-label">Láthatóság <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('groups.col_privacy') }} <span style="color:#f06548">*</span></label>
                     <select name="privacy" class="nf-select">
-                        @foreach(['public'=>'Nyilvános','private'=>'Zárt','secret'=>'Titkos'] as $val => $label)
-                        <option value="{{ $val }}">{{ $label }}</option>
+                        @foreach(['public','private','secret'] as $val)
+                        <option value="{{ $val }}">{{ __('groups.privacy.' . $val) }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -171,17 +168,17 @@
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
                         <input type="hidden" name="is_active" value="0">
                         <input type="checkbox" name="is_active" value="1" checked style="width:15px;height:15px;accent-color:#405189">
-                        <span class="nf-label" style="margin:0">Aktív csoport</span>
+                        <span class="nf-label" style="margin:0">{{ __('common.active') }}</span>
                     </label>
                 </div>
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Leírás</label>
+                    <label class="nf-label">{{ __('groups.description') }}</label>
                     <textarea name="description" rows="3" class="nf-input" style="resize:none"></textarea>
                 </div>
             </div>
             <div class="nf-modal-footer">
-                <button type="button" class="btn-ghost" onclick="closeModal('modal-create')">Mégse</button>
-                <button type="submit" class="btn-teal">Létrehozás</button>
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-create')">{{ __('common.cancel') }}</button>
+                <button type="submit" class="btn-teal">{{ __('common.create') }}</button>
             </div>
         </form>
     </div>
@@ -191,7 +188,7 @@
 <div id="modal-edit" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-edit')">
     <div class="nf-modal" style="max-width:540px">
         <div class="nf-modal-header">
-            <span class="nf-modal-title">Csoport szerkesztése</span>
+            <span class="nf-modal-title">{{ __('groups.edit_title') }}</span>
             <button class="nf-modal-close" onclick="closeModal('modal-edit')">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -201,22 +198,22 @@
             <input type="hidden" name="_method" value="PUT">
             <div class="nf-modal-body" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Csoport neve <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('groups.col_name') }} <span style="color:#f06548">*</span></label>
                     <input type="text" name="name" id="g_name" class="nf-input" required>
                 </div>
                 <div>
-                    <label class="nf-label">Típus</label>
+                    <label class="nf-label">{{ __('groups.col_type') }}</label>
                     <select name="type" id="g_type" class="nf-select">
-                        @foreach(['community'=>'Közösség','campaign'=>'Kampány','chapter'=>'Tagozat','committee'=>'Bizottság','team'=>'Csapat'] as $val => $label)
-                        <option value="{{ $val }}">{{ $label }}</option>
+                        @foreach(['community','campaign','chapter','committee','team'] as $val)
+                        <option value="{{ $val }}">{{ __('groups.type.' . $val) }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
-                    <label class="nf-label">Láthatóság</label>
+                    <label class="nf-label">{{ __('groups.col_privacy') }}</label>
                     <select name="privacy" id="g_privacy" class="nf-select">
-                        @foreach(['public'=>'Nyilvános','private'=>'Zárt','secret'=>'Titkos'] as $val => $label)
-                        <option value="{{ $val }}">{{ $label }}</option>
+                        @foreach(['public','private','secret'] as $val)
+                        <option value="{{ $val }}">{{ __('groups.privacy.' . $val) }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -237,17 +234,17 @@
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
                         <input type="hidden" name="is_active" value="0">
                         <input type="checkbox" name="is_active" id="g_active" value="1" style="width:15px;height:15px;accent-color:#405189">
-                        <span class="nf-label" style="margin:0">Aktív csoport</span>
+                        <span class="nf-label" style="margin:0">{{ __('common.active') }}</span>
                     </label>
                 </div>
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Leírás</label>
+                    <label class="nf-label">{{ __('groups.description') }}</label>
                     <textarea name="description" id="g_desc" rows="3" class="nf-input" style="resize:none"></textarea>
                 </div>
             </div>
             <div class="nf-modal-footer">
-                <button type="button" class="btn-ghost" onclick="closeModal('modal-edit')">Mégse</button>
-                <button type="submit" class="btn-teal">Mentés</button>
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-edit')">{{ __('common.cancel') }}</button>
+                <button type="submit" class="btn-teal">{{ __('common.save') }}</button>
             </div>
         </form>
     </div>
@@ -265,7 +262,6 @@ function openGroupEditRow(el) {
     document.getElementById('g_active').checked = d.active === '1';
     document.getElementById('g_desc').value     = d.desc;
 
-    // Ikon előre kijelölése
     document.querySelectorAll('#modal-edit input[name=icon]').forEach(r => {
         r.checked = (r.value === d.icon);
     });

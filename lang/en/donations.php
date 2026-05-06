@@ -1,0 +1,36 @@
+<?php
+
+return [
+    'title'       => 'Donations',
+    'new'         => 'New donation',
+    'edit_title'  => 'Edit donation',
+    'col_donor'   => 'Donor',
+    'col_amount'  => 'Amount',
+    'col_date'    => 'Date',
+    'col_status'  => 'Status',
+    'col_notes'   => 'Notes',
+    'empty'       => 'No donations yet.',
+    'amount'      => 'Amount (HUF)',
+    'donor'       => 'Donor',
+    'payment_status'   => 'Payment status',
+    'payment_method'   => 'Payment method',
+    'currency'         => 'Currency',
+    'campaign'         => 'Campaign',
+    'recurring'        => 'Recurring donation',
+    'anonymous'        => 'Anonymous',
+    'total_completed'  => 'Total completed donations',
+    'col_method'       => 'Method',
+    'col_recurring'    => 'Recurring',
+    'method' => [
+        'cash'     => 'Cash',
+        'transfer' => 'Transfer',
+        'card'     => 'Card',
+        'other'    => 'Other',
+    ],
+    'status' => [
+        'pending'   => 'Pending',
+        'completed' => 'Completed',
+        'failed'    => 'Failed',
+        'refunded'  => 'Refunded',
+    ],
+];

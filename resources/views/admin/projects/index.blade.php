@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Projektek')
-@section('header', 'Projektkezelő')
-@section('breadcrumb') Projektek @endsection
+@section('title', __('projects.title'))
+@section('header', __('projects.title'))
+@section('breadcrumb') {{ __('projects.title') }} @endsection
 
 @section('header-actions')
     <button onclick="openModal('project-create-modal')" class="btn-primary">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-        Új projekt
+        {{ __('projects.new') }}
     </button>
 @endsection
 
@@ -21,7 +21,7 @@
         </div>
         <div>
             <p class="text-xl font-bold text-gray-800">{{ $counts['osszes'] }}</p>
-            <p class="text-xs text-gray-500">Összes projekt</p>
+            <p class="text-xs text-gray-500">{{ __('common.all') }}</p>
         </div>
     </div>
     <div class="nf-card p-4 flex items-center gap-3">
@@ -30,7 +30,7 @@
         </div>
         <div>
             <p class="text-xl font-bold text-gray-800">{{ $counts['aktiv'] }}</p>
-            <p class="text-xs text-gray-500">Aktív</p>
+            <p class="text-xs text-gray-500">{{ __('projects.status.active') }}</p>
         </div>
     </div>
     <div class="nf-card p-4 flex items-center gap-3">
@@ -39,7 +39,7 @@
         </div>
         <div>
             <p class="text-xl font-bold text-gray-800">{{ $counts['tervezes'] }}</p>
-            <p class="text-xs text-gray-500">Tervezés alatt</p>
+            <p class="text-xs text-gray-500">{{ __('projects.status.planning') }}</p>
         </div>
     </div>
     <div class="nf-card p-4 flex items-center gap-3">
@@ -48,7 +48,7 @@
         </div>
         <div>
             <p class="text-xl font-bold text-gray-800">{{ $counts['lezart'] }}</p>
-            <p class="text-xs text-gray-500">Lezárt</p>
+            <p class="text-xs text-gray-500">{{ __('projects.status.completed') }}</p>
         </div>
     </div>
 </div>
@@ -57,22 +57,22 @@
 @if($projects->isEmpty())
     <div class="nf-card p-12 text-center text-gray-400">
         <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mx-auto mb-3 opacity-30"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-        <p class="text-sm">Még nincs projekt. Hozz létre egyet!</p>
+        <p class="text-sm">{{ __('projects.empty') }}</p>
     </div>
 @else
 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 mb-5">
     @foreach($projects as $project)
     @php
         $statusMap = [
-            'tervezes'      => ['badge-warning',   'Tervezés'],
-            'aktiv'         => ['badge-success',   'Aktív'],
-            'lezart'        => ['badge-secondary', 'Lezárt'],
-            'felfuggesztve' => ['badge-danger',    'Felfüggesztve'],
+            'tervezes'      => ['badge-warning',   __('projects.status.planning')],
+            'aktiv'         => ['badge-success',   __('projects.status.active')],
+            'lezart'        => ['badge-secondary', __('projects.status.completed')],
+            'felfuggesztve' => ['badge-danger',    __('projects.status.on_hold')],
         ];
         $priorityMap = [
-            'magas'    => ['badge-danger',   'Magas'],
-            'kozepes'  => ['badge-info',     'Közepes'],
-            'alacsony' => ['badge-secondary','Alacsony'],
+            'magas'    => ['badge-danger',   __('projects.priority.high')],
+            'kozepes'  => ['badge-info',     __('projects.priority.medium')],
+            'alacsony' => ['badge-secondary',__('projects.priority.low')],
         ];
         [$stClass, $stLabel] = $statusMap[$project->status]   ?? ['badge-secondary', $project->status];
         [$prClass, $prLabel] = $priorityMap[$project->priority] ?? ['badge-secondary', $project->priority];
@@ -97,18 +97,16 @@
         </div>
 
         <div style="padding:12px 20px; flex:1">
-            {{-- Haladás --}}
             <div class="mb-3">
                 <div class="flex justify-between mb-1" style="font-size:0.72rem; color:#6c757d">
-                    <span>Haladás</span>
-                    <span>{{ $project->kesz_count }}/{{ $project->tasks_count }} feladat · {{ $progress }}%</span>
+                    <span>{{ __('projects.progress') }}</span>
+                    <span>{{ $project->kesz_count }}/{{ $project->tasks_count }} {{ __('projects.tasks') }} · {{ $progress }}%</span>
                 </div>
                 <div style="height:6px; background:#f3f3f9; border-radius:3px; overflow:hidden">
                     <div style="height:100%; width:{{ $progress }}%; background:{{ $progress === 100 ? '#0ab39c' : '#405189' }}; border-radius:3px; transition:width 0.3s"></div>
                 </div>
             </div>
 
-            {{-- Meta --}}
             <div class="flex flex-wrap gap-x-4 gap-y-1" style="font-size:0.75rem; color:#adb5bd">
                 @if($project->responsible)
                     <span>👤 {{ $project->responsible->name }}</span>
@@ -116,17 +114,17 @@
                 @if($project->end_date)
                     <span style="{{ $project->isOverdue() ? 'color:#f06548;font-weight:600' : '' }}">
                         📅 {{ $project->end_date->format('Y.m.d') }}
-                        @if($project->isOverdue()) · Lejárt @endif
+                        @if($project->isOverdue()) · {{ __('projects.overdue') }} @endif
                     </span>
                 @endif
             </div>
         </div>
 
         <div style="padding:10px 20px; border-top:1px solid #f3f3f9; display:flex; gap:8px">
-            <a href="{{ route('admin.projects.show', $project) }}" class="btn-ghost" style="padding:5px 12px;font-size:0.75rem;flex:1;justify-content:center">Megnyitás</a>
+            <a href="{{ route('admin.projects.show', $project) }}" class="btn-ghost" style="padding:5px 12px;font-size:0.75rem;flex:1;justify-content:center">{{ __('common.details') }}</a>
             <button onclick="openEditProjectModal({{ $project->id }}, {{ json_encode($project->title) }}, {{ json_encode($project->description) }}, '{{ $project->status }}', '{{ $project->priority }}', '{{ $project->start_date?->format('Y-m-d') }}', '{{ $project->end_date?->format('Y-m-d') }}', {{ $project->responsible_id ?? 'null' }})"
-                    class="btn-ghost" style="padding:5px 12px;font-size:0.75rem">Szerk.</button>
-            <button onclick="openModal('del-proj-{{ $project->id }}')" style="padding:5px 10px;font-size:0.75rem;background:none;border:1px solid transparent;border-radius:5px;color:#f06548;cursor:pointer" onmouseover="this.style.background='rgba(240,101,72,0.08)'" onmouseout="this.style.background='none'">Törlés</button>
+                    class="btn-ghost" style="padding:5px 12px;font-size:0.75rem">{{ __('common.edit') }}</button>
+            <button onclick="openModal('del-proj-{{ $project->id }}')" style="padding:5px 10px;font-size:0.75rem;background:none;border:1px solid transparent;border-radius:5px;color:#f06548;cursor:pointer" onmouseover="this.style.background='rgba(240,101,72,0.08)'" onmouseout="this.style.background='none'">{{ __('common.delete') }}</button>
         </div>
     </div>
 
@@ -134,17 +132,17 @@
     <div id="del-proj-{{ $project->id }}" class="nf-overlay">
         <div class="nf-modal">
             <div class="nf-modal-header">
-                <span class="nf-modal-title">Projekt törlése</span>
+                <span class="nf-modal-title">{{ __('projects.title') }} – {{ __('common.delete') }}</span>
                 <button onclick="closeModal('del-proj-{{ $project->id }}')" class="nf-modal-close">✕</button>
             </div>
             <div class="nf-modal-body">
-                <p style="font-size:0.875rem;color:#495057">Biztosan törli a <strong>„{{ $project->title }}"</strong> projektet? A hozzárendelt feladatok megmaradnak, de projekt nélkül lesznek.</p>
+                <p style="font-size:0.875rem;color:#495057">{{ __('common.confirm_delete') }} <strong>„{{ $project->title }}"</strong></p>
             </div>
             <div class="nf-modal-footer">
-                <button onclick="closeModal('del-proj-{{ $project->id }}')" class="btn-ghost">Mégse</button>
+                <button onclick="closeModal('del-proj-{{ $project->id }}')" class="btn-ghost">{{ __('common.cancel') }}</button>
                 <form method="POST" action="{{ route('admin.projects.destroy', $project) }}">
                     @csrf @method('DELETE')
-                    <button type="submit" class="btn-danger">Törlés</button>
+                    <button type="submit" class="btn-danger">{{ __('common.delete') }}</button>
                 </form>
             </div>
         </div>
@@ -160,15 +158,15 @@
 <div id="project-create-modal" class="nf-overlay">
     <div class="nf-modal nf-modal-lg">
         <div class="nf-modal-header">
-            <span class="nf-modal-title">Új projekt</span>
+            <span class="nf-modal-title">{{ __('projects.new') }}</span>
             <button onclick="closeModal('project-create-modal')" class="nf-modal-close">✕</button>
         </div>
         <form method="POST" action="{{ route('admin.projects.store') }}">
             @csrf
             @include('admin.projects._form', ['project' => null])
             <div class="nf-modal-footer">
-                <button type="button" onclick="closeModal('project-create-modal')" class="btn-ghost">Mégse</button>
-                <button type="submit" class="btn-teal">Létrehozás</button>
+                <button type="button" onclick="closeModal('project-create-modal')" class="btn-ghost">{{ __('common.cancel') }}</button>
+                <button type="submit" class="btn-teal">{{ __('common.create') }}</button>
             </div>
         </form>
     </div>
@@ -178,15 +176,15 @@
 <div id="project-edit-modal" class="nf-overlay">
     <div class="nf-modal nf-modal-lg">
         <div class="nf-modal-header">
-            <span class="nf-modal-title">Projekt szerkesztése</span>
+            <span class="nf-modal-title">{{ __('projects.edit_title') }}</span>
             <button onclick="closeModal('project-edit-modal')" class="nf-modal-close">✕</button>
         </div>
         <form method="POST" id="edit-project-form" action="">
             @csrf @method('PUT')
             @include('admin.projects._form', ['project' => null, 'edit' => true])
             <div class="nf-modal-footer">
-                <button type="button" onclick="closeModal('project-edit-modal')" class="btn-ghost">Mégse</button>
-                <button type="submit" class="btn-primary">Mentés</button>
+                <button type="button" onclick="closeModal('project-edit-modal')" class="btn-ghost">{{ __('common.cancel') }}</button>
+                <button type="submit" class="btn-primary">{{ __('common.save') }}</button>
             </div>
         </form>
     </div>

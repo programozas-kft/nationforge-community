@@ -1,0 +1,36 @@
+<?php
+
+return [
+    'title'       => 'Adományok',
+    'new'         => 'Új adomány',
+    'edit_title'  => 'Adomány szerkesztése',
+    'col_donor'   => 'Adományozó',
+    'col_amount'  => 'Összeg',
+    'col_date'    => 'Dátum',
+    'col_status'  => 'Státusz',
+    'col_notes'   => 'Megjegyzés',
+    'empty'       => 'Nincs még adomány.',
+    'amount'      => 'Összeg (Ft)',
+    'donor'       => 'Adományozó',
+    'payment_status'   => 'Fizetési státusz',
+    'payment_method'   => 'Fizetési mód',
+    'currency'         => 'Pénznem',
+    'campaign'         => 'Kampány',
+    'recurring'        => 'Visszatérő adomány',
+    'anonymous'        => 'Névtelen',
+    'total_completed'  => 'Összes befejezett adomány',
+    'col_method'       => 'Módszer',
+    'col_recurring'    => 'Visszatérő',
+    'method' => [
+        'cash'     => 'Készpénz',
+        'transfer' => 'Átutalás',
+        'card'     => 'Bankkártya',
+        'other'    => 'Egyéb',
+    ],
+    'status' => [
+        'pending'   => 'Függőben',
+        'completed' => 'Teljesítve',
+        'failed'    => 'Sikertelen',
+        'refunded'  => 'Visszatérítve',
+    ],
+];

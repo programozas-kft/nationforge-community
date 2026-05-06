@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title'          => 'Users',
+    'new'            => 'New user',
+    'edit_title'     => 'Edit user',
+    'col_photo'      => 'Photo',
+    'col_name'       => 'Name',
+    'col_email'      => 'Email',
+    'col_role'       => 'Role',
+    'col_groups'     => 'Groups',
+    'col_registered' => 'Registered',
+    'empty'          => 'No users.',
+    'you'            => 'You',
+    'full_name'      => 'Full name',
+    'password'       => 'Password',
+    'new_password'   => 'New password',
+    'password_confirm' => 'Confirm password',
+    'password_placeholder' => 'Leave blank to keep current password',
+    'role'           => 'Role',
+    'groups'         => 'Groups',
+    'no_groups'      => 'No groups.',
+    'photo_upload'   => 'Upload photo',
+    'roles' => [
+        'super-admin' => 'Super Admin',
+        'admin'       => 'Admin',
+        'editor'      => 'Editor',
+        'member'      => 'Member',
+    ],
+];

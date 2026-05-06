@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Kapcsolatok')
-@section('header', 'Kapcsolatok')
-@section('breadcrumb') <span style="color:#495057">Kapcsolatok</span> @endsection
+@section('title', __('people.title'))
+@section('header', __('people.title'))
+@section('breadcrumb') <span style="color:#495057">{{ __('people.title') }}</span> @endsection
 
 @section('header-actions')
     <a href="#" class="btn-primary" onclick="openModal('modal-create');return false;">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-        Új kapcsolat
+        {{ __('people.new') }}
     </a>
 @endsection
 
@@ -17,12 +17,12 @@
         <thead>
             <tr>
                 <th style="width:40px"></th>
-                <th>Név</th>
-                <th>Email</th>
-                <th>Telefon</th>
-                <th>Státusz</th>
-                <th>Város</th>
-                <th>Regisztrált</th>
+                <th>{{ __('people.col_name') }}</th>
+                <th>{{ __('people.col_email') }}</th>
+                <th>{{ __('people.col_phone') }}</th>
+                <th>{{ __('common.status') }}</th>
+                <th>{{ __('people.col_city') }}</th>
+                <th>{{ __('people.col_registered') }}</th>
                 <th style="width:80px"></th>
             </tr>
         </thead>
@@ -63,27 +63,26 @@
                 <td>
                     @php
                         $sc=['member'=>'badge-primary','supporter'=>'badge-success','donor'=>'badge-warning','volunteer'=>'badge-info','vip'=>'badge-purple','prospect'=>'badge-secondary','inactive'=>'badge-secondary'];
-                        $sl=['prospect'=>'Érdeklődő','supporter'=>'Támogató','member'=>'Tag','volunteer'=>'Önkéntes','donor'=>'Adományozó','vip'=>'VIP','inactive'=>'Inaktív'];
                     @endphp
-                    <span class="nf-badge {{ $sc[$person->status] ?? 'badge-secondary' }}">{{ $sl[$person->status] ?? $person->status }}</span>
+                    <span class="nf-badge {{ $sc[$person->status] ?? 'badge-secondary' }}">{{ __('people.status.' . $person->status, [], null) ?: $person->status }}</span>
                 </td>
                 <td style="color:#6c757d">{{ $person->city ?? '—' }}</td>
                 <td style="color:#adb5bd">{{ $person->created_at->format('d M, Y') }}</td>
                 <td style="text-align:right" onclick="event.stopPropagation()">
                     <button onclick="openEdit({{ $editArgs }})"
-                            style="background:none;border:none;cursor:pointer;color:#405189;margin-right:6px" title="Szerkesztés">
+                            style="background:none;border:none;cursor:pointer;color:#405189;margin-right:6px" title="{{ __('common.edit') }}">
                         <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     </button>
-                    <form method="POST" action="{{ route('admin.people.destroy', $person) }}" style="display:inline" onsubmit="return confirm('Biztosan törli?')">
+                    <form method="POST" action="{{ route('admin.people.destroy', $person) }}" style="display:inline" onsubmit="return confirm('{{ __('common.confirm_delete') }}')">
                         @csrf @method('DELETE')
-                        <button type="submit" style="background:none;border:none;cursor:pointer;color:#f06548" title="Törlés">
+                        <button type="submit" style="background:none;border:none;cursor:pointer;color:#f06548" title="{{ __('common.delete') }}">
                             <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
                     </form>
                 </td>
             </tr>
             @empty
-            <tr><td colspan="8" style="text-align:center;padding:40px;color:#adb5bd">Nincs még kapcsolat.</td></tr>
+            <tr><td colspan="8" style="text-align:center;padding:40px;color:#adb5bd">{{ __('people.empty') }}</td></tr>
             @endforelse
         </tbody>
     </table>
@@ -96,7 +95,7 @@
 <div id="modal-create" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-create')">
     <div class="nf-modal">
         <div class="nf-modal-header">
-            <span class="nf-modal-title">Új kapcsolat</span>
+            <span class="nf-modal-title">{{ __('people.create_title') }}</span>
             <button class="nf-modal-close" onclick="closeModal('modal-create')">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -105,57 +104,56 @@
             @csrf
             <div class="nf-modal-body" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
 
-                {{-- Fotó feltöltő --}}
                 <div style="grid-column:span 2;display:flex;align-items:center;gap:16px">
                     <div id="c-preview-wrap" style="width:64px;height:64px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#405189,#7a5af8);display:flex;align-items:center;justify-content:center;flex-shrink:0">
                         <svg id="c-preview-icon" width="28" height="28" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                         <img id="c-preview-img" src="" style="width:100%;height:100%;object-fit:cover;display:none">
                     </div>
                     <div>
-                        <label class="nf-label" style="margin-bottom:6px">Profilkép</label>
+                        <label class="nf-label" style="margin-bottom:6px">{{ __('people.photo') }}</label>
                         <label style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid #ced4da;border-radius:5px;cursor:pointer;font-size:0.8rem;color:#495057;background:#fff">
                             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                            Kép feltöltése
+                            {{ __('people.upload_photo') }}
                             <input type="file" name="photo" accept="image/*" style="display:none" onchange="previewPhoto(this,'c-preview-img','c-preview-icon')">
                         </label>
-                        <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">JPG, PNG, max 2MB</p>
+                        <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">{{ __('people.photo_hint') }}</p>
                     </div>
                 </div>
 
                 <div>
-                    <label class="nf-label">Vezetéknév <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('people.last_name') }} <span style="color:#f06548">*</span></label>
                     <input type="text" name="last_name" class="nf-input" required>
                 </div>
                 <div>
-                    <label class="nf-label">Keresztnév <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('people.first_name') }} <span style="color:#f06548">*</span></label>
                     <input type="text" name="first_name" class="nf-input" required>
                 </div>
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Email</label>
+                    <label class="nf-label">{{ __('common.email') }}</label>
                     <input type="email" name="email" class="nf-input">
                 </div>
                 <div>
-                    <label class="nf-label">Telefon</label>
+                    <label class="nf-label">{{ __('common.phone') }}</label>
                     <input type="text" name="phone" class="nf-input">
                 </div>
                 <div>
-                    <label class="nf-label">Város</label>
+                    <label class="nf-label">{{ __('people.city') }}</label>
                     <input type="text" name="city" class="nf-input">
                 </div>
                 <div>
-                    <label class="nf-label">Státusz <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('common.status') }} <span style="color:#f06548">*</span></label>
                     <select name="status" class="nf-select">
-                        @foreach(['prospect'=>'Érdeklődő','supporter'=>'Támogató','member'=>'Tag','volunteer'=>'Önkéntes','donor'=>'Adományozó','vip'=>'VIP','inactive'=>'Inaktív'] as $val=>$label)
-                        <option value="{{ $val }}">{{ $label }}</option>
+                        @foreach(['prospect','supporter','member','volunteer','donor','vip','inactive'] as $val)
+                        <option value="{{ $val }}">{{ __('people.status.' . $val) }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
-                    <label class="nf-label">Forrás</label>
+                    <label class="nf-label">{{ __('people.source') }}</label>
                     <input type="text" name="source" class="nf-input">
                 </div>
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Csoportok</label>
+                    <label class="nf-label">{{ __('people.groups') }}</label>
                     <div class="group-chip-wrap">
                         @forelse($groups as $group)
                             <label class="group-chip">
@@ -163,7 +161,7 @@
                                 {{ $group->name }}
                             </label>
                         @empty
-                            <span style="font-size:0.78rem;color:#adb5bd">Nincs csoport.</span>
+                            <span style="font-size:0.78rem;color:#adb5bd">{{ __('people.no_groups') }}</span>
                         @endforelse
                     </div>
                 </div>
@@ -171,17 +169,17 @@
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
                         <input type="hidden" name="is_subscribed" value="0">
                         <input type="checkbox" name="is_subscribed" value="1" style="width:15px;height:15px;accent-color:#405189">
-                        <span class="nf-label" style="margin:0">Hírlevél feliratkozó</span>
+                        <span class="nf-label" style="margin:0">{{ __('people.subscribed') }}</span>
                     </label>
                 </div>
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Megjegyzés</label>
+                    <label class="nf-label">{{ __('common.notes') }}</label>
                     <textarea name="notes" rows="2" class="nf-input" style="resize:none"></textarea>
                 </div>
             </div>
             <div class="nf-modal-footer">
-                <button type="button" class="btn-ghost" onclick="closeModal('modal-create')">Mégse</button>
-                <button type="submit" class="btn-teal">Létrehozás</button>
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-create')">{{ __('common.cancel') }}</button>
+                <button type="submit" class="btn-teal">{{ __('common.create') }}</button>
             </div>
         </form>
     </div>
@@ -191,7 +189,7 @@
 <div id="modal-edit" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-edit')">
     <div class="nf-modal">
         <div class="nf-modal-header">
-            <span class="nf-modal-title">Kapcsolat szerkesztése</span>
+            <span class="nf-modal-title">{{ __('people.edit_title') }}</span>
             <button class="nf-modal-close" onclick="closeModal('modal-edit')">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -202,57 +200,56 @@
             <input type="hidden" name="_method" value="PUT">
             <div class="nf-modal-body" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
 
-                {{-- Fotó --}}
                 <div style="grid-column:span 2;display:flex;align-items:center;gap:16px">
                     <div style="width:64px;height:64px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#405189,#7a5af8);display:flex;align-items:center;justify-content:center;flex-shrink:0">
                         <svg id="e-preview-icon" width="28" height="28" fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                         <img id="e-preview-img" src="" style="width:100%;height:100%;object-fit:cover;display:none">
                     </div>
                     <div>
-                        <label class="nf-label" style="margin-bottom:6px">Profilkép módosítása</label>
+                        <label class="nf-label" style="margin-bottom:6px">{{ __('people.photo_change') }}</label>
                         <label style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid #ced4da;border-radius:5px;cursor:pointer;font-size:0.8rem;color:#495057;background:#fff">
                             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                            Új kép feltöltése
+                            {{ __('people.upload_new') }}
                             <input type="file" name="photo" accept="image/*" style="display:none" onchange="previewPhoto(this,'e-preview-img','e-preview-icon')">
                         </label>
-                        <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">Hagyd üresen ha nem változtatod</p>
+                        <p style="font-size:0.7rem;color:#adb5bd;margin-top:4px">{{ __('people.photo_keep') }}</p>
                     </div>
                 </div>
 
                 <div>
-                    <label class="nf-label">Vezetéknév <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('people.last_name') }} <span style="color:#f06548">*</span></label>
                     <input type="text" name="last_name" id="e_last" class="nf-input" required>
                 </div>
                 <div>
-                    <label class="nf-label">Keresztnév <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('people.first_name') }} <span style="color:#f06548">*</span></label>
                     <input type="text" name="first_name" id="e_first" class="nf-input" required>
                 </div>
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Email</label>
+                    <label class="nf-label">{{ __('common.email') }}</label>
                     <input type="email" name="email" id="e_email" class="nf-input">
                 </div>
                 <div>
-                    <label class="nf-label">Telefon</label>
+                    <label class="nf-label">{{ __('common.phone') }}</label>
                     <input type="text" name="phone" id="e_phone" class="nf-input">
                 </div>
                 <div>
-                    <label class="nf-label">Város</label>
+                    <label class="nf-label">{{ __('people.city') }}</label>
                     <input type="text" name="city" id="e_city" class="nf-input">
                 </div>
                 <div>
-                    <label class="nf-label">Státusz</label>
+                    <label class="nf-label">{{ __('common.status') }}</label>
                     <select name="status" id="e_status" class="nf-select">
-                        @foreach(['prospect'=>'Érdeklődő','supporter'=>'Támogató','member'=>'Tag','volunteer'=>'Önkéntes','donor'=>'Adományozó','vip'=>'VIP','inactive'=>'Inaktív'] as $val=>$label)
-                        <option value="{{ $val }}">{{ $label }}</option>
+                        @foreach(['prospect','supporter','member','volunteer','donor','vip','inactive'] as $val)
+                        <option value="{{ $val }}">{{ __('people.status.' . $val) }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
-                    <label class="nf-label">Forrás</label>
+                    <label class="nf-label">{{ __('people.source') }}</label>
                     <input type="text" name="source" id="e_source" class="nf-input">
                 </div>
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Csoportok</label>
+                    <label class="nf-label">{{ __('people.groups') }}</label>
                     <div class="group-chip-wrap" id="e_groups">
                         @forelse($groups as $group)
                             <label class="group-chip">
@@ -260,7 +257,7 @@
                                 {{ $group->name }}
                             </label>
                         @empty
-                            <span style="font-size:0.78rem;color:#adb5bd">Nincs csoport.</span>
+                            <span style="font-size:0.78rem;color:#adb5bd">{{ __('people.no_groups') }}</span>
                         @endforelse
                     </div>
                 </div>
@@ -268,17 +265,17 @@
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
                         <input type="hidden" name="is_subscribed" value="0">
                         <input type="checkbox" name="is_subscribed" id="e_subscribed" value="1" style="width:15px;height:15px;accent-color:#405189">
-                        <span class="nf-label" style="margin:0">Hírlevél feliratkozó</span>
+                        <span class="nf-label" style="margin:0">{{ __('people.subscribed') }}</span>
                     </label>
                 </div>
                 <div style="grid-column:span 2">
-                    <label class="nf-label">Megjegyzés</label>
+                    <label class="nf-label">{{ __('common.notes') }}</label>
                     <textarea name="notes" id="e_notes" rows="2" class="nf-input" style="resize:none"></textarea>
                 </div>
             </div>
             <div class="nf-modal-footer">
-                <button type="button" class="btn-ghost" onclick="closeModal('modal-edit')">Mégse</button>
-                <button type="submit" class="btn-teal">Mentés</button>
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-edit')">{{ __('common.cancel') }}</button>
+                <button type="submit" class="btn-teal">{{ __('common.save') }}</button>
             </div>
         </form>
     </div>

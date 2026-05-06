@@ -82,7 +82,7 @@
 
 <div class="timeline">
 
-    <!-- v1.8.0 LATEST -->
+    <!-- v1.9.0 LATEST -->
     <div class="tl-item">
         <div class="tl-dot latest">
             <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
@@ -90,8 +90,32 @@
         <div class="tl-content">
             <div class="tl-header">
                 <div class="tl-title">
-                    v1.8.0
+                    v1.9.0
                     <span class="tl-badge" style="background:rgba(10,179,156,0.1);color:#0ab39c;">Aktuális, Legújabb</span>
+                </div>
+                <div class="tl-date">2026. május 6.</div>
+            </div>
+            <ul>
+                <li><strong>Open Core GitHub stratégia — repó szétválasztás:</strong> A projekt nyilvános (<code>nationforge-community</code>) és privát (<code>nationforge-pro</code>) repóra vált szét. A Community MIT licenc alatt elérhető, a Pro fejlesztések külön privát repóban folynak.</li>
+                <li><strong>MIT LICENSE fájl hozzáadása:</strong> A Community kiadáshoz hivatalos <code>LICENSE</code> fájl került (MIT, Programozás Kft. 2026) — enélkül jogilag „minden jog fenntartva" lett volna érvényes.</li>
+                <li><strong>GitHub README — angol hero kép:</strong> A főoldalon megjelenő marketing kép angol szövegű verzióra cserélve (<em>Stronger communities. More action. Real change.</em>), a GitHub globális fejlesztői közönsége számára.</li>
+                <li><strong>README Pro-szekció linkelése:</strong> Az Open Core táblázatban a Pro oszlop és a call-to-action sor mostantól közvetlenül a <code>nationforge-pro</code> GitHub repóra hivatkozik.</li>
+                <li><strong>Repó tisztítás — érzékeny fájlok eltávolítása:</strong> A publikus repóból eltávolításra kerültek a helyi fejlesztői eszközök: <code>.claude/</code> config, <code>gitupdate.bat</code>, <code>get_help.php</code>, <code>run_help_fix.php</code>, <code>help_dump.json</code>, <code>help_fix.json</code>. Mindegyik bekerült a <code>.gitignore</code>-ba.</li>
+                <li><strong>Pro repó automatikus Community-szinkron:</strong> A <code>nationforge-pro</code> repóhoz <code>gitupdate.bat</code> szkript készült, amely minden futtatáskor automatikusan behúzza a Community újításait (<code>git fetch community && git merge</code>), majd feltölti a Pro változásokat.</li>
+                <li><strong>Többnyelvűség a Roadmap-ben:</strong> A tervezett fejlesztések közé bekerült a többnyelvű támogatás (angol / magyar) mint közelgő funkció.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- v1.8.0 -->
+    <div class="tl-item">
+        <div class="tl-dot">
+            <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <div class="tl-content">
+            <div class="tl-header">
+                <div class="tl-title">
+                    v1.8.0
                 </div>
                 <div class="tl-date">2026. május 5.</div>
             </div>

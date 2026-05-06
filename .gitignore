@@ -22,3 +22,11 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Local dev tools (not for public repo)
+.claude/
+gitupdate.bat
+get_help.php
+run_help_fix.php
+help_dump.json
+help_fix.json

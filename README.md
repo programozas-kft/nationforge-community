@@ -1,59 +1,232 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1 align="center">
+  <br>
+  NationForge
+  <br>
+</h1>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <strong>Community & Political Organization Management Platform</strong><br>
+  Built with Laravel 12 · Livewire 3 · Spatie Permission
 </p>
 
-## About Laravel
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-12-FF2D20?style=flat-square&logo=laravel&logoColor=white" alt="Laravel 12">
+  <img src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP 8.2+">
+  <img src="https://img.shields.io/badge/Livewire-3-FB70A9?style=flat-square" alt="Livewire 3">
+  <img src="https://img.shields.io/badge/License-MIT-0ab39c?style=flat-square" alt="MIT License">
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## What is NationForge?
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+NationForge is an open-core platform built for **political movements, civic organizations, and community groups** to manage their operations from a single, self-hosted admin panel.
 
-## Learning Laravel
+Running an organization means juggling hundreds of contacts, events, volunteers, donors, and internal communication — all at once. Generic CRMs are expensive and built for sales teams, not communities. NationForge is purpose-built for the way civic organizations actually work.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+**Own your data. Host it yourself. Extend it freely.**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Features
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Contacts (CRM)
+- Full people database: name, status, address, phone, email, subscriptions
+- Status workflow: **Prospect → Supporter → Member → Volunteer → Donor → VIP → Inactive**
+- Photo upload, group assignment, custom notes
+- Searchable, filterable list with inline editing
 
-### Premium Partners
+### Groups
+- Types: Community, Campaign, Chapter, Committee, Team
+- Privacy levels: Public / Private / Secret
+- 28 custom icons per group
+- Built-in **real-time group chat** (Livewire)
+- Member list with role and type badges
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Events
+- Types: Meetup, Rally, Webinar, Fundraiser, Volunteer, Conference
+- Online & offline support with venue/city info
+- RSVP tracking per event
+- Status workflow: Draft → Published → Completed / Cancelled
+
+### Donations
+- Donor records linked to contacts
+- Amount, date, payment status per donation
+- Monthly totals shown on the dashboard
+
+### Projects & Tasks
+- Project management with assigned team members
+- Task list with status updates and deadlines
+
+### Dashboard
+- Stat cards: total contacts, upcoming events, donation totals, newsletter subscribers
+- **Chart.js charts**: monthly donations (bar), contact growth (dual-axis line), status distribution (doughnut)
+- Upcoming events panel, latest contacts feed
+
+### Users & Roles
+- Role-based access control: **Super Admin, Admin, Editor, Member**
+- Powered by [Spatie Laravel Permission](https://github.com/spatie/laravel-permission)
+- Users can be assigned to groups with roles
+
+### Link Collection
+- Configurable link library for the whole team (social media, news, resources)
+- Category grouping, custom colors, sort order
+- Managed directly from Settings — no code needed
+
+### Quick Links Bar
+- Top navigation bar with instant access to external resources (YouTube, Drive, Instagram, News, etc.)
+- Links configurable per deployment
+
+### Help & Documentation
+- Built-in help article editor with image lightbox
+- Accessible to all users from the admin panel
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | PHP 8.2+, Laravel 12 |
+| Templating | Blade |
+| Reactivity | Livewire 3 + Volt |
+| Auth | Laravel Breeze |
+| Roles & Permissions | Spatie Laravel Permission |
+| Media | Spatie Laravel MediaLibrary |
+| Charts | Chart.js 4.4 |
+| CSS | Tailwind CSS |
+| Database | MySQL 8+ / SQLite |
+
+---
+
+## Requirements
+
+- PHP >= 8.2
+- Composer 2
+- Node.js >= 18 + NPM
+- MySQL 8+ (or SQLite for local development)
+
+---
+
+## Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/programozas-kft/nationforge.git
+cd nationforge
+
+# 2. Install PHP & JS dependencies
+composer install
+npm install
+
+# 3. Set up environment
+cp .env.example .env
+php artisan key:generate
+
+# 4. Configure database in .env
+# DB_DATABASE=nationforge
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# 5. Run migrations & link storage
+php artisan migrate
+php artisan storage:link
+
+# 6. Build frontend assets
+npm run build
+```
+
+Or use the one-command setup:
+
+```bash
+composer run setup
+```
+
+### Create your first admin user
+
+```bash
+php artisan tinker
+```
+```php
+$user = User::create(['name' => 'Admin', 'email' => 'admin@example.com', 'password' => bcrypt('password')]);
+$user->assignRole('super-admin');
+```
+
+---
+
+## Local Development
+
+```bash
+composer run dev
+```
+
+Starts the Laravel server, Vite, queue listener and log watcher concurrently.
+
+---
+
+## Open Core Model
+
+NationForge follows an **Open Core** strategy — the community foundation is MIT-licensed and free forever, while advanced enterprise features are available in the Pro tier.
+
+| Feature | Community (this repo) | Pro / Enterprise |
+|---|:---:|:---:|
+| Full source code | ✅ | ✅ |
+| Contacts, Groups, Events | ✅ | ✅ |
+| Donations, Projects, Tasks | ✅ | ✅ |
+| Built-in chat | ✅ | ✅ |
+| Advanced analytics & reports | — | ✅ |
+| Email campaign sender | — | ✅ |
+| Multi-organization / Multi-tenant | — | ✅ |
+| Two-factor authentication | — | ✅ |
+| REST API | — | ✅ |
+| White-label & custom domain | — | ✅ |
+| Priority support & SLA | — | ✅ |
+| Managed cloud hosting | — | ✅ |
+
+> **Interested in Pro or managed hosting?** → [programozas.kft@gmail.com](mailto:programozas.kft@gmail.com)
+
+---
+
+## Roadmap
+
+- [ ] Public event registration page
+- [ ] Email campaign sender (Mailgun / SMTP)
+- [ ] Volunteer shift scheduling
+- [ ] REST API for mobile clients
+- [ ] SMS / push notification integration
+- [ ] Multi-tenant support *(Pro)*
+- [ ] Advanced reporting & export *(Pro)*
+
+---
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Pull requests are welcome for bug fixes, UI improvements, and translations.
 
-## Code of Conduct
+1. Fork the repository
+2. Create your branch: `git checkout -b fix/your-fix`
+3. Commit: `git commit -m "Fix: description"`
+4. Push and open a Pull Request
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+For larger features, **please open an Issue first** so we can discuss direction before you invest the time.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Security
+
+If you discover a security vulnerability, please email [programozas.kft@gmail.com](mailto:programozas.kft@gmail.com) instead of opening a public issue. All reports are addressed promptly.
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The NationForge Community Edition is released under the **[MIT License](LICENSE)**.
+
+---
+
+<p align="center">
+  Built with Laravel ·
+  <a href="https://github.com/your-username/nationforge/issues">Report a Bug</a> ·
+  <a href="https://github.com/your-username/nationforge/discussions">Discussions</a> ·
+  <a href="mailto:programozas.kft@gmail.com">Contact</a>
+</p>

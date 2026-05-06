@@ -19,6 +19,8 @@ return [
     'recurring'        => 'Visszatérő adomány',
     'anonymous'        => 'Névtelen',
     'total_completed'  => 'Összes befejezett adomány',
+    'show_title'       => 'Adomány részletei',
+    'none'             => 'Nincs adomány.',
     'col_method'       => 'Módszer',
     'col_recurring'    => 'Visszatérő',
     'method' => [

@@ -132,7 +132,7 @@
                        class="text-sm font-medium text-gray-800 hover:text-indigo-700 truncate block">
                         {{ $event->title }}
                     </a>
-                    <p class="text-xs text-gray-400">{{ $event->starts_at->format('H:i') }} · {{ $event->city ?? ($event->is_online ? 'Online' : '—') }}</p>
+                    <p class="text-xs text-gray-400">{{ $event->starts_at->format('H:i') }} · {{ $event->city ?? ($event->is_online ? __('common.online') : '—') }}</p>
                 </div>
                 <span class="nf-badge badge-info">{{ $event->type }}</span>
             </div>

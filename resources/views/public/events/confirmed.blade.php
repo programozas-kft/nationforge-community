@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sikeres regisztráció – {{ $event->title }}</title>
+    <title>{{ __('events.reg_success') }} – {{ $event->title }}</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f3f4f8; color: #212529; min-height: 100vh; }
@@ -65,8 +65,8 @@
         </svg>
     </div>
 
-    <h1>Sikeres regisztráció!</h1>
-    <p>Sikeresen regisztráltál a következő eseményre:</p>
+    <h1>{{ __('events.reg_success') }}</h1>
+    <p>{{ __('events.reg_success_msg') }}</p>
     <p class="event-name">{{ $event->title }}</p>
 
     <div class="card">
@@ -82,7 +82,7 @@
             <svg class="meta-icon" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.277A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
             </svg>
-            <span>Online esemény</span>
+            <span>{{ __('events.is_online') }}</span>
         </div>
         @elseif($event->venue_name || $event->city)
         <div class="meta-row">
@@ -94,7 +94,7 @@
         @endif
     </div>
 
-    <a href="{{ route('events.public', $event->slug) }}" class="btn-back">← Vissza az eseményhez</a>
+    <a href="{{ route('events.public', $event->slug) }}" class="btn-back">{{ __('events.back_to_event') }}</a>
 </div>
 
 </body>

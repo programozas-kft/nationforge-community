@@ -19,6 +19,8 @@ return [
     'recurring'        => 'Recurring donation',
     'anonymous'        => 'Anonymous',
     'total_completed'  => 'Total completed donations',
+    'show_title'       => 'Donation details',
+    'none'             => 'No donations.',
     'col_method'       => 'Method',
     'col_recurring'    => 'Recurring',
     'method' => [

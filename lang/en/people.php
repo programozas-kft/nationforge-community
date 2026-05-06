@@ -26,6 +26,8 @@ return [
     'no_groups'      => 'No groups yet.',
     'subscribed'     => 'Newsletter subscriber',
     'notes'          => 'Notes',
+    'subscribed_label' => 'Subscribed',
+    'total_donated'    => 'Total donations',
     'status' => [
         'prospect'  => 'Prospect',
         'supporter' => 'Supporter',

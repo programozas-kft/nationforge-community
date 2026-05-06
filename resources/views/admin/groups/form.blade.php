@@ -1,11 +1,11 @@
 @extends('admin.layouts.app')
 
-@section('title', $group->exists ? 'Csoport szerkesztése' : 'Új csoport')
-@section('header', $group->exists ? 'Csoport szerkesztése' : 'Új csoport')
+@section('title', $group->exists ? __('groups.edit_title') : __('groups.create_title'))
+@section('header', $group->exists ? __('groups.edit_title') : __('groups.create_title'))
 @section('breadcrumb')
-    <a href="{{ route('admin.groups.index') }}">Csoportok</a>
+    <a href="{{ route('admin.groups.index') }}">{{ __('groups.title') }}</a>
     <span class="breadcrumb-sep">/</span>
-    <span class="text-gray-700">{{ $group->exists ? 'Szerkesztés' : 'Új' }}</span>
+    <span class="text-gray-700">{{ $group->exists ? __('common.edit') : __('common.new') }}</span>
 @endsection
 
 @section('content')
@@ -17,7 +17,7 @@
 
         <div class="nf-card p-6 space-y-5">
             <div>
-                <label class="nf-label">Csoport neve <span style="color:#f06548">*</span></label>
+                <label class="nf-label">{{ __('groups.name') }} <span style="color:#f06548">*</span></label>
                 <input type="text" name="name" value="{{ old('name', $group->name) }}"
                        class="nf-input {{ $errors->has('name') ? 'error' : '' }}">
                 @error('name') <p class="nf-error">{{ $message }}</p> @enderror
@@ -25,18 +25,18 @@
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="nf-label">Típus <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('common.type') }} <span style="color:#f06548">*</span></label>
                     <select name="type" class="nf-select">
                         @foreach(['community','campaign','chapter','committee','team'] as $t)
-                        <option value="{{ $t }}" @selected(old('type', $group->type) === $t)>{{ ucfirst($t) }}</option>
+                        <option value="{{ $t }}" @selected(old('type', $group->type) === $t)>{{ __('groups.type.' . $t) }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
-                    <label class="nf-label">Láthatóság <span style="color:#f06548">*</span></label>
+                    <label class="nf-label">{{ __('groups.col_privacy') }} <span style="color:#f06548">*</span></label>
                     <select name="privacy" class="nf-select">
                         @foreach(['public','private','secret'] as $p)
-                        <option value="{{ $p }}" @selected(old('privacy', $group->privacy) === $p)>{{ ucfirst($p) }}</option>
+                        <option value="{{ $p }}" @selected(old('privacy', $group->privacy) === $p)>{{ __('groups.privacy.' . $p) }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -48,22 +48,22 @@
                     <input type="checkbox" name="is_active" value="1"
                            @checked(old('is_active', $group->exists ? $group->is_active : true))
                            class="w-4 h-4 rounded" style="accent-color:#405189">
-                    <span class="nf-label mb-0">Aktív csoport</span>
+                    <span class="nf-label mb-0">{{ __('groups.active_group') }}</span>
                 </label>
             </div>
 
             <div>
-                <label class="nf-label">Leírás</label>
+                <label class="nf-label">{{ __('common.description') }}</label>
                 <textarea name="description" rows="4" class="nf-input resize-none">{{ old('description', $group->description) }}</textarea>
             </div>
         </div>
 
         <div class="flex items-center gap-3 mt-5">
             <button type="submit" class="btn-primary">
-                {{ $group->exists ? 'Változtatások mentése' : 'Csoport létrehozása' }}
+                {{ $group->exists ? __('common.save_changes') : __('groups.new') }}
             </button>
             <a href="{{ $group->exists ? route('admin.groups.show', $group) : route('admin.groups.index') }}"
-               class="btn-ghost">Mégse</a>
+               class="btn-ghost">{{ __('common.cancel') }}</a>
         </div>
     </form>
 </div>

@@ -26,6 +26,8 @@ return [
     'no_groups'      => 'Nincs csoport.',
     'subscribed'     => 'Hírlevél feliratkozó',
     'notes'          => 'Megjegyzés',
+    'subscribed_label' => 'Feliratkozott',
+    'total_donated'    => 'Összes adomány',
     'status' => [
         'prospect'  => 'Érdeklődő',
         'supporter' => 'Támogató',

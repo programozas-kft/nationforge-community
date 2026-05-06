@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -124,7 +124,6 @@
 
 <div class="page-wrap">
 
-    {{-- Bal oldal: esemény részletek --}}
     <div class="event-card">
         @if($event->cover_image)
             <img src="{{ Storage::url($event->cover_image) }}" alt="{{ $event->title }}" class="event-cover">
@@ -137,7 +136,7 @@
         @endif
 
         <div class="event-body">
-            <div class="event-type">{{ $event->type }}</div>
+            <div class="event-type">{{ __('events.type.' . $event->type) }}</div>
             <h1 class="event-title">{{ $event->title }}</h1>
 
             <div class="event-meta">
@@ -157,7 +156,7 @@
                     <svg class="event-meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.277A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
                     </svg>
-                    <div>Online esemény @if($event->online_url) · <a href="{{ $event->online_url }}" target="_blank" style="color:#405189">Csatlakozási link</a>@endif</div>
+                    <div>{{ __('events.is_online') }} @if($event->online_url) · <a href="{{ $event->online_url }}" target="_blank" style="color:#405189">{{ __('events.join_link') }}</a>@endif</div>
                 </div>
                 @elseif($event->venue_name || $event->city)
                 <div class="event-meta-row">
@@ -178,14 +177,14 @@
                     <svg class="event-meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
                     </svg>
-                    <div>Részvételi díj: <strong>{{ number_format($event->ticket_price, 0, ',', ' ') }} Ft</strong></div>
+                    <div>{{ __('events.admission_fee') }} <strong>{{ number_format($event->ticket_price, 0, ',', ' ') }} Ft</strong></div>
                 </div>
                 @else
                 <div class="event-meta-row">
                     <svg class="event-meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <div>Ingyenes esemény</div>
+                    <div>{{ __('events.free_event') }}</div>
                 </div>
                 @endif
 
@@ -194,7 +193,7 @@
                     <svg class="event-meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    <div>{{ $registrationCount }} / {{ $event->capacity }} regisztrált</div>
+                    <div>{{ $registrationCount }} / {{ $event->capacity }} {{ __('events.registered_unit') }}</div>
                 </div>
                 @php
                     $pct = min(100, round($registrationCount / $event->capacity * 100));
@@ -202,7 +201,7 @@
                 @endphp
                 <div class="capacity-bar-wrap">
                     <div class="capacity-label">
-                        <span>Beteltség</span>
+                        <span>{{ __('events.occupancy') }}</span>
                         <span>{{ $pct }}%</span>
                     </div>
                     <div class="capacity-bar">
@@ -218,16 +217,15 @@
         </div>
     </div>
 
-    {{-- Jobb oldal: regisztrációs form --}}
     <div class="form-card">
         @if($isFull)
-            <p class="form-title">Regisztráció</p>
+            <p class="form-title">{{ __('events.registration') }}</p>
             <div class="full-badge" style="margin-top:12px">
-                Ez az esemény betelt.<br>Nincs több szabad hely.
+                {{ __('events.full_notice') }}
             </div>
         @else
-            <p class="form-title">Regisztrálj az eseményre</p>
-            <p class="form-sub">A részvételi szándékodat az alábbi űrlapon jelezheted.</p>
+            <p class="form-title">{{ __('events.reg_title') }}</p>
+            <p class="form-sub">{{ __('events.reg_subtitle') }}</p>
 
             @if($errors->any())
                 <div style="background:rgba(240,101,72,0.08);border:1px solid #f06548;border-radius:7px;padding:10px 14px;margin-bottom:14px;font-size:0.8rem;color:#f06548">
@@ -238,28 +236,28 @@
             <form method="POST" action="{{ route('events.register', $event->slug) }}">
                 @csrf
                 <div class="form-group">
-                    <label class="form-label">Teljes név <span style="color:#f06548">*</span></label>
-                    <input type="text" name="name" class="form-input" value="{{ old('name') }}" required placeholder="pl. Kovács János">
+                    <label class="form-label">{{ __('common.full_name') }} <span style="color:#f06548">*</span></label>
+                    <input type="text" name="name" class="form-input" value="{{ old('name') }}" required placeholder="{{ __('events.name_placeholder') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">E-mail cím <span style="color:#f06548">*</span></label>
-                    <input type="email" name="email" class="form-input" value="{{ old('email') }}" required placeholder="pl. kovacs@email.hu">
+                    <label class="form-label">{{ __('common.email') }} <span style="color:#f06548">*</span></label>
+                    <input type="email" name="email" class="form-input" value="{{ old('email') }}" required placeholder="{{ __('events.email_placeholder') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Telefonszám</label>
-                    <input type="tel" name="phone" class="form-input" value="{{ old('phone') }}" placeholder="+36 30 123 4567">
+                    <label class="form-label">{{ __('common.phone') }}</label>
+                    <input type="tel" name="phone" class="form-input" value="{{ old('phone') }}" placeholder="{{ __('events.phone_placeholder') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Kísérők száma</label>
+                    <label class="form-label">{{ __('events.guests_label') }}</label>
                     <input type="number" name="guests" class="form-input" value="{{ old('guests', 0) }}" min="0" max="10">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Megjegyzés</label>
-                    <textarea name="notes" class="form-input" rows="3" placeholder="Bármilyen kérdés vagy megjegyzés...">{{ old('notes') }}</textarea>
+                    <label class="form-label">{{ __('common.notes') }}</label>
+                    <textarea name="notes" class="form-input" rows="3" placeholder="{{ __('events.notes_placeholder') }}">{{ old('notes') }}</textarea>
                 </div>
-                <button type="submit" class="btn-submit">Regisztráció elküldése</button>
+                <button type="submit" class="btn-submit">{{ __('events.reg_submit') }}</button>
             </form>
-            <p class="privacy-note">Az adataid kizárólag az esemény szervezéséhez kerülnek felhasználásra.</p>
+            <p class="privacy-note">{{ __('events.privacy_note') }}</p>
         @endif
     </div>
 

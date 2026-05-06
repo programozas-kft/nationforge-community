@@ -16,6 +16,10 @@
   <img src="https://img.shields.io/badge/License-MIT-0ab39c?style=flat-square" alt="MIT License">
 </p>
 
+<p align="center">
+  <img src="docs/hero.png" alt="NationForge – Erősebb közösségek. Több mozgósítás. Valódi változás." width="100%">
+</p>
+
 ---
 
 ## What is NationForge?

@@ -230,7 +230,7 @@ The NationForge Community Edition is released under the **[MIT License](LICENSE)
 
 <p align="center">
   Built with Laravel ·
-  <a href="https://github.com/your-username/nationforge/issues">Report a Bug</a> ·
-  <a href="https://github.com/your-username/nationforge/discussions">Discussions</a> ·
+  <a href="https://github.com/programozas-kft/nationforge/issues">Report a Bug</a> ·
+  <a href="https://github.com/programozas-kft/nationforge/discussions">Discussions</a> ·
   <a href="mailto:programozas.kft@gmail.com">Contact</a>
 </p>

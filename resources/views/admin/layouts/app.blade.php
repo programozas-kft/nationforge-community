@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -344,105 +344,119 @@
     </a>
 
     <!-- MENU section -->
-    <div class="sb-section">Menu</div>
+    <div class="sb-section">{{ __('nav.menu') }}</div>
 
-    <!-- Dashboard (single) -->
+    <!-- Dashboard -->
     <a href="{{ route('admin.dashboard') }}"
        class="sb-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-        <span class="sb-item-text">Főoldal</span>
+        <span class="sb-item-text">{{ __('nav.dashboard') }}</span>
     </a>
 
-    <!-- Kapcsolatok (single) -->
+    <!-- Contacts -->
     <a href="{{ route('admin.people.index') }}"
        class="sb-item {{ request()->routeIs('admin.people.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        <span class="sb-item-text">Kapcsolatok</span>
+        <span class="sb-item-text">{{ __('nav.contacts') }}</span>
         <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Person::count() }}</span>
     </a>
 
-    <!-- Csoportok (single) -->
+    <!-- Groups -->
     <a href="{{ route('admin.groups.index') }}"
        class="sb-item {{ request()->routeIs('admin.groups.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-        <span class="sb-item-text">Csoportok</span>
+        <span class="sb-item-text">{{ __('nav.groups') }}</span>
         <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Group::count() }}</span>
     </a>
 
-    <!-- PAGES section -->
-    <div class="sb-section">Szervezés</div>
+    <!-- Organizing section -->
+    <div class="sb-section">{{ __('nav.organizing') }}</div>
 
-    <!-- Events (single) -->
+    <!-- Events -->
     <a href="{{ route('admin.events.index') }}"
        class="sb-item {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        <span class="sb-item-text">Események</span>
+        <span class="sb-item-text">{{ __('nav.events') }}</span>
         <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Event::count() }}</span>
     </a>
 
-    <!-- Donations (single) -->
+    <!-- Donations -->
     <a href="{{ route('admin.donations.index') }}"
        class="sb-item {{ request()->routeIs('admin.donations.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span class="sb-item-text">Adományok</span>
+        <span class="sb-item-text">{{ __('nav.donations') }}</span>
         <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Donation::count() }}</span>
     </a>
 
-    <!-- Projektek (single) -->
+    <!-- Projects -->
     <a href="{{ route('admin.projects.index') }}"
        class="sb-item {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
-        <span class="sb-item-text">Projektek</span>
+        <span class="sb-item-text">{{ __('nav.projects') }}</span>
         <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Project::count() }}</span>
     </a>
 
-    <!-- Feladatok (single) -->
+    <!-- Tasks -->
     <a href="{{ route('admin.tasks.index') }}"
        class="sb-item {{ request()->routeIs('admin.tasks.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-        <span class="sb-item-text">Feladatok</span>
+        <span class="sb-item-text">{{ __('nav.tasks') }}</span>
         @php $openTasks = \App\Models\Task::whereIn('status',['nyitott','folyamatban'])->count(); @endphp
         @if($openTasks > 0)
-            <span class="sb-item-badge badge-new" style="margin-right:0;">{{ $openTasks }} nyitott</span>
+            <span class="sb-item-badge badge-new" style="margin-right:0;">{{ $openTasks }} {{ __('nav.open_tasks') }}</span>
         @endif
         <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf; margin-left:6px;">{{ \App\Models\Task::count() }}</span>
     </a>
 
-    <!-- ADMIN section -->
-    <div class="sb-section">Adminisztráció</div>
+    <!-- Administration section -->
+    <div class="sb-section">{{ __('nav.administration') }}</div>
 
-    <!-- Felhasználók (single) -->
+    <!-- Users -->
     <a href="{{ route('admin.users.index') }}"
        class="sb-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        <span class="sb-item-text">Felhasználók</span>
+        <span class="sb-item-text">{{ __('nav.users') }}</span>
         <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\User::count() }}</span>
     </a>
 
-    <!-- Beállítások (single) -->
+    <!-- Settings -->
     <a href="{{ route('admin.settings') }}"
        class="sb-item {{ request()->routeIs('admin.settings*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        <span class="sb-item-text">Beállítások</span>
+        <span class="sb-item-text">{{ __('nav.settings') }}</span>
     </a>
 
-    <!-- Verziókövetés (single) -->
+    <!-- Changelog -->
     <a href="{{ route('admin.changelog') }}"
        class="sb-item {{ request()->routeIs('admin.changelog') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-        <span class="sb-item-text">Verziókövetés</span>
+        <span class="sb-item-text">{{ __('nav.changelog') }}</span>
     </a>
 
-    <!-- Súgó kezelése (single) -->
+    <!-- Help -->
     <a href="{{ route('admin.help.index') }}"
        class="sb-item {{ request()->routeIs('admin.help*') ? 'active' : '' }}">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span class="sb-item-text">Súgó kezelése</span>
+        <span class="sb-item-text">{{ __('nav.help') }}</span>
         <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\HelpArticle::count() }}</span>
     </a>
 
-    <!-- User -->
+    <!-- User + language switcher -->
     <div class="sb-user">
+        <!-- Language switcher -->
+        <div style="display:flex;gap:4px;margin-bottom:8px;padding:0 2px">
+            <a href="{{ route('locale.switch', 'hu') }}"
+               style="flex:1;text-align:center;padding:5px;border-radius:5px;font-size:0.72rem;font-weight:600;text-decoration:none;
+                      {{ app()->getLocale() === 'hu' ? 'background:rgba(255,255,255,0.2);color:#fff' : 'color:#5a6587' }}">
+                🇭🇺 HU
+            </a>
+            <a href="{{ route('locale.switch', 'en') }}"
+               style="flex:1;text-align:center;padding:5px;border-radius:5px;font-size:0.72rem;font-weight:600;text-decoration:none;
+                      {{ app()->getLocale() === 'en' ? 'background:rgba(255,255,255,0.2);color:#fff' : 'color:#5a6587' }}">
+                🇬🇧 EN
+            </a>
+        </div>
+
         <div class="sb-user-card">
             @if(auth()->user()->photo)
                 <div class="sb-avatar" style="padding:0;overflow:hidden">
@@ -453,14 +467,14 @@
             @endif
             <div style="min-width:0">
                 <div class="sb-user-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ auth()->user()->name }}</div>
-                <div class="sb-user-role">Admin</div>
+                <div class="sb-user-role">{{ __('common.admin') }}</div>
             </div>
         </div>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="sb-logout">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                Kijelentkezés
+                {{ __('nav.logout') }}
             </button>
         </form>
     </div>

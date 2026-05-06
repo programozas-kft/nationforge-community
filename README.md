@@ -194,7 +194,6 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 
 ## Roadmap
 
-- [ ] Public event registration page
 - [ ] Email campaign sender (Mailgun / SMTP)
 - [ ] Volunteer shift scheduling
 - [ ] REST API for mobile clients

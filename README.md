@@ -172,7 +172,7 @@ Starts the Laravel server, Vite, queue listener and log watcher concurrently.
 
 NationForge follows an **Open Core** strategy — the community foundation is MIT-licensed and free forever, while advanced enterprise features are available in the Pro tier.
 
-| Feature | Community (this repo) | Pro / Enterprise |
+| Feature | Community (this repo) | [Pro / Enterprise](https://github.com/programozas-kft/nationforge-pro) |
 |---|:---:|:---:|
 | Full source code | ✅ | ✅ |
 | Contacts, Groups, Events | ✅ | ✅ |
@@ -187,7 +187,8 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 | Priority support & SLA | — | ✅ |
 | Managed cloud hosting | — | ✅ |
 
-> **Interested in Pro or managed hosting?** → [programozas.kft@gmail.com](mailto:programozas.kft@gmail.com)
+> **Interested in Pro or managed hosting?**
+> → [View NationForge Pro](https://github.com/programozas-kft/nationforge-pro) · [programozas.kft@gmail.com](mailto:programozas.kft@gmail.com)
 
 ---
 

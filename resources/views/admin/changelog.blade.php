@@ -15,11 +15,38 @@ $locale = app()->getLocale();
 $versions = [
 
     [
-        'version' => 'v1.9.0',
+        'version' => 'v1.10.0',
         'latest'  => true,
         'badge'   => [
             'text'  => ['hu' => 'Aktuális, Legújabb', 'en' => 'Current, Latest'],
             'style' => 'background:rgba(10,179,156,0.1);color:#0ab39c;',
+        ],
+        'date' => ['hu' => '2026. május 6.', 'en' => 'May 6, 2026'],
+        'items' => [
+            ['hu' => '<strong>Többnyelvűség (HU/EN) — infrastruktúra:</strong> Bevezetve a <code>SetLocale</code> middleware (session-alapú locale beállítás), <code>LocaleController</code> és a <code>/language/{locale}</code> route. A felső navigációban megjelent a HU / EN nyelvváltó gomb, amely azonnal átkapcsolja az admin felület teljes szövegét.',
+             'en' => '<strong>Multi-language support (HU/EN) — infrastructure:</strong> Introduced <code>SetLocale</code> middleware (session-based locale), <code>LocaleController</code> and the <code>/language/{locale}</code> route. A HU / EN language switcher button appeared in the top navigation, instantly switching all admin interface text.'],
+            ['hu' => '<strong>Fordítási fájlok — teljes lefedés:</strong> Létrehozásra és feltöltésre kerültek a <code>lang/hu/</code> és <code>lang/en/</code> PHP nyelvi fájlok minden modulhoz: <code>common</code>, <code>people</code>, <code>events</code>, <code>groups</code>, <code>donations</code>, <code>projects</code>, <code>tasks</code>, <code>users</code>, <code>settings</code>, <code>links</code>, <code>cal</code> (naptár hónap- és napnevek), <code>changelog</code>.',
+             'en' => '<strong>Translation files — full coverage:</strong> <code>lang/hu/</code> and <code>lang/en/</code> PHP language files created and populated for every module: <code>common</code>, <code>people</code>, <code>events</code>, <code>groups</code>, <code>donations</code>, <code>projects</code>, <code>tasks</code>, <code>users</code>, <code>settings</code>, <code>links</code>, <code>cal</code> (calendar month and day names), <code>changelog</code>.'],
+            ['hu' => '<strong>Admin listaoldalak fordítása:</strong> Minden admin <em>index</em> nézet átírva <code>__()</code> helperekkel — Kapcsolatok, Események, Csoportok, Adományok, Projektek, Feladatok, Felhasználók, Beállítások. A státusz/típus/prioritás badge-ek és a dropdown opciók mostantól a kiválasztott nyelvnek megfelelően jelennek meg.',
+             'en' => '<strong>Admin list pages translated:</strong> All admin <em>index</em> views rewritten with <code>__()</code> helpers — Contacts, Events, Groups, Donations, Projects, Tasks, Users, Settings. Status/type/priority badges and dropdown options now display according to the selected language.'],
+            ['hu' => '<strong>Admin részletoldalak fordítása:</strong> A Projekt, Esemény, Adomány, Kapcsolat és Csoport részletoldalak (<em>show</em> nézetek) teljes szövege lefordítva. A dinamikus PHP értéktérképek (státusz, prioritás, típus, szerepkör) szintén <code>__()</code> hívásokat használnak.',
+             'en' => '<strong>Admin detail pages translated:</strong> Full translation of the Project, Event, Donation, Contact and Group detail (<em>show</em>) views. Dynamic PHP value maps (status, priority, type, role) also use <code>__()</code> calls.'],
+            ['hu' => '<strong>Admin űrlapok fordítása:</strong> Minden szerkesztő és létrehozó oldal (<em>form</em> nézetek) átírva — Projektek, Események (teljes oldal + modal partial), Kapcsolatok, Csoportok. A legördülő opciók értéktérképek alapján töltődnek be a megfelelő nyelven.',
+             'en' => '<strong>Admin forms translated:</strong> All edit and create pages (<em>form</em> views) rewritten — Projects, Events (full page + modal partial), Contacts, Groups. Dropdown options populate from value maps in the correct language.'],
+            ['hu' => '<strong>Naptár és Gantt JS-fordítás:</strong> A Projekt részletoldalon a Naptár és Gantt nézetekhez szükséges hónap/nap neveket PHP <code>__()</code> tömbök tárolják, amelyek <code>@json()</code> direktívával kerülnek a JavaScript kontextusba — így az oldal renderidejében a helyes lokalizált értékek jelennek meg.',
+             'en' => '<strong>Calendar and Gantt JS translation:</strong> On the Project detail page, month/day names needed by the Calendar and Gantt views are stored in PHP <code>__()</code> arrays passed into JavaScript context via the <code>@json()</code> directive — rendering correctly localized values at page load time.'],
+            ['hu' => '<strong>Nyilvános eseményoldalak fordítása:</strong> A bejelentkezés nélkül elérhető nyilvános regisztrációs oldal (<code>/e/{slug}</code>) és a visszaigazoló oldal is teljes HU/EN fordítást kapott. A <code>&lt;html lang&gt;</code> attribútum mostantól dinamikusan tükrözi az aktuális locale-t.',
+             'en' => '<strong>Public event pages translated:</strong> The login-free public registration page (<code>/e/{slug}</code>) and the confirmation page received full HU/EN translation. The <code>&lt;html lang&gt;</code> attribute now dynamically reflects the current locale.'],
+            ['hu' => '<strong>Verziókövetés oldal fordítása:</strong> A Changelog oldal data-driven szerkezetre váltott — a verziók bejegyzései PHP tömbökben tárolódnak <code>hu</code>/<code>en</code> kulcsokkal, a sablon locale alapján rendereli a megfelelő szöveget. Badge-ek és dátumok szintén kétnyelvűek.',
+             'en' => '<strong>Changelog page translated:</strong> The Changelog page switched to a data-driven structure — version entries are stored in PHP arrays with <code>hu</code>/<code>en</code> keys, the template renders the correct text based on locale. Badges and dates are also bilingual.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.9.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
         ],
         'date' => ['hu' => '2026. május 6.', 'en' => 'May 6, 2026'],
         'items' => [

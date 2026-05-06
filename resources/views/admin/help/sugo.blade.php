@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Súgó | NationForge</title>
+    <title>{{ __('help.page_title') }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -105,48 +105,52 @@
         <div class="sb-logo-icon">
             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
-        <span class="sb-brand-name">NationForge Súgó</span>
+        <span class="sb-brand-name">{{ __('help.brand') }}</span>
     </div>
 
-    <div class="sb-section">Témakörök</div>
+    <div class="sb-section">{{ __('help.topics') }}</div>
     
     <div id="help-tabs">
         @forelse($help_articles as $i => $art)
         <button onclick="showHelpTab({{ $art->id }})"
             id="htab-{{ $art->id }}"
             class="help-tab {{ $i === 0 ? 'active' : '' }}">
-            {{ $art->title }}
+            {{ ($locale === 'en' && $art->title_en) ? $art->title_en : $art->title }}
         </button>
         @empty
-        <div class="px-5 py-4 text-sm text-gray-400 italic">Még nincsenek súgó cikkek.</div>
+        <div class="px-5 py-4 text-sm text-gray-400 italic">{{ __('help.no_articles') }}</div>
         @endforelse
     </div>
 </aside>
 
-<div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+<div style="flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden">
     <header id="topbar">
-        <div class="tb-title">Útmutató és dokumentáció</div>
+        <div class="tb-title">{{ __('help.guide_title') }}</div>
         <div class="flex gap-3">
             @if(auth()->check() && auth()->user()->isAdmin())
-            <a href="{{ route('admin.help.index') }}" class="btn-ghost">Súgó szerkesztése</a>
+            <a href="{{ route('admin.help.index') }}" class="btn-ghost">{{ __('help.edit_link') }}</a>
             @endif
-            <button onclick="window.close()" class="btn-ghost">Bejelentkezéshez vissza</button>
+            <button onclick="window.close()" class="btn-ghost">{{ __('help.back_btn') }}</button>
         </div>
     </header>
 
-    <main style="flex:1;overflow-y:auto;padding:30px 40px;background:#fff">
+    <main id="help-main" style="height:calc(100vh - 60px);overflow-y:auto;padding:30px 40px;background:#fff">
         <div class="max-w-4xl mx-auto">
             @forelse($help_articles as $i => $art)
             <div id="hcontent-{{ $art->id }}" style="display:{{ $i===0 ? 'block' : 'none' }}">
-                <h1 class="text-3xl font-bold text-gray-800 mb-8" style="color:#2a2f45">{{ $art->title }}</h1>
+                @php
+                    $displayTitle   = ($locale === 'en' && $art->title_en)   ? $art->title_en   : $art->title;
+                    $displayContent = ($locale === 'en' && $art->content_en) ? $art->content_en : $art->content;
+                @endphp
+                <h1 class="text-3xl font-bold text-gray-800 mb-8" style="color:#2a2f45">{{ $displayTitle }}</h1>
                 <div class="prose prose-blue max-w-none text-gray-600 leading-relaxed help-content" style="font-size:0.95rem;">
-                    {!! Str::markdown($art->content) !!}
+                    {!! Str::markdown($displayContent) !!}
                 </div>
             </div>
             @empty
             <div class="text-center py-20">
                 <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <h3 class="text-lg font-medium text-gray-700">Nincs megjeleníthető súgó</h3>
+                <h3 class="text-lg font-medium text-gray-700">{{ __('help.no_content') }}</h3>
             </div>
             @endforelse
         </div>
@@ -164,7 +168,7 @@ function showHelpTab(id) {
         if (aid === id) {
             tab.classList.add('active');
             content.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('help-main').scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             tab.classList.remove('active');
             content.style.display = 'none';

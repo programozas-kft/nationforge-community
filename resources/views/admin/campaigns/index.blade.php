@@ -73,7 +73,7 @@ $statusMap = [
                             <span style="color:#f06548"> ({{ $c->failed_count }} {{ __('campaigns.failed_count') }})</span>
                         @endif
                     @else
-                        —
+                        {{ $subscriberCount }} {{ __('campaigns.recipients_hint') }}
                     @endif
                 </td>
                 <td style="font-size:.85rem;color:#6c757d;">{{ $c->sent_at?->format('Y.m.d H:i') ?? '—' }}</td>
@@ -140,7 +140,7 @@ $statusMap = [
                     <p style="font-size:.72rem;color:#adb5bd;margin-top:4px">{{ __('campaigns.markdown_hint') }}</p>
                 </div>
                 <div style="padding:10px 12px;background:#f8f9fa;border-radius:6px;font-size:.8rem;color:#6c757d;">
-                    📧 {{ __('campaigns.recipients_hint') }}
+                    📧 {{ $subscriberCount }} {{ __('campaigns.recipients_hint') }}
                 </div>
             </div>
             <div class="nf-modal-footer">

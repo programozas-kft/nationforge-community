@@ -14,7 +14,11 @@ class CampaignController extends Controller
     public function index()
     {
         $campaigns = EmailCampaign::latest()->get();
-        return view('admin.campaigns.index', compact('campaigns'));
+        $subscriberCount = Person::whereNotNull('email')
+            ->where('email', '!=', '')
+            ->where('is_subscribed', true)
+            ->count();
+        return view('admin.campaigns.index', compact('campaigns', 'subscriberCount'));
     }
 
     public function store(Request $request)

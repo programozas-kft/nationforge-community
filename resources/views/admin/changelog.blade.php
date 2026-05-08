@@ -15,11 +15,38 @@ $locale = app()->getLocale();
 $versions = [
 
     [
-        'version' => 'v1.10.0',
+        'version' => 'v1.11.0',
         'latest'  => true,
         'badge'   => [
             'text'  => ['hu' => 'Aktuális, Legújabb', 'en' => 'Current, Latest'],
             'style' => 'background:rgba(10,179,156,0.1);color:#0ab39c;',
+        ],
+        'date' => ['hu' => '2026. május 8.', 'en' => 'May 8, 2026'],
+        'items' => [
+            ['hu' => '<strong>Email kampány modul — hibajavítás csomag (Pro):</strong> Az email kampány küldési funkció több kritikus hibája javításra került: a <code>is_subscribed</code> mező helyes használata (volt: <code>newsletter</code>), a <code>full_name</code> accessor használata (nem létező <code>name</code> oszlop helyett), az üres <code>\$e</code> catch változó elhárítása, valamint az utolsó <code>$campaign->update()</code> hívás köré helyezett try/catch védelem <em>failed</em> státusz esetére.',
+             'en' => '<strong>Email campaign module — bug fix bundle (Pro):</strong> Several critical bugs in the email campaign send flow were fixed: correct use of the <code>is_subscribed</code> field (was: <code>newsletter</code>), use of the <code>full_name</code> accessor (instead of non-existent <code>name</code> column), removal of unused <code>$e</code> catch variable, and a try/catch wrapper around the final <code>$campaign->update()</code> call for the <em>failed</em> status case.'],
+            ['hu' => '<strong>Kampány modal javítás:</strong> A kampány létrehozás és szerkesztés modaljain helytelen CSS osztály (<code>nf-modal-backdrop</code>) volt megadva, ami miatt a modalisablonok nem nyíltak meg. Javítva: <code>nf-overlay</code>.',
+             'en' => '<strong>Campaign modal fix:</strong> The campaign create and edit modals had an incorrect CSS class (<code>nf-modal-backdrop</code>) that prevented them from opening. Fixed to <code>nf-overlay</code>.'],
+            ['hu' => '<strong>Feliratkozók száma piszkozat kampányoknál:</strong> A kampány lista Fogadók oszlopa piszkozat állapotú kampányoknál korábban „—” jelet mutatott. Mostantól a valós hírlevél feliratkozók száma jelenik meg.',
+             'en' => '<strong>Subscriber count for draft campaigns:</strong> The Recipients column in the campaign list previously showed "—" for draft campaigns. It now correctly displays the actual newsletter subscriber count.'],
+            ['hu' => '<strong>Feladó cím javítása (<code>CampaignMail</code>):</strong> Az emailek küldésékor a feladó cím helytelenül, csonkítva jelent meg (pl. <code>admin@</code> domain nélkül). A <code>CampaignMail::envelope()</code> most explicitén a kampányban tárolt <code>from_email</code> és <code>from_name</code> értékeket használja (<code>Illuminate\\Mail\\Mailables\\Address</code> segítségével), config fallbackkel.',
+             'en' => '<strong>Sender address fix (<code>CampaignMail</code>):</strong> When sending emails, the sender address appeared incorrectly truncated (e.g. <code>admin@</code> without domain). <code>CampaignMail::envelope()</code> now explicitly uses the campaign\'s stored <code>from_email</code> and <code>from_name</code> values (via <code>Illuminate\\Mail\\Mailables\\Address</code>), with config fallback.'],
+            ['hu' => '<strong><code>failed_count</code> oszlop és ENUM bővítés (migráció):</strong> Két új migráció: az <code>email_campaigns</code> táblához hozzáadásra kerültek a <code>failed_count</code> (unsignedInteger, default 0) oszlop, valamint a <em>failed</em> státusz értéke az ENUM mezőhöz — raw <code>ALTER TABLE</code> SQL-lel, mivel a MySQL ENUM módosítás nem lehetséges Laravelblueprint-tel.',
+             'en' => '<strong><code>failed_count</code> column and ENUM extension (migration):</strong> Two new migrations: the <code>failed_count</code> (unsignedInteger, default 0) column and the <em>failed</em> status value were added to the <code>email_campaigns</code> table — using raw <code>ALTER TABLE</code> SQL, as MySQL ENUM modification is not possible with Laravel Blueprint.'],
+            ['hu' => '<strong>Duplikált migráció eltávolítása (Forge deployment fix):</strong> A <code>2026_05_08_190846_create_email_campaigns_table.php</code> migráció — amely lokálisan manuálisan volt hozzáadva az adatbázishoz — eltávolításra került a git repóból. A Forge szerveren ez a duplikált migráció <em>„table already exists"</em> hibával akadályozta a deployment-et.',
+             'en' => '<strong>Duplicate migration removed (Forge deployment fix):</strong> The <code>2026_05_08_190846_create_email_campaigns_table.php</code> migration — which was manually added to the database locally — was removed from the git repository. On the Forge server, this duplicate migration was blocking deployment with a <em>"table already exists"</em> error.'],
+            ['hu' => '<strong>Dashboard TypeError javítás (Windows / HU locale):</strong> A <code>/dashboard</code> oldal <code>TypeError: htmlspecialchars() array given</code> hibával omlott össze. Gyökérok: Windows fájlrendszer nem különbözteti meg a kis- és nagybetűket, ezért az <code>__("Dashboard")</code> hívás a <code>lang/hu/dashboard.php</code> fájlt (tömbként) adta vissza a várt szöveg helyett. Javítás: <code>__("nav.dashboard")</code> — mind a <code>dashboard.blade.php</code>, mind a <code>livewire/layout/navigation.blade.php</code> nézetekben.',
+             'en' => '<strong>Dashboard TypeError fix (Windows / HU locale):</strong> The <code>/dashboard</code> page was crashing with <code>TypeError: htmlspecialchars() array given</code>. Root cause: the Windows filesystem is case-insensitive, so <code>__("Dashboard")</code> matched <code>lang/hu/dashboard.php</code> and returned the entire array instead of a string. Fix: <code>__("nav.dashboard")</code> — in both <code>dashboard.blade.php</code> and <code>livewire/layout/navigation.blade.php</code>.'],
+            ['hu' => '<strong>Resend email integráció:</strong> A <code>config/services.php</code>-ben a <code>RESEND_API_KEY</code> env változó neve <code>RESEND_KEY</code>-re javítva a <code>.env</code> fájl tényleges változójának megfelelően. A Resend Laravel csomag mindkét config kulcsot ellenőrzi fallback-ként, így a javítás után az API kulcs helyesen töltődik be.',
+             'en' => '<strong>Resend email integration:</strong> In <code>config/services.php</code>, the env variable name was corrected from <code>RESEND_API_KEY</code> to <code>RESEND_KEY</code> to match the actual <code>.env</code> file variable. The Resend Laravel package checks both config keys as fallback, so after the fix the API key loads correctly.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.10.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
         ],
         'date' => ['hu' => '2026. május 6.', 'en' => 'May 6, 2026'],
         'items' => [

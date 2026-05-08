@@ -53,6 +53,13 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - RSVP tracking per event
 - Status workflow: Draft → Published → Completed / Cancelled
 
+### Email Campaigns *(Pro)*
+- Compose and send HTML email campaigns to all newsletter subscribers
+- Sender name / sender email configurable per campaign
+- Delivery tracking: sent count, failed count, recipient count
+- Status workflow: Draft → Sending → Sent / Failed
+- Powered by [Resend](https://resend.com) transactional email API
+
 ### Donations
 - Donor records linked to contacts
 - Amount, date, payment status per donation
@@ -194,7 +201,7 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 
 ## Roadmap
 
-- [ ] Email campaign sender (Mailgun / SMTP)
+- [x] Email campaign sender — Resend integration *(Pro, v1.11.0)*
 - [ ] Volunteer shift scheduling
 - [ ] REST API for mobile clients
 - [ ] SMS / push notification integration

@@ -103,13 +103,17 @@ class CampaignController extends Controller
             }
         }
 
-        $campaign->update([
-            'status'           => $failed > 0 && $sent === 0 ? 'failed' : 'sent',
-            'sent_at'          => now(),
-            'sent_count'       => $sent,
-            'failed_count'     => $failed,
-            'recipients_count' => $recipients->count(),
-        ]);
+        try {
+            $campaign->update([
+                'status'           => $failed > 0 && $sent === 0 ? 'failed' : 'sent',
+                'sent_at'          => now(),
+                'sent_count'       => $sent,
+                'failed_count'     => $failed,
+                'recipients_count' => $recipients->count(),
+            ]);
+        } catch (\Exception) {
+            $campaign->update(['status' => 'sent', 'sent_at' => now()]);
+        }
 
         return back()->with('success', __('campaigns.sent_ok', ['count' => $sent]));
     }

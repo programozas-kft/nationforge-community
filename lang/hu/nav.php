@@ -20,4 +20,5 @@ return [
     'links'          => 'Linkgyűjtemény',
     'news'           => 'Hírek',
     'infographics'   => 'Infografikonok',
+    'campaigns'      => 'Email kampányok',
 ];

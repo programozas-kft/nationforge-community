@@ -20,4 +20,5 @@ return [
     'links'          => 'Link Library',
     'news'           => 'News',
     'infographics'   => 'Infographics',
+    'campaigns'      => 'Email Campaigns',
 ];

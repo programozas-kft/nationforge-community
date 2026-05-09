@@ -117,7 +117,6 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Powered by [Spatie Laravel Permission](https://github.com/spatie/laravel-permission)
 - ✅ User photo upload
 - ✅ Users assignable to groups with roles
-- 🔲 Two-factor authentication (TOTP)
 - 🔲 Audit log (who changed what, when)
 - 🔲 Invitation-based user registration
 
@@ -146,7 +145,6 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - 🔲 Additional language packs (DE, RO, SK, …)
 
 ### Integrations & API
-- 🔲 REST API for mobile clients
 - 🔲 Webhook support (outgoing events)
 - 🔲 Google Calendar sync
 - 🔲 Facebook Events sync
@@ -156,6 +154,8 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - 🔲 Multi-organization / Multi-tenant support
 - 🔲 White-label & custom domain per tenant
 - 🔲 Advanced reporting & data export
+- 🔲 Two-factor authentication (TOTP)
+- 🔲 REST API for mobile clients
 - 🔲 Document storage (files per contact / project)
 - 🔲 Survey & form builder
 - 🔲 Petition / signature collection
@@ -259,11 +259,16 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 | Donations, Projects, Tasks | ✅ | ✅ |
 | Built-in chat | ✅ | ✅ |
 | Email campaign sender | ✅ | ✅ |
+| Multi-language (HU/EN) | ✅ | ✅ |
 | Advanced analytics & reports | — | ✅ |
 | Multi-organization / Multi-tenant | — | ✅ |
-| Two-factor authentication | — | ✅ |
-| REST API | — | ✅ |
 | White-label & custom domain | — | ✅ |
+| Two-factor authentication (TOTP) | — | ✅ |
+| REST API for mobile clients | — | ✅ |
+| Document storage | — | ✅ |
+| Survey & form builder | — | ✅ |
+| Petition / signature collection | — | ✅ |
+| Volunteer hours tracking | — | ✅ |
 | Priority support & SLA | — | ✅ |
 | Managed cloud hosting | — | ✅ |
 

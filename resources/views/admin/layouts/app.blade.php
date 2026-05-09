@@ -6,6 +6,7 @@
     <title>@yield('title', 'Admin') | NationForge</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         *, *::before, *::after { box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -456,12 +457,12 @@
             <a href="{{ route('locale.switch', 'hu') }}"
                style="flex:1;text-align:center;padding:5px;border-radius:5px;font-size:0.72rem;font-weight:600;text-decoration:none;
                       {{ app()->getLocale() === 'hu' ? 'background:rgba(255,255,255,0.2);color:#fff' : 'color:#5a6587' }}">
-                🇭🇺 HU
+                <span class="fi fi-hu" style="border-radius:2px"></span> HU
             </a>
             <a href="{{ route('locale.switch', 'en') }}"
                style="flex:1;text-align:center;padding:5px;border-radius:5px;font-size:0.72rem;font-weight:600;text-decoration:none;
                       {{ app()->getLocale() === 'en' ? 'background:rgba(255,255,255,0.2);color:#fff' : 'color:#5a6587' }}">
-                🇬🇧 EN
+                <span class="fi fi-gb" style="border-radius:2px"></span> EN
             </a>
         </div>
 

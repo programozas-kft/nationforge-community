@@ -34,63 +34,134 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 
 ## Features
 
+> ✅ = implemented &nbsp;·&nbsp; 🔲 = planned
+
 ### Contacts (CRM)
-- Full people database: name, status, address, phone, email, subscriptions
-- Status workflow: **Prospect → Supporter → Member → Volunteer → Donor → VIP → Inactive**
-- Photo upload, group assignment, custom notes
-- Searchable, filterable list with inline editing
+- ✅ Full people database: name, status, address, phone, email, birthdate, gender, social links
+- ✅ Status workflow: **Prospect → Supporter → Member → Volunteer → Donor → VIP → Inactive**
+- ✅ Photo upload (Spatie MediaLibrary)
+- ✅ Newsletter subscription management + unsubscribe token
+- ✅ Custom fields (JSON), source tracking, notes, biography
+- ✅ Donation statistics per contact (total donated, count, last donation date)
+- ✅ Group membership & event RSVP history
+- ✅ Soft deletes
+- 🔲 CSV / Excel import & export
+- 🔲 Advanced saved filters & search
+- 🔲 Duplicate detection & contact merge
+- 🔲 Per-contact activity log (interaction history)
+- 🔲 Contact scoring / lead scoring
 
 ### Groups
-- Types: Community, Campaign, Chapter, Committee, Team
-- Privacy levels: Public / Private / Secret
-- 28 custom icons per group
-- Built-in **real-time group chat** (Livewire)
-- Member list with role and type badges
+- ✅ Types: Community, Campaign, Chapter, Committee, Team
+- ✅ Privacy levels: Public / Private / Secret
+- ✅ 28 custom icons per group
+- ✅ Cover image, member list with role badges
+- ✅ Built-in **real-time group chat** (Livewire)
+- ✅ Soft deletes
+- 🔲 File sharing within groups
+- 🔲 Group-level calendar
 
 ### Events
-- Types: Meetup, Rally, Webinar, Fundraiser, Volunteer, Conference
-- Online & offline support with venue/city info
-- RSVP tracking per event
-- Status workflow: Draft → Published → Completed / Cancelled
+- ✅ Types: Meetup, Rally, Webinar, Fundraiser, Volunteer, Conference
+- ✅ Online & offline support (venue/city + online URL)
+- ✅ Capacity management, ticket pricing fields
+- ✅ RSVP tracking per event
+- ✅ **Public event registration page** (name, email, phone, guests, notes, token)
+- ✅ Status workflow: Draft → Published → Completed / Cancelled
+- ✅ Cover image, featured flag, tags, soft deletes
+- 🔲 Registration confirmation email (automatic after sign-up)
+- 🔲 Volunteer shift scheduling (model ready, UI pending)
+- 🔲 Event check-in via QR code
+- 🔲 Online payment for paid tickets (Stripe / Barion)
+- 🔲 Waitlist management
 
-### Email Campaigns *(Pro)*
-- Compose and send HTML email campaigns to all newsletter subscribers
-- Sender name / sender email configurable per campaign
-- Delivery tracking: sent count, failed count, recipient count
-- Status workflow: Draft → Sending → Sent / Failed
-- Powered by [Resend](https://resend.com) transactional email API
+### Email Campaigns
+- ✅ Compose and send HTML / Markdown email campaigns
+- ✅ Sender name & email configurable per campaign
+- ✅ Delivery tracking: sent count, failed count, recipient count
+- ✅ Status workflow: Draft → Sending → Sent / Failed
+- ✅ Powered by [Resend](https://resend.com) transactional email API
+- 🔲 Email template library (reusable layouts)
+- 🔲 Audience segmentation (send to group / tag / status)
+- 🔲 Automated drip / sequence campaigns
+- 🔲 One-click unsubscribe landing page
+- 🔲 Open & click tracking
 
 ### Donations
-- Donor records linked to contacts
-- Amount, date, payment status per donation
-- Monthly totals shown on the dashboard
+- ✅ Donor records linked to contacts (or anonymous)
+- ✅ Amount, currency, payment status, payment method, transaction ID
+- ✅ Per-campaign tracking label
+- ✅ Monthly donation totals on dashboard
+- ✅ Recurring donation fields (interval, next charge date)
+- 🔲 Public online donation form
+- 🔲 Donation receipt / acknowledgment email
+- 🔲 Export for accounting (CSV, PDF)
 
 ### Projects & Tasks
-- Project management with assigned team members
-- Task list with status updates and deadlines
+- ✅ Project management: title, status, priority, start/end date
+- ✅ Assigned team members (many-to-many)
+- ✅ Overdue detection & progress percentage (based on tasks)
+- ✅ Task list with status and deadlines per project
+- 🔲 Task comments & file attachments
+- 🔲 Gantt-style timeline view
 
 ### Dashboard
-- Stat cards: total contacts, upcoming events, donation totals, newsletter subscribers
-- **Chart.js charts**: monthly donations (bar), contact growth (dual-axis line), status distribution (doughnut)
-- Upcoming events panel, latest contacts feed
+- ✅ Stat cards: total contacts, upcoming events, donation totals, newsletter subscribers
+- ✅ **Chart.js charts**: monthly donations (bar), contact growth (dual-axis line), status distribution (doughnut)
+- ✅ Upcoming events panel, latest contacts feed
+- 🔲 Custom dashboard widget builder
+- 🔲 Scheduled summary reports via email
 
 ### Users & Roles
-- Role-based access control: **Super Admin, Admin, Editor, Member**
-- Powered by [Spatie Laravel Permission](https://github.com/spatie/laravel-permission)
-- Users can be assigned to groups with roles
+- ✅ Role-based access control: **Super Admin, Admin, Editor, Member**
+- ✅ Powered by [Spatie Laravel Permission](https://github.com/spatie/laravel-permission)
+- ✅ User photo upload
+- ✅ Users assignable to groups with roles
+- 🔲 Two-factor authentication (TOTP)
+- 🔲 Audit log (who changed what, when)
+- 🔲 Invitation-based user registration
 
-### Link Collection
-- Configurable link library for the whole team (social media, news, resources)
-- Category grouping, custom colors, sort order
-- Managed directly from Settings — no code needed
+### Link Collection & Quick Links
+- ✅ Configurable link library for the whole team (social media, news, resources)
+- ✅ Custom colors, sort order, category grouping
+- ✅ Quick links bar in top navigation
+- ✅ Managed from Settings — no code needed
 
-### Quick Links Bar
-- Top navigation bar with instant access to external resources (YouTube, Drive, Instagram, News, etc.)
-- Links configurable per deployment
+### Settings
+- ✅ App name, mail from address / name configurable from admin UI
+- ✅ Changes written directly to `.env`
+- 🔲 Branding settings (logo, colors, org name)
+- 🔲 SMTP / mailer configuration from UI
 
 ### Help & Documentation
-- Built-in help article editor with image lightbox
-- Accessible to all users from the admin panel
+- ✅ Built-in help article editor (Markdown-like, bilingual HU/EN)
+- ✅ Image lightbox support
+- ✅ Accessible to all users from the admin panel
+- 🔲 Video embed support in help articles
+
+### Multi-language
+- ✅ Full HU / EN bilingual admin panel
+- ✅ Language switcher in sidebar (SVG flag-icons)
+- ✅ Per-session locale switching
+- 🔲 Additional language packs (DE, RO, SK, …)
+
+### Integrations & API
+- 🔲 REST API for mobile clients
+- 🔲 Webhook support (outgoing events)
+- 🔲 Google Calendar sync
+- 🔲 Facebook Events sync
+- 🔲 Zapier / Make (Integromat) integration
+
+### Advanced / Enterprise
+- 🔲 Multi-organization / Multi-tenant support
+- 🔲 White-label & custom domain per tenant
+- 🔲 Advanced reporting & data export
+- 🔲 Document storage (files per contact / project)
+- 🔲 Survey & form builder
+- 🔲 Petition / signature collection
+- 🔲 Volunteer hours tracking
+- 🔲 Priority support & SLA
+- 🔲 Managed cloud hosting
 
 ---
 
@@ -179,14 +250,16 @@ Starts the Laravel server, Vite, queue listener and log watcher concurrently.
 
 NationForge follows an **Open Core** strategy — the community foundation is MIT-licensed and free forever, while advanced enterprise features are available in the Pro tier.
 
+> The Community / Pro split is being finalized. See the [Features](#features) section above for the full list (✅ done, 🔲 planned). The table below will be updated once the split is confirmed.
+
 | Feature | Community (this repo) | [Pro / Enterprise](https://github.com/programozas-kft/nationforge-pro) |
 |---|:---:|:---:|
 | Full source code | ✅ | ✅ |
 | Contacts, Groups, Events | ✅ | ✅ |
 | Donations, Projects, Tasks | ✅ | ✅ |
 | Built-in chat | ✅ | ✅ |
+| Email campaign sender | ✅ | ✅ |
 | Advanced analytics & reports | — | ✅ |
-| Email campaign sender | — | ✅ |
 | Multi-organization / Multi-tenant | — | ✅ |
 | Two-factor authentication | — | ✅ |
 | REST API | — | ✅ |
@@ -196,17 +269,6 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 
 > **Interested in Pro or managed hosting?**
 > → [View NationForge Pro](https://github.com/programozas-kft/nationforge-pro) · [programozas.kft@gmail.com](mailto:programozas.kft@gmail.com)
-
----
-
-## Roadmap
-
-- [x] Email campaign sender — Resend integration *(Pro, v1.11.0)*
-- [ ] Volunteer shift scheduling
-- [ ] REST API for mobile clients
-- [ ] SMS / push notification integration
-- [ ] Multi-tenant support *(Pro)*
-- [ ] Advanced reporting & export *(Pro)*
 
 ---
 

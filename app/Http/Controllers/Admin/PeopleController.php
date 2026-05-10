@@ -189,77 +189,89 @@ class PeopleController extends Controller
 
     public function duplicates()
     {
-        $pairs = collect();
+        $pairMap = []; // plain PHP array — safe with use (&$ref)
 
-        // ── Email matches ────────────────────────────────────
-        DB::table('people')
-            ->whereNotNull('email')->where('email', '!=', '')->whereNull('deleted_at')
-            ->select('email', DB::raw('GROUP_CONCAT(id ORDER BY created_at ASC) as ids'))
-            ->groupBy('email')->havingRaw('COUNT(*) > 1')
+        $addPair = function (int $id1, int $id2, string $reason) use (&$pairMap) {
+            $a = min($id1, $id2);
+            $b = max($id1, $id2);
+            $key = "{$a}_{$b}";
+            if (!isset($pairMap[$key])) {
+                $pairMap[$key] = ['ids' => [$a, $b], 'reasons' => []];
+            }
+            if (!in_array($reason, $pairMap[$key]['reasons'], true)) {
+                $pairMap[$key]['reasons'][] = $reason;
+            }
+        };
+
+        // ── Email matches (SQL GROUP BY on real column) ──────
+        Person::whereNotNull('email')
+            ->where('email', '!=', '')
+            ->select('id', 'email')
+            ->orderBy('created_at')
             ->get()
-            ->each(function ($row) use (&$pairs) {
-                $ids = explode(',', $row->ids);
-                for ($i = 0; $i < count($ids); $i++) {
-                    for ($j = $i + 1; $j < count($ids); $j++) {
-                        $key = min($ids[$i], $ids[$j]) . '_' . max($ids[$i], $ids[$j]);
-                        $entry = $pairs->get($key, ['ids' => [(int)$ids[$i], (int)$ids[$j]], 'reasons' => []]);
-                        $entry['reasons'][] = 'email';
-                        $pairs->put($key, $entry);
+            ->groupBy('email')
+            ->each(function ($group) use ($addPair) {
+                if ($group->count() < 2) return;
+                $ids = $group->pluck('id')->values();
+                for ($i = 0; $i < $ids->count(); $i++) {
+                    for ($j = $i + 1; $j < $ids->count(); $j++) {
+                        $addPair($ids[$i], $ids[$j], 'email');
                     }
                 }
             });
 
         // ── Phone matches ────────────────────────────────────
-        DB::table('people')
-            ->whereNotNull('phone')->where('phone', '!=', '')->whereNull('deleted_at')
-            ->select('phone', DB::raw('GROUP_CONCAT(id ORDER BY created_at ASC) as ids'))
-            ->groupBy('phone')->havingRaw('COUNT(*) > 1')
+        Person::whereNotNull('phone')
+            ->where('phone', '!=', '')
+            ->select('id', 'phone')
+            ->orderBy('created_at')
             ->get()
-            ->each(function ($row) use (&$pairs) {
-                $ids = explode(',', $row->ids);
-                for ($i = 0; $i < count($ids); $i++) {
-                    for ($j = $i + 1; $j < count($ids); $j++) {
-                        $key = min($ids[$i], $ids[$j]) . '_' . max($ids[$i], $ids[$j]);
-                        $entry = $pairs->get($key, ['ids' => [(int)$ids[$i], (int)$ids[$j]], 'reasons' => []]);
-                        $entry['reasons'][] = 'phone';
-                        $pairs->put($key, $entry);
+            ->groupBy('phone')
+            ->each(function ($group) use ($addPair) {
+                if ($group->count() < 2) return;
+                $ids = $group->pluck('id')->values();
+                for ($i = 0; $i < $ids->count(); $i++) {
+                    for ($j = $i + 1; $j < $ids->count(); $j++) {
+                        $addPair($ids[$i], $ids[$j], 'phone');
                     }
                 }
             });
 
-        // ── Name matches ─────────────────────────────────────
-        DB::table('people')
-            ->whereNull('deleted_at')
-            ->select(
-                DB::raw('LOWER(TRIM(first_name)) as fn'),
-                DB::raw('LOWER(TRIM(last_name)) as ln'),
-                DB::raw('GROUP_CONCAT(id ORDER BY created_at ASC) as ids')
-            )
-            ->groupBy('fn', 'ln')->havingRaw('COUNT(*) > 1')
+        // ── Name matches (PHP-side grouping — no SQL alias) ──
+        Person::select('id', 'first_name', 'last_name')
+            ->orderBy('created_at')
             ->get()
-            ->each(function ($row) use (&$pairs) {
-                $ids = explode(',', $row->ids);
-                for ($i = 0; $i < count($ids); $i++) {
-                    for ($j = $i + 1; $j < count($ids); $j++) {
-                        $key = min($ids[$i], $ids[$j]) . '_' . max($ids[$i], $ids[$j]);
-                        $entry = $pairs->get($key, ['ids' => [(int)$ids[$i], (int)$ids[$j]], 'reasons' => []]);
-                        $entry['reasons'][] = 'name';
-                        $pairs->put($key, $entry);
+            ->groupBy(function ($p) {
+                return mb_strtolower(trim($p->first_name)) . '|' . mb_strtolower(trim($p->last_name));
+            })
+            ->each(function ($group) use ($addPair) {
+                if ($group->count() < 2) return;
+                $ids = $group->pluck('id')->values();
+                for ($i = 0; $i < $ids->count(); $i++) {
+                    for ($j = $i + 1; $j < $ids->count(); $j++) {
+                        $addPair($ids[$i], $ids[$j], 'name');
                     }
                 }
             });
+
+        if (empty($pairMap)) {
+            return view('admin.people.duplicates', ['pairs' => collect()]);
+        }
 
         // ── Load Person models ───────────────────────────────
-        $allIds = $pairs->flatMap(fn ($p) => $p['ids'])->unique()->values();
+        $allIds = collect($pairMap)->flatMap(fn ($p) => $p['ids'])->unique()->values();
         $people = Person::whereIn('id', $allIds)->with('groups')->get()->keyBy('id');
 
-        $result = $pairs->map(fn ($p) => [
-            'reasons' => array_unique($p['reasons']),
-            'a'       => $people->get($p['ids'][0]),
-            'b'       => $people->get($p['ids'][1]),
-        ])->filter(fn ($p) => $p['a'] && $p['b'])->values();
+        $pairs = collect($pairMap)
+            ->map(fn ($p) => [
+                'reasons' => $p['reasons'],
+                'a'       => $people->get($p['ids'][0]),
+                'b'       => $people->get($p['ids'][1]),
+            ])
+            ->filter(fn ($p) => $p['a'] && $p['b'])
+            ->values();
 
-        return view('admin.people.duplicates', ['pairs' => $result]);
+        return view('admin.people.duplicates', compact('pairs'));
     }
 
     public function merge(Request $request)

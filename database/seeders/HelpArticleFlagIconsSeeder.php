@@ -9,18 +9,14 @@ class HelpArticleFlagIconsSeeder extends Seeder
 {
     public function run(): void
     {
-        $existing = DB::table('help_articles')
-            ->where('title', 'Nyelvváltó és zászló ikonok')
-            ->orWhere('title_en', 'Language Switcher & Flag Icons')
-            ->first();
-
-        if ($existing) {
+        if (DB::table('help_articles')->where('menu_key', 'nyelvvalto-zaszlo')->exists()) {
             return;
         }
 
         $maxOrder = DB::table('help_articles')->max('sort_order') ?? 0;
 
         DB::table('help_articles')->insert([
+            'menu_key'   => 'nyelvvalto-zaszlo',
             'title'      => 'Nyelvváltó és zászló ikonok',
             'title_en'   => 'Language Switcher & Flag Icons',
             'content'    => <<<'MD'

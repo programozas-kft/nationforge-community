@@ -9,18 +9,14 @@ class HelpArticleEmailCampaignSeeder extends Seeder
 {
     public function run(): void
     {
-        $existing = DB::table('help_articles')
-            ->where('title', 'Email kampányok')
-            ->orWhere('title_en', 'Email Campaigns')
-            ->first();
-
-        if ($existing) {
+        if (DB::table('help_articles')->where('menu_key', 'email-kampanyok')->exists()) {
             return;
         }
 
         $maxOrder = DB::table('help_articles')->max('sort_order') ?? 0;
 
         DB::table('help_articles')->insert([
+            'menu_key'   => 'email-kampanyok',
             'title'      => 'Email kampányok',
             'title_en'   => 'Email Campaigns',
             'content'    => <<<'MD'

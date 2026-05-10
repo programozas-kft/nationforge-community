@@ -169,11 +169,24 @@
 </div>
 
 @push('scripts')
+@php
+$pairData = $pairs->map(function ($p) {
+    return [
+        'a' => [
+            'id'     => $p['a']->id,
+            'name'   => $p['a']->last_name . ' ' . $p['a']->first_name,
+            'detail' => $p['a']->email ?: ($p['a']->phone ?: $p['a']->city),
+        ],
+        'b' => [
+            'id'     => $p['b']->id,
+            'name'   => $p['b']->last_name . ' ' . $p['b']->first_name,
+            'detail' => $p['b']->email ?: ($p['b']->phone ?: $p['b']->city),
+        ],
+    ];
+})->values();
+@endphp
 <script>
-const pairData = @json($pairs->map(fn($p) => [
-    'a' => ['id' => $p['a']->id, 'name' => $p['a']->last_name . ' ' . $p['a']->first_name, 'detail' => $p['a']->email ?: ($p['a']->phone ?: $p['a']->city)],
-    'b' => ['id' => $p['b']->id, 'name' => $p['b']->last_name . ' ' . $p['b']->first_name, 'detail' => $p['b']->email ?: ($p['b']->phone ?: $p['b']->city)],
-])->values());
+const pairData = @json($pairData);
 
 function openMergeModal(idA, idB, idx) {
     const pair = pairData[idx];

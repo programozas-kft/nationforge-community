@@ -14,7 +14,7 @@ return [
     'users'          => 'Felhasználók',
     'settings'       => 'Beállítások',
     'changelog'      => 'Verziókövetés',
-    'help'           => 'Súgó kezelése',
+    'help'           => 'Súgó',
     'logout'         => 'Kijelentkezés',
     'open_tasks'     => 'nyitott',
     'links'          => 'Linkgyűjtemény',

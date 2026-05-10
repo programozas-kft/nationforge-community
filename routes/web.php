@@ -41,6 +41,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::delete('people/filters/{filter}', [PeopleController::class, 'deleteFilter'])->name('people.filters.destroy');
     Route::get('people/duplicates', [PeopleController::class, 'duplicates'])->name('people.duplicates');
     Route::post('people/merge', [PeopleController::class, 'merge'])->name('people.merge');
+    Route::post('people/{person}/activities', [PeopleController::class, 'logActivity'])->name('people.activities.store');
+    Route::delete('people/{person}/activities/{activity}', [PeopleController::class, 'deleteActivity'])->name('people.activities.destroy');
     Route::resource('people', PeopleController::class);
     Route::resource('events', EventController::class);
     Route::resource('groups', GroupController::class);

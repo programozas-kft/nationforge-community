@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactActivity;
 use App\Models\Person;
 use App\Models\PeopleSavedFilter;
 use Illuminate\Http\Request;
@@ -129,7 +130,33 @@ class PeopleController extends Controller
     public function show(Person $person)
     {
         $person->load('donations', 'groups');
-        return view('admin.people.show', compact('person'));
+        $activities = ContactActivity::where('person_id', $person->id)
+            ->with('user')
+            ->orderByDesc('occurred_at')
+            ->get();
+        return view('admin.people.show', compact('person', 'activities'));
+    }
+
+    public function logActivity(Request $request, Person $person)
+    {
+        $data = $request->validate([
+            'type'        => 'required|in:call,email,meeting,note,task,sms,other',
+            'notes'       => 'nullable|string|max:2000',
+            'occurred_at' => 'required|date',
+        ]);
+        $data['person_id'] = $person->id;
+        $data['user_id']   = auth()->id();
+
+        ContactActivity::create($data);
+
+        return back()->with('success', 'Aktivitás rögzítve.');
+    }
+
+    public function deleteActivity(Person $person, ContactActivity $activity)
+    {
+        abort_unless($activity->person_id === $person->id, 403);
+        $activity->delete();
+        return back()->with('success', 'Aktivitás törölve.');
     }
 
     public function edit(Person $person)

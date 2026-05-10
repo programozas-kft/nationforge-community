@@ -20,6 +20,8 @@ class HelpArticleEmailCampaignSeeder extends Seeder
             'title'      => 'Email kampányok',
             'title_en'   => 'Email Campaigns',
             'content'    => <<<'MD'
+![Screenshot](/img/sugo/kampanyok.png)
+
 ## Email kampányok (Pro)
 
 Az **Email kampányok** modul lehetővé teszi, hogy hírleveleket és értesítőket küldj az összes feliratkozott kapcsolatodnak egyetlen kattintással.
@@ -62,6 +64,8 @@ Az emailek küldéséhez a **Resend** transactional email szolgáltatás szüks�
 
 MD,
             'content_en' => <<<'MD'
+![Screenshot](/img/sugo/kampanyok.png)
+
 ## Email Campaigns (Pro)
 
 The **Email Campaigns** module lets you send newsletters and notifications to all subscribed contacts with a single click.

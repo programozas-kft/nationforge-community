@@ -45,11 +45,11 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Donation statistics per contact (total donated, count, last donation date)
 - ✅ Group membership & event RSVP history
 - ✅ Soft deletes
-- 🔲 CSV / Excel import & export
-- 🔲 Advanced saved filters & search
-- 🔲 Duplicate detection & contact merge
-- 🔲 Per-contact activity log (interaction history)
-- 🔲 Contact scoring / lead scoring
+- ✅ CSV / Excel import & export
+- ✅ Advanced saved filters & search with named presets
+- ✅ Duplicate detection & contact merge
+- ✅ Per-contact activity log (interaction history)
+- ✅ Contact scoring / lead scoring (6-stage pipeline + 1–5 stars)
 
 ### Groups
 - ✅ Types: Community, Campaign, Chapter, Committee, Team
@@ -260,6 +260,11 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 | Built-in chat | ✅ | ✅ |
 | Email campaign sender | ✅ | ✅ |
 | Multi-language (HU/EN) | ✅ | ✅ |
+| CSV / Excel import & export | ✅ | ✅ |
+| Advanced filters & saved presets | ✅ | ✅ |
+| Duplicate detection & merge | ✅ | ✅ |
+| Activity log per contact | ✅ | ✅ |
+| Lead scoring (pipeline + stars) | ✅ | ✅ |
 | Advanced analytics & reports | — | ✅ |
 | Multi-organization / Multi-tenant | — | ✅ |
 | White-label & custom domain | — | ✅ |

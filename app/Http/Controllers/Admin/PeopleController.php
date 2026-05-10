@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Person;
 use App\Models\PeopleSavedFilter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -184,6 +185,137 @@ class PeopleController extends Controller
         }
         $person->delete();
         return redirect()->route('admin.people.index')->with('success', 'Kapcsolat törölve!');
+    }
+
+    public function duplicates()
+    {
+        $pairs = collect();
+
+        // ── Email matches ────────────────────────────────────
+        DB::table('people')
+            ->whereNotNull('email')->where('email', '!=', '')->whereNull('deleted_at')
+            ->select('email', DB::raw('GROUP_CONCAT(id ORDER BY created_at ASC) as ids'))
+            ->groupBy('email')->havingRaw('COUNT(*) > 1')
+            ->get()
+            ->each(function ($row) use (&$pairs) {
+                $ids = explode(',', $row->ids);
+                for ($i = 0; $i < count($ids); $i++) {
+                    for ($j = $i + 1; $j < count($ids); $j++) {
+                        $key = min($ids[$i], $ids[$j]) . '_' . max($ids[$i], $ids[$j]);
+                        $entry = $pairs->get($key, ['ids' => [(int)$ids[$i], (int)$ids[$j]], 'reasons' => []]);
+                        $entry['reasons'][] = 'email';
+                        $pairs->put($key, $entry);
+                    }
+                }
+            });
+
+        // ── Phone matches ────────────────────────────────────
+        DB::table('people')
+            ->whereNotNull('phone')->where('phone', '!=', '')->whereNull('deleted_at')
+            ->select('phone', DB::raw('GROUP_CONCAT(id ORDER BY created_at ASC) as ids'))
+            ->groupBy('phone')->havingRaw('COUNT(*) > 1')
+            ->get()
+            ->each(function ($row) use (&$pairs) {
+                $ids = explode(',', $row->ids);
+                for ($i = 0; $i < count($ids); $i++) {
+                    for ($j = $i + 1; $j < count($ids); $j++) {
+                        $key = min($ids[$i], $ids[$j]) . '_' . max($ids[$i], $ids[$j]);
+                        $entry = $pairs->get($key, ['ids' => [(int)$ids[$i], (int)$ids[$j]], 'reasons' => []]);
+                        $entry['reasons'][] = 'phone';
+                        $pairs->put($key, $entry);
+                    }
+                }
+            });
+
+        // ── Name matches ─────────────────────────────────────
+        DB::table('people')
+            ->whereNull('deleted_at')
+            ->select(
+                DB::raw('LOWER(TRIM(first_name)) as fn'),
+                DB::raw('LOWER(TRIM(last_name)) as ln'),
+                DB::raw('GROUP_CONCAT(id ORDER BY created_at ASC) as ids')
+            )
+            ->groupBy('fn', 'ln')->havingRaw('COUNT(*) > 1')
+            ->get()
+            ->each(function ($row) use (&$pairs) {
+                $ids = explode(',', $row->ids);
+                for ($i = 0; $i < count($ids); $i++) {
+                    for ($j = $i + 1; $j < count($ids); $j++) {
+                        $key = min($ids[$i], $ids[$j]) . '_' . max($ids[$i], $ids[$j]);
+                        $entry = $pairs->get($key, ['ids' => [(int)$ids[$i], (int)$ids[$j]], 'reasons' => []]);
+                        $entry['reasons'][] = 'name';
+                        $pairs->put($key, $entry);
+                    }
+                }
+            });
+
+        // ── Load Person models ───────────────────────────────
+        $allIds = $pairs->flatMap(fn ($p) => $p['ids'])->unique()->values();
+        $people = Person::whereIn('id', $allIds)->with('groups')->get()->keyBy('id');
+
+        $result = $pairs->map(fn ($p) => [
+            'reasons' => array_unique($p['reasons']),
+            'a'       => $people->get($p['ids'][0]),
+            'b'       => $people->get($p['ids'][1]),
+        ])->filter(fn ($p) => $p['a'] && $p['b'])->values();
+
+        return view('admin.people.duplicates', ['pairs' => $result]);
+    }
+
+    public function merge(Request $request)
+    {
+        $request->validate([
+            'master_id'    => 'required|exists:people,id',
+            'duplicate_id' => 'required|exists:people,id|different:master_id',
+        ]);
+
+        $master = Person::findOrFail($request->master_id);
+        $dupe   = Person::findOrFail($request->duplicate_id);
+
+        // Fill blank fields on master from duplicate
+        $fields = [
+            'email','phone','mobile','city','county','postal_code','address',
+            'birthdate','gender','occupation','employer','bio',
+            'facebook_url','twitter_url','linkedin_url','website','source','notes',
+        ];
+        foreach ($fields as $field) {
+            if (empty($master->$field) && !empty($dupe->$field)) {
+                $master->$field = $dupe->$field;
+            }
+        }
+        // Combine donation stats
+        $master->total_donated  = (float) $master->total_donated + (float) $dupe->total_donated;
+        $master->donation_count = (int)   $master->donation_count + (int)   $dupe->donation_count;
+        if ($dupe->last_donated_at && (!$master->last_donated_at || $dupe->last_donated_at > $master->last_donated_at)) {
+            $master->last_donated_at = $dupe->last_donated_at;
+        }
+        // Subscribe if either was subscribed
+        $master->is_subscribed = $master->is_subscribed || $dupe->is_subscribed;
+        $master->save();
+
+        // Transfer donations
+        DB::table('donations')->where('person_id', $dupe->id)->update(['person_id' => $master->id]);
+
+        // Transfer event RSVPs (skip if master already has one for the same event)
+        $masterEventIds = DB::table('event_rsvps')->where('person_id', $master->id)->pluck('event_id')->toArray();
+        DB::table('event_rsvps')
+            ->where('person_id', $dupe->id)
+            ->whereNotIn('event_id', $masterEventIds)
+            ->update(['person_id' => $master->id]);
+        DB::table('event_rsvps')->where('person_id', $dupe->id)->delete();
+
+        // Transfer groups
+        $dupeGroupIds = DB::table('group_person')->where('person_id', $dupe->id)->pluck('group_id');
+        foreach ($dupeGroupIds as $gid) {
+            DB::table('group_person')->insertOrIgnore(['group_id' => $gid, 'person_id' => $master->id, 'joined_at' => now()]);
+        }
+        DB::table('group_person')->where('person_id', $dupe->id)->delete();
+
+        $dupeName = $dupe->last_name . ' ' . $dupe->first_name;
+        $dupe->delete();
+
+        return redirect()->route('admin.people.duplicates')
+            ->with('success', "Összevonva. {$dupeName} törölve, adatai átkerültek.");
     }
 
     public function export(Request $request)

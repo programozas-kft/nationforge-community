@@ -69,6 +69,96 @@
             </div>
             @endif
         </div>
+
+        {{-- ── LEAD SCORING CARD ────────────────────────── --}}
+        @php
+        $leadStages = [
+            'new'       => ['label' => 'Új érdeklődő',     'color' => '#6c757d', 'icon' => 'M12 4v16m8-8H4'],
+            'contacted' => ['label' => 'Kapcsolatba lépve', 'color' => '#299cdb', 'icon' => 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
+            'qualified' => ['label' => 'Minősített',        'color' => '#7a5af8', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
+            'proposal'  => ['label' => 'Ajánlat küldve',   'color' => '#f7b84b', 'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'],
+            'converted' => ['label' => 'Megnyert',          'color' => '#0ab39c', 'icon' => 'M5 13l4 4L19 7'],
+            'lost'      => ['label' => 'Elveszett',         'color' => '#f06548', 'icon' => 'M6 18L18 6M6 6l12 12'],
+        ];
+        $currentStage = $person->lead_stage;
+        $currentScore = $person->lead_score;
+        @endphp
+
+        <div class="nf-card">
+            <div class="nf-card-header">Kapcsolatfelvétel / Értékelés</div>
+
+            <form method="POST" action="{{ route('admin.people.lead.update', $person) }}" style="padding:20px 24px">
+                @csrf @method('PATCH')
+
+                {{-- Pipeline stages --}}
+                <div style="margin-bottom:18px">
+                    <label style="font-size:0.72rem;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:10px">Értékesítési fázis</label>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px" id="stageGrid">
+                        @foreach($leadStages as $val => $stage)
+                        @php $active = $currentStage === $val; @endphp
+                        <label style="cursor:pointer">
+                            <input type="radio" name="lead_stage" value="{{ $val }}" {{ $active ? 'checked' : '' }}
+                                   style="display:none" class="stage-radio">
+                            <div class="stage-chip" data-val="{{ $val }}" data-color="{{ $stage['color'] }}"
+                                 style="border:1.5px solid {{ $active ? $stage['color'] : '#e9ebec' }};
+                                        background:{{ $active ? 'rgba('.implode(',', sscanf($stage['color'],'#%02x%02x%02x')).', 0.1)' : '#fff' }};
+                                        border-radius:8px;padding:8px 6px;text-align:center;transition:all .15s">
+                                <svg width="16" height="16" fill="none" stroke="{{ $active ? $stage['color'] : '#adb5bd' }}"
+                                     viewBox="0 0 24 24" style="display:block;margin:0 auto 4px">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $stage['icon'] }}"/>
+                                </svg>
+                                <span style="font-size:0.68rem;font-weight:{{ $active ? '700' : '500' }};color:{{ $active ? $stage['color'] : '#6c757d' }};line-height:1.2;display:block">
+                                    {{ $stage['label'] }}
+                                </span>
+                            </div>
+                        </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Star score --}}
+                <div style="margin-bottom:18px">
+                    <label style="font-size:0.72rem;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:8px">Pontszám (érdeklődési szint)</label>
+                    <div style="display:flex;gap:6px;align-items:center" id="starRow">
+                        @for($i = 1; $i <= 5; $i++)
+                        <button type="button" class="star-btn" data-val="{{ $i }}"
+                                style="background:none;border:none;cursor:pointer;padding:2px;line-height:1">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="{{ $currentScore >= $i ? '#f7b84b' : 'none' }}"
+                                 stroke="{{ $currentScore >= $i ? '#f7b84b' : '#ced4da' }}" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            </svg>
+                        </button>
+                        @endfor
+                        <input type="hidden" name="lead_score" id="scoreInput" value="{{ $currentScore }}">
+                        <span id="scoreLabel" style="font-size:0.8rem;color:#adb5bd;margin-left:4px">
+                            @if($currentScore)
+                                {{ $currentScore }}/5 — @switch($currentScore)
+                                    @case(1) Hideg @break
+                                    @case(2) Langyos @break
+                                    @case(3) Érdeklődő @break
+                                    @case(4) Forró @break
+                                    @case(5) Nagyon forró @break
+                                @endswitch
+                            @else
+                                Nincs értékelve
+                            @endif
+                        </span>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:8px">
+                    <button type="submit" class="btn-primary" style="font-size:0.82rem;padding:8px 18px">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:4px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        Mentés
+                    </button>
+                    @if($currentStage || $currentScore)
+                    <button type="button" onclick="clearLead()" class="btn-secondary" style="font-size:0.82rem;padding:8px 14px">Törlés</button>
+                    @endif
+                </div>
+            </form>
+        </div>
+
     </div>
 
     <div class="lg:col-span-2 space-y-5">
@@ -232,3 +322,96 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    // ── Stage chips ────────────────────────────────────────────
+    document.querySelectorAll('.stage-radio').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            document.querySelectorAll('.stage-chip').forEach(function (chip) {
+                const val   = chip.dataset.val;
+                const color = chip.dataset.color;
+                const isActive = val === radio.value;
+                chip.style.borderColor  = isActive ? color : '#e9ebec';
+                chip.style.background   = isActive ? hexToRgba(color, 0.1) : '#fff';
+                chip.querySelector('svg').setAttribute('stroke', isActive ? color : '#adb5bd');
+                chip.querySelector('span').style.color      = isActive ? color : '#6c757d';
+                chip.querySelector('span').style.fontWeight = isActive ? '700' : '500';
+            });
+        });
+    });
+
+    function hexToRgba(hex, a) {
+        var r = parseInt(hex.slice(1,3),16);
+        var g = parseInt(hex.slice(3,5),16);
+        var b = parseInt(hex.slice(5,7),16);
+        return 'rgba('+r+','+g+','+b+','+a+')';
+    }
+
+    // ── Star rating ────────────────────────────────────────────
+    var scoreLabels = ['', 'Hideg', 'Langyos', 'Érdeklődő', 'Forró', 'Nagyon forró'];
+    var stars       = document.querySelectorAll('.star-btn');
+    var scoreInput  = document.getElementById('scoreInput');
+    var scoreLabel  = document.getElementById('scoreLabel');
+    var currentScore = parseInt(scoreInput.value) || 0;
+
+    function paintStars(n, hovered) {
+        stars.forEach(function (btn, idx) {
+            var filled = idx < n;
+            var svg    = btn.querySelector('svg');
+            var color  = filled ? '#f7b84b' : '#ced4da';
+            svg.setAttribute('fill',   filled ? '#f7b84b' : 'none');
+            svg.setAttribute('stroke', color);
+        });
+        if (!hovered) {
+            scoreLabel.textContent = n ? n + '/5 — ' + scoreLabels[n] : 'Nincs értékelve';
+        }
+    }
+
+    stars.forEach(function (btn) {
+        btn.addEventListener('mouseenter', function () {
+            paintStars(parseInt(btn.dataset.val), true);
+        });
+        btn.addEventListener('mouseleave', function () {
+            paintStars(currentScore, false);
+        });
+        btn.addEventListener('click', function () {
+            var val = parseInt(btn.dataset.val);
+            // clicking same star again clears the score
+            currentScore = (currentScore === val) ? 0 : val;
+            scoreInput.value = currentScore || '';
+            paintStars(currentScore, false);
+        });
+    });
+
+    // ── Clear button ───────────────────────────────────────────
+    window.clearLead = function () {
+        // uncheck all stage radios
+        document.querySelectorAll('.stage-radio').forEach(function (r) { r.checked = false; });
+        document.querySelectorAll('.stage-chip').forEach(function (chip) {
+            chip.style.borderColor = '#e9ebec';
+            chip.style.background  = '#fff';
+            chip.querySelector('svg').setAttribute('stroke', '#adb5bd');
+            chip.querySelector('span').style.color      = '#6c757d';
+            chip.querySelector('span').style.fontWeight = '500';
+        });
+        currentScore = 0;
+        scoreInput.value = '';
+        paintStars(0, false);
+
+        // add hidden inputs to send null values
+        var form = document.querySelector('form[action*="lead"]');
+        ['lead_stage','lead_score'].forEach(function (name) {
+            var existing = form.querySelector('input[name="'+name+'"][type="hidden"][data-clear]');
+            if (!existing) {
+                var h = document.createElement('input');
+                h.type = 'hidden'; h.name = name; h.value = ''; h.dataset.clear = '1';
+                form.appendChild(h);
+            }
+        });
+        form.submit();
+    };
+})();
+</script>
+@endpush

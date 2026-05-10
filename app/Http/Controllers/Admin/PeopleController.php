@@ -56,10 +56,18 @@ class PeopleController extends Controller
             $query->whereDate('created_at', '<=', $dateTo);
         }
 
+        if ($leadStage = $request->input('lead_stage')) {
+            $query->where('lead_stage', $leadStage);
+        }
+
+        if ($leadScoreMin = $request->input('lead_score_min')) {
+            $query->where('lead_score', '>=', (int) $leadScoreMin);
+        }
+
         $people       = $query->paginate(25)->withQueryString();
         $groups       = \App\Models\Group::orderBy('name')->get();
         $savedFilters = PeopleSavedFilter::where('user_id', auth()->id())->orderBy('name')->get();
-        $filters      = $request->only(['q','status','city','source','subscribed','group_id','date_from','date_to']);
+        $filters      = $request->only(['q','status','city','source','subscribed','group_id','date_from','date_to','lead_stage','lead_score_min']);
 
         return view('admin.people.index', compact('people', 'groups', 'savedFilters', 'filters'));
     }
@@ -157,6 +165,21 @@ class PeopleController extends Controller
         abort_unless($activity->person_id === $person->id, 403);
         $activity->delete();
         return back()->with('success', 'Aktivitás törölve.');
+    }
+
+    public function updateLead(Request $request, Person $person)
+    {
+        $data = $request->validate([
+            'lead_stage' => 'nullable|in:new,contacted,qualified,proposal,converted,lost',
+            'lead_score' => 'nullable|integer|min:1|max:5',
+        ]);
+
+        // Allow explicitly clearing fields
+        $person->lead_stage = $data['lead_stage'] ?? null;
+        $person->lead_score = isset($data['lead_score']) ? (int) $data['lead_score'] : null;
+        $person->save();
+
+        return back()->with('success', 'Értékelés mentve.');
     }
 
     public function edit(Person $person)

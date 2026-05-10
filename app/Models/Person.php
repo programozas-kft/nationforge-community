@@ -16,7 +16,8 @@ class Person extends Model implements HasMedia
         'birthdate', 'gender', 'address', 'city', 'county', 'postal_code',
         'country', 'occupation', 'employer', 'bio', 'avatar',
         'facebook_url', 'twitter_url', 'linkedin_url', 'website',
-        'status', 'total_donated', 'donation_count', 'last_donated_at',
+        'status', 'lead_stage', 'lead_score',
+        'total_donated', 'donation_count', 'last_donated_at',
         'last_contacted_at', 'is_subscribed', 'unsubscribe_token',
         'custom_fields', 'source', 'notes', 'photo',
     ];

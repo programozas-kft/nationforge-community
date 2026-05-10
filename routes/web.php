@@ -43,6 +43,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('people/merge', [PeopleController::class, 'merge'])->name('people.merge');
     Route::post('people/{person}/activities', [PeopleController::class, 'logActivity'])->name('people.activities.store');
     Route::delete('people/{person}/activities/{activity}', [PeopleController::class, 'deleteActivity'])->name('people.activities.destroy');
+    Route::patch('people/{person}/lead', [PeopleController::class, 'updateLead'])->name('people.lead.update');
     Route::resource('people', PeopleController::class);
     Route::resource('events', EventController::class);
     Route::resource('groups', GroupController::class);

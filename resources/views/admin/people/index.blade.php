@@ -117,6 +117,13 @@
             @if(!empty($filters['date_to']))
                 <span class="filter-chip">Ig: {{ $filters['date_to'] }} <a href="{{ request()->fullUrlWithoutQuery(['date_to','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
             @endif
+            @if(!empty($filters['lead_stage']))
+                @php $lsLabels = ['new'=>'Új érdeklődő','contacted'=>'Kapcsolatba lépve','qualified'=>'Minősített','proposal'=>'Ajánlat küldve','converted'=>'Megnyert','lost'=>'Elveszett']; @endphp
+                <span class="filter-chip">Fázis: {{ $lsLabels[$filters['lead_stage']] ?? $filters['lead_stage'] }} <a href="{{ request()->fullUrlWithoutQuery(['lead_stage','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endif
+            @if(!empty($filters['lead_score_min']))
+                <span class="filter-chip">Min. pont: {{ $filters['lead_score_min'] }}★ <a href="{{ request()->fullUrlWithoutQuery(['lead_score_min','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endif
         </div>
         <a href="{{ route('admin.people.index') }}" style="margin-left:auto;font-size:0.78rem;color:#f06548;text-decoration:none;white-space:nowrap">× Szűrők törlése</a>
         @endif
@@ -203,6 +210,31 @@
                 <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}" class="nf-input" style="font-size:0.8125rem">
             </div>
 
+            {{-- Lead stage filter --}}
+            <div>
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:6px">Fázis</label>
+                <select name="lead_stage" class="nf-select" style="font-size:0.8125rem">
+                    <option value="">Mind</option>
+                    <option value="new"       {{ ($filters['lead_stage'] ?? '') === 'new'       ? 'selected' : '' }}>Új érdeklődő</option>
+                    <option value="contacted" {{ ($filters['lead_stage'] ?? '') === 'contacted' ? 'selected' : '' }}>Kapcsolatba lépve</option>
+                    <option value="qualified" {{ ($filters['lead_stage'] ?? '') === 'qualified' ? 'selected' : '' }}>Minősített</option>
+                    <option value="proposal"  {{ ($filters['lead_stage'] ?? '') === 'proposal'  ? 'selected' : '' }}>Ajánlat küldve</option>
+                    <option value="converted" {{ ($filters['lead_stage'] ?? '') === 'converted' ? 'selected' : '' }}>Megnyert</option>
+                    <option value="lost"      {{ ($filters['lead_stage'] ?? '') === 'lost'      ? 'selected' : '' }}>Elveszett</option>
+                </select>
+            </div>
+
+            {{-- Lead score min filter --}}
+            <div>
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:6px">Min. pontszám</label>
+                <select name="lead_score_min" class="nf-select" style="font-size:0.8125rem">
+                    <option value="">Mind</option>
+                    @foreach([1,2,3,4,5] as $s)
+                    <option value="{{ $s }}" {{ ($filters['lead_score_min'] ?? '') == $s ? 'selected' : '' }}>{{ $s }}★ vagy több</option>
+                    @endforeach
+                </select>
+            </div>
+
             {{-- Action buttons --}}
             <div style="grid-column:span 3;display:flex;align-items:center;gap:8px;border-top:1px solid #f3f3f9;padding-top:12px">
                 <button type="submit" class="btn-primary" style="padding:7px 20px">
@@ -258,6 +290,7 @@
                 <th>{{ __('people.col_email') }}</th>
                 <th>{{ __('people.col_phone') }}</th>
                 <th>{{ __('common.status') }}</th>
+                <th>Értékelés</th>
                 <th>{{ __('people.col_city') }}</th>
                 <th>{{ __('people.col_registered') }}</th>
                 <th style="width:80px"></th>
@@ -303,6 +336,24 @@
                     @endphp
                     <span class="nf-badge {{ $sc[$person->status] ?? 'badge-secondary' }}">{{ __('people.status.' . $person->status, [], null) ?: $person->status }}</span>
                 </td>
+                <td style="white-space:nowrap">
+                    @if($person->lead_score)
+                    <span style="color:#f7b84b;letter-spacing:-1px;font-size:0.85rem">
+                        {{ str_repeat('★', $person->lead_score) }}<span style="color:#dee2e6">{{ str_repeat('★', 5 - $person->lead_score) }}</span>
+                    </span>
+                    @endif
+                    @if($person->lead_stage)
+                    @php
+                        $stageBadgeColors = ['new'=>'#6c757d','contacted'=>'#299cdb','qualified'=>'#7a5af8','proposal'=>'#f7b84b','converted'=>'#0ab39c','lost'=>'#f06548'];
+                        $stageLabels = ['new'=>'Új','contacted'=>'Kapcsolatba lépve','qualified'=>'Minősített','proposal'=>'Ajánlat','converted'=>'Megnyert','lost'=>'Elveszett'];
+                        $stageColor = $stageBadgeColors[$person->lead_stage] ?? '#6c757d';
+                    @endphp
+                    <span style="display:block;font-size:0.7rem;color:{{ $stageColor }};font-weight:600;margin-top:2px">{{ $stageLabels[$person->lead_stage] ?? $person->lead_stage }}</span>
+                    @endif
+                    @if(!$person->lead_score && !$person->lead_stage)
+                    <span style="color:#dee2e6;font-size:0.78rem">—</span>
+                    @endif
+                </td>
                 <td style="color:#6c757d">{{ $person->city ?? '—' }}</td>
                 <td style="color:#adb5bd">{{ $person->created_at->format('d M, Y') }}</td>
                 <td style="text-align:right" onclick="event.stopPropagation()">
@@ -319,7 +370,7 @@
                 </td>
             </tr>
             @empty
-            <tr><td colspan="8" style="text-align:center;padding:40px;color:#adb5bd">{{ __('people.empty') }}</td></tr>
+            <tr><td colspan="9" style="text-align:center;padding:40px;color:#adb5bd">{{ __('people.empty') }}</td></tr>
             @endforelse
         </tbody>
     </table>

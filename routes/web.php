@@ -37,6 +37,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     Route::get('people/export', [PeopleController::class, 'export'])->name('people.export');
     Route::post('people/import', [PeopleController::class, 'import'])->name('people.import');
+    Route::post('people/filters', [PeopleController::class, 'saveFilter'])->name('people.filters.store');
+    Route::delete('people/filters/{filter}', [PeopleController::class, 'deleteFilter'])->name('people.filters.destroy');
     Route::resource('people', PeopleController::class);
     Route::resource('events', EventController::class);
     Route::resource('groups', GroupController::class);

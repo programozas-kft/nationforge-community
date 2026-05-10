@@ -38,6 +38,213 @@
 @endsection
 
 @section('content')
+
+{{-- ── FILTER PANEL ──────────────────────────────────── --}}
+@php
+    $hasFilter = collect($filters)->filter(fn($v) => $v !== null && $v !== '' && $v !== [])->isNotEmpty();
+    $statusLabels = ['prospect'=>__('people.status.prospect'),'supporter'=>__('people.status.supporter'),'member'=>__('people.status.member'),'volunteer'=>__('people.status.volunteer'),'donor'=>__('people.status.donor'),'vip'=>__('people.status.vip'),'inactive'=>__('people.status.inactive')];
+@endphp
+
+<form id="filter-form" method="GET" action="{{ route('admin.people.index') }}">
+<div class="nf-card" style="margin-bottom:16px">
+    {{-- Header row --}}
+    <div style="padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #e9ebec;flex-wrap:wrap">
+        <button type="button" onclick="toggleFilterPanel()" id="filter-toggle-btn"
+            style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid #ced4da;border-radius:5px;background:#fff;font-size:0.8rem;font-weight:500;color:#495057;cursor:pointer">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+            Szűrők
+            <svg id="filter-chevron" width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="transition:transform 0.2s"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+
+        {{-- Saved filters dropdown --}}
+        @if($savedFilters->isNotEmpty())
+        <div style="position:relative" id="saved-wrap">
+            <button type="button" onclick="toggleSavedMenu()"
+                style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid #ced4da;border-radius:5px;background:#fff;font-size:0.8rem;font-weight:500;color:#405189;cursor:pointer">
+                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                Mentett szűrők
+                <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="saved-menu" style="display:none;position:absolute;left:0;top:calc(100% + 4px);background:#fff;border:1px solid #e9ebec;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,0.1);min-width:200px;z-index:200;max-height:280px;overflow-y:auto">
+                @foreach($savedFilters as $sf)
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #f3f3f9"
+                     onmouseover="this.style.background='#f8f9ff'" onmouseout="this.style.background=''">
+                    <button type="button" onclick="applySavedFilter({{ json_encode($sf->filters) }})"
+                        style="background:none;border:none;padding:0;font-size:0.8125rem;color:#343a40;cursor:pointer;text-align:left;flex:1">
+                        {{ $sf->name }}
+                    </button>
+                    <form method="POST" action="{{ route('admin.people.filters.destroy', $sf) }}" style="display:inline" onsubmit="return confirm('Törlöd ezt a szűrőt?')">
+                        @csrf @method('DELETE')
+                        <button type="submit" style="background:none;border:none;color:#f06548;cursor:pointer;padding:0 0 0 8px">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </form>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        {{-- Active filter chips --}}
+        @if($hasFilter)
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex:1">
+            @if(!empty($filters['q']))
+                <span class="filter-chip">Keresés: {{ $filters['q'] }} <a href="{{ request()->fullUrlWithoutQuery(['q','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endif
+            @foreach((array)($filters['status'] ?? []) as $st)
+                <span class="filter-chip">{{ $statusLabels[$st] ?? $st }} <a href="{{ request()->fullUrlWithoutQuery(['status','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endforeach
+            @if(!empty($filters['city']))
+                <span class="filter-chip">Város: {{ $filters['city'] }} <a href="{{ request()->fullUrlWithoutQuery(['city','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endif
+            @if(!empty($filters['source']))
+                <span class="filter-chip">Forrás: {{ $filters['source'] }} <a href="{{ request()->fullUrlWithoutQuery(['source','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endif
+            @if(isset($filters['subscribed']) && $filters['subscribed'] !== '')
+                <span class="filter-chip">Hírlevél: {{ $filters['subscribed'] ? 'Igen' : 'Nem' }} <a href="{{ request()->fullUrlWithoutQuery(['subscribed','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endif
+            @if(!empty($filters['group_id']))
+                @php $gName = $groups->firstWhere('id', $filters['group_id'])?->name ?? $filters['group_id']; @endphp
+                <span class="filter-chip">Csoport: {{ $gName }} <a href="{{ request()->fullUrlWithoutQuery(['group_id','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endif
+            @if(!empty($filters['date_from']))
+                <span class="filter-chip">Tól: {{ $filters['date_from'] }} <a href="{{ request()->fullUrlWithoutQuery(['date_from','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endif
+            @if(!empty($filters['date_to']))
+                <span class="filter-chip">Ig: {{ $filters['date_to'] }} <a href="{{ request()->fullUrlWithoutQuery(['date_to','page']) }}" style="color:inherit;text-decoration:none;margin-left:4px">×</a></span>
+            @endif
+        </div>
+        <a href="{{ route('admin.people.index') }}" style="margin-left:auto;font-size:0.78rem;color:#f06548;text-decoration:none;white-space:nowrap">× Szűrők törlése</a>
+        @endif
+
+        {{-- Total count --}}
+        <span style="margin-left:auto;font-size:0.78rem;color:#adb5bd;white-space:nowrap">{{ $people->total() }} kapcsolat</span>
+    </div>
+
+    {{-- Collapsible filter fields --}}
+    <div id="filter-panel" style="display:{{ $hasFilter ? 'block' : 'none' }}">
+        <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+
+            {{-- Search --}}
+            <div style="grid-column:span 3">
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:6px">Keresés</label>
+                <input type="text" name="q" value="{{ $filters['q'] ?? '' }}" class="nf-input"
+                       placeholder="Név, email, telefon…" style="font-size:0.8125rem">
+            </div>
+
+            {{-- Status chips --}}
+            <div style="grid-column:span 3">
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:8px">Státusz</label>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                    @foreach(['prospect','supporter','member','volunteer','donor','vip','inactive'] as $st)
+                    <label style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border:1.5px solid #dee2e6;border-radius:20px;cursor:pointer;font-size:0.78rem;font-weight:500;color:#6c757d;background:#fff;transition:all 0.15s"
+                           id="sc-{{ $st }}">
+                        <input type="checkbox" name="status[]" value="{{ $st }}"
+                               {{ in_array($st, (array)($filters['status'] ?? [])) ? 'checked' : '' }}
+                               style="display:none"
+                               onchange="updateStatusChip('{{ $st }}',this.checked)">
+                        {{ $statusLabels[$st] }}
+                    </label>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- City --}}
+            <div>
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:6px">Város</label>
+                <input type="text" name="city" value="{{ $filters['city'] ?? '' }}" class="nf-input" placeholder="pl. Budapest" style="font-size:0.8125rem">
+            </div>
+
+            {{-- Source --}}
+            <div>
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:6px">Forrás</label>
+                <input type="text" name="source" value="{{ $filters['source'] ?? '' }}" class="nf-input" placeholder="pl. facebook" style="font-size:0.8125rem">
+            </div>
+
+            {{-- Subscribed --}}
+            <div>
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:8px">Hírlevél</label>
+                <div style="display:flex;gap:8px">
+                    @foreach(['' => 'Mind', '1' => 'Igen', '0' => 'Nem'] as $val => $label)
+                    <label style="display:inline-flex;align-items:center;gap:5px;font-size:0.8rem;cursor:pointer;color:#495057">
+                        <input type="radio" name="subscribed" value="{{ $val }}"
+                               {{ ($filters['subscribed'] ?? '') === (string)$val ? 'checked' : '' }}
+                               style="accent-color:#405189">
+                        {{ $label }}
+                    </label>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Group --}}
+            <div>
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:6px">Csoport</label>
+                <select name="group_id" class="nf-select" style="font-size:0.8125rem">
+                    <option value="">— Összes —</option>
+                    @foreach($groups as $g)
+                    <option value="{{ $g->id }}" {{ ($filters['group_id'] ?? '') == $g->id ? 'selected' : '' }}>{{ $g->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Date from --}}
+            <div>
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:6px">Regisztrálva (tól)</label>
+                <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}" class="nf-input" style="font-size:0.8125rem">
+            </div>
+
+            {{-- Date to --}}
+            <div>
+                <label style="font-size:0.75rem;font-weight:600;color:#6c757d;letter-spacing:0.05em;text-transform:uppercase;display:block;margin-bottom:6px">Regisztrálva (ig)</label>
+                <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}" class="nf-input" style="font-size:0.8125rem">
+            </div>
+
+            {{-- Action buttons --}}
+            <div style="grid-column:span 3;display:flex;align-items:center;gap:8px;border-top:1px solid #f3f3f9;padding-top:12px">
+                <button type="submit" class="btn-primary" style="padding:7px 20px">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/></svg>
+                    Szűrés
+                </button>
+                <button type="button" class="btn-ghost" onclick="openModal('modal-save-filter')" style="padding:7px 16px">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                    Mentés
+                </button>
+                @if($hasFilter)
+                <a href="{{ route('admin.people.index') }}" class="btn-ghost" style="padding:7px 16px;color:#f06548;border-color:#f06548">
+                    Szűrők törlése
+                </a>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+{{-- ── SAVE FILTER MODAL ──────────────────────────────── --}}
+<div id="modal-save-filter" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-save-filter')">
+    <div class="nf-modal" style="max-width:380px">
+        <div class="nf-modal-header">
+            <span class="nf-modal-title">Szűrő mentése</span>
+            <button class="nf-modal-close" onclick="closeModal('modal-save-filter')">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <form method="POST" action="{{ route('admin.people.filters.store') }}" id="save-filter-form">
+            @csrf
+            <input type="hidden" name="filters" id="save-filter-data">
+            <div class="nf-modal-body">
+                <label class="nf-label">Szűrő neve <span style="color:#f06548">*</span></label>
+                <input type="text" name="name" class="nf-input" placeholder="pl. Budapest tagok" required maxlength="100">
+                <p style="font-size:0.75rem;color:#adb5bd;margin-top:6px">A jelenlegi szűrőbeállítások kerülnek mentésre.</p>
+            </div>
+            <div class="nf-modal-footer">
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-save-filter')">Mégse</button>
+                <button type="submit" class="btn-primary">Mentés</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="nf-card" style="overflow:hidden">
     <table class="nf-table">
         <thead>
@@ -354,7 +561,109 @@
 </div>
 
 @push('scripts')
+<style>
+.filter-chip {
+    display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;
+    background:rgba(64,81,137,0.1);color:#405189;font-size:0.75rem;font-weight:500;
+}
+</style>
 <script>
+// ── Filter panel toggle ──────────────────────────────────
+function toggleFilterPanel() {
+    const panel = document.getElementById('filter-panel');
+    const chevron = document.getElementById('filter-chevron');
+    const open = panel.style.display !== 'none';
+    panel.style.display = open ? 'none' : 'block';
+    chevron.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+// Auto-open panel if filters are active
+document.addEventListener('DOMContentLoaded', () => {
+    const panel = document.getElementById('filter-panel');
+    if (panel.style.display !== 'none') {
+        document.getElementById('filter-chevron').style.transform = 'rotate(180deg)';
+    }
+    // Init status chips visual state
+    document.querySelectorAll('input[name="status[]"]').forEach(cb => {
+        updateStatusChip(cb.value, cb.checked);
+    });
+});
+
+function updateStatusChip(val, checked) {
+    const label = document.getElementById('sc-' + val);
+    if (!label) return;
+    if (checked) {
+        label.style.background = '#405189';
+        label.style.borderColor = '#405189';
+        label.style.color = '#fff';
+    } else {
+        label.style.background = '#fff';
+        label.style.borderColor = '#dee2e6';
+        label.style.color = '#6c757d';
+    }
+}
+
+// ── Saved filters dropdown ──────────────────────────────
+function toggleSavedMenu() {
+    const m = document.getElementById('saved-menu');
+    m.style.display = m.style.display === 'block' ? 'none' : 'block';
+}
+document.addEventListener('click', e => {
+    const wrap = document.getElementById('saved-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+        const m = document.getElementById('saved-menu');
+        if (m) m.style.display = 'none';
+    }
+});
+
+function applySavedFilter(filters) {
+    const form = document.getElementById('filter-form');
+    // Clear existing filter inputs
+    ['q','city','source','date_from','date_to','group_id'].forEach(name => {
+        const el = form.querySelector('[name="' + name + '"]');
+        if (el) el.value = filters[name] ?? '';
+    });
+    // Subscribed radio
+    const subVal = filters.subscribed ?? '';
+    form.querySelectorAll('[name="subscribed"]').forEach(r => {
+        r.checked = (r.value === String(subVal));
+    });
+    // Status checkboxes
+    const statuses = filters.status ?? [];
+    form.querySelectorAll('[name="status[]"]').forEach(cb => {
+        cb.checked = statuses.includes(cb.value);
+        updateStatusChip(cb.value, cb.checked);
+    });
+    // Open panel and submit
+    document.getElementById('filter-panel').style.display = 'block';
+    document.getElementById('filter-chevron').style.transform = 'rotate(180deg)';
+    document.getElementById('saved-menu').style.display = 'none';
+    form.submit();
+}
+
+// ── Save filter — serialize current form state ──────────
+document.getElementById('modal-save-filter')?.addEventListener('click', () => {
+    const form = document.getElementById('filter-form');
+    const data = {};
+    const q = form.querySelector('[name="q"]')?.value;
+    if (q) data.q = q;
+    const city = form.querySelector('[name="city"]')?.value;
+    if (city) data.city = city;
+    const source = form.querySelector('[name="source"]')?.value;
+    if (source) data.source = source;
+    const dateFrom = form.querySelector('[name="date_from"]')?.value;
+    if (dateFrom) data.date_from = dateFrom;
+    const dateTo = form.querySelector('[name="date_to"]')?.value;
+    if (dateTo) data.date_to = dateTo;
+    const groupId = form.querySelector('[name="group_id"]')?.value;
+    if (groupId) data.group_id = groupId;
+    const sub = form.querySelector('[name="subscribed"]:checked')?.value;
+    if (sub !== undefined && sub !== '') data.subscribed = sub;
+    const statuses = [...form.querySelectorAll('[name="status[]"]:checked')].map(c => c.value);
+    if (statuses.length) data.status = statuses;
+    document.getElementById('save-filter-data').value = JSON.stringify(data);
+});
+
 function toggleExportMenu() {
     const m = document.getElementById('export-menu');
     m.style.display = m.style.display === 'block' ? 'none' : 'block';

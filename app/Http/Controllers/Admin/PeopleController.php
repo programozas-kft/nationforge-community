@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Person;
+use App\Models\PeopleSavedFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -12,11 +13,75 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class PeopleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $people = Person::with('groups')->orderBy('last_name')->paginate(25);
-        $groups = \App\Models\Group::orderBy('name')->get();
-        return view('admin.people.index', compact('people', 'groups'));
+        $query = Person::with('groups')->orderBy('last_name')->orderBy('first_name');
+
+        if ($q = $request->input('q')) {
+            $query->where(function ($b) use ($q) {
+                $b->whereRaw("CONCAT(last_name,' ',first_name) LIKE ?", ["%{$q}%"])
+                  ->orWhereRaw("CONCAT(first_name,' ',last_name) LIKE ?", ["%{$q}%"])
+                  ->orWhere('email', 'like', "%{$q}%")
+                  ->orWhere('phone', 'like', "%{$q}%");
+            });
+        }
+
+        if ($statuses = $request->input('status')) {
+            $query->whereIn('status', (array) $statuses);
+        }
+
+        if ($city = $request->input('city')) {
+            $query->where('city', 'like', "%{$city}%");
+        }
+
+        if ($source = $request->input('source')) {
+            $query->where('source', 'like', "%{$source}%");
+        }
+
+        if ($request->filled('subscribed')) {
+            $query->where('is_subscribed', (bool) $request->input('subscribed'));
+        }
+
+        if ($groupId = $request->input('group_id')) {
+            $query->whereHas('groups', fn ($g) => $g->where('groups.id', $groupId));
+        }
+
+        if ($dateFrom = $request->input('date_from')) {
+            $query->whereDate('created_at', '>=', $dateFrom);
+        }
+
+        if ($dateTo = $request->input('date_to')) {
+            $query->whereDate('created_at', '<=', $dateTo);
+        }
+
+        $people       = $query->paginate(25)->withQueryString();
+        $groups       = \App\Models\Group::orderBy('name')->get();
+        $savedFilters = PeopleSavedFilter::where('user_id', auth()->id())->orderBy('name')->get();
+        $filters      = $request->only(['q','status','city','source','subscribed','group_id','date_from','date_to']);
+
+        return view('admin.people.index', compact('people', 'groups', 'savedFilters', 'filters'));
+    }
+
+    public function saveFilter(Request $request)
+    {
+        $request->validate([
+            'name'    => 'required|string|max:100',
+            'filters' => 'required|array',
+        ]);
+
+        PeopleSavedFilter::updateOrCreate(
+            ['user_id' => auth()->id(), 'name' => $request->input('name')],
+            ['filters' => $request->input('filters')]
+        );
+
+        return back()->with('success', 'Szűrő mentve: ' . $request->input('name'));
+    }
+
+    public function deleteFilter(PeopleSavedFilter $filter)
+    {
+        abort_unless($filter->user_id === auth()->id(), 403);
+        $filter->delete();
+        return back()->with('success', 'Szűrő törölve.');
     }
 
     public function create()

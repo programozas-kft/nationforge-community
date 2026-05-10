@@ -163,7 +163,7 @@
                 @endphp
                 <h1 class="text-3xl font-bold text-gray-800 mb-8" style="color:#2a2f45">{{ $displayTitle }}</h1>
                 <div class="prose prose-blue max-w-none text-gray-600 leading-relaxed help-content" style="font-size:0.95rem;">
-                    {!! Str::markdown($displayContent) !!}
+                    {!! str_replace('src="/img/', 'src="' . asset('img/') . '/', Str::markdown($displayContent)) !!}
                 </div>
             </div>
             @empty

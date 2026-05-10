@@ -5,6 +5,32 @@
 @section('breadcrumb') <span style="color:#495057">{{ __('people.title') }}</span> @endsection
 
 @section('header-actions')
+    {{-- Export dropdown --}}
+    <div style="position:relative;display:inline-block" id="export-wrap">
+        <button onclick="toggleExportMenu()" class="btn-ghost">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div id="export-menu" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #e9ebec;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,0.1);min-width:150px;z-index:100">
+            <a href="{{ route('admin.people.export', ['format'=>'csv']) }}"
+               style="display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:0.8125rem;color:#495057;text-decoration:none"
+               onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background=''">
+                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                CSV letöltés
+            </a>
+            <a href="{{ route('admin.people.export', ['format'=>'xlsx']) }}"
+               style="display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:0.8125rem;color:#495057;text-decoration:none;border-top:1px solid #f3f3f9"
+               onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background=''">
+                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Excel letöltés
+            </a>
+        </div>
+    </div>
+    <button onclick="openModal('modal-import')" class="btn-ghost">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        Import
+    </button>
     <a href="#" class="btn-primary" onclick="openModal('modal-create');return false;">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
         {{ __('people.new') }}
@@ -281,8 +307,64 @@
     </div>
 </div>
 
+{{-- ── IMPORT MODAL ──────────────────────────────────── --}}
+<div id="modal-import" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-import')">
+    <div class="nf-modal">
+        <div class="nf-modal-header">
+            <span class="nf-modal-title">Kapcsolatok importálása</span>
+            <button class="nf-modal-close" onclick="closeModal('modal-import')">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <form method="POST" action="{{ route('admin.people.import') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="nf-modal-body" style="display:flex;flex-direction:column;gap:16px">
+                <div style="background:#f8f9fa;border:1px solid #e9ebec;border-radius:6px;padding:12px 14px;font-size:0.8rem;color:#6c757d;line-height:1.6">
+                    <strong style="color:#343a40">Elfogadott formátumok:</strong> CSV (.csv) és Excel (.xlsx, .xls)<br>
+                    <strong style="color:#343a40">Kötelező oszlopok:</strong> Vezetéknév, Keresztnév<br>
+                    <strong style="color:#343a40">Opcionális:</strong> Email, Telefon, Mobil, Város, Megye, Irányítószám, Státusz, Hírlevél (0/1), Forrás, Megjegyzés<br>
+                    <strong style="color:#343a40">Duplikátum:</strong> Ha az email cím már szerepel a rendszerben, a sor kimarad.<br>
+                    <span style="margin-top:4px;display:inline-block">
+                        Sablon letöltése:
+                        <a href="{{ route('admin.people.export', ['format'=>'csv']) }}" style="color:#405189">CSV</a> /
+                        <a href="{{ route('admin.people.export', ['format'=>'xlsx']) }}" style="color:#405189">Excel</a>
+                        (meglévő adatokkal)
+                    </span>
+                </div>
+                <div>
+                    <label class="nf-label">Fájl kiválasztása <span style="color:#f06548">*</span></label>
+                    <label id="import-label" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border:2px dashed #ced4da;border-radius:6px;cursor:pointer;transition:border-color 0.2s"
+                           onmouseover="this.style.borderColor='#405189'" onmouseout="this.style.borderColor='#ced4da'">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                        <span id="import-filename" style="font-size:0.8125rem;color:#6c757d">Kattints a fájl kiválasztásához…</span>
+                        <input type="file" name="file" accept=".csv,.xlsx,.xls" required style="display:none"
+                               onchange="document.getElementById('import-filename').textContent = this.files[0]?.name || 'Kattints a fájl kiválasztásához…'">
+                    </label>
+                </div>
+            </div>
+            <div class="nf-modal-footer">
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-import')">Mégse</button>
+                <button type="submit" class="btn-primary">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    Importálás
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 @push('scripts')
 <script>
+function toggleExportMenu() {
+    const m = document.getElementById('export-menu');
+    m.style.display = m.style.display === 'block' ? 'none' : 'block';
+}
+document.addEventListener('click', e => {
+    if (!document.getElementById('export-wrap').contains(e.target)) {
+        document.getElementById('export-menu').style.display = 'none';
+    }
+});
+
 function previewPhoto(input, imgId, iconId) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();

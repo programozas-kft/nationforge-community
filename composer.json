@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6.4",
         "livewire/volt": "^1.7.0",
+        "phpoffice/phpspreadsheet": "^5.7",
         "resend/resend-laravel": "^1.4",
         "spatie/laravel-medialibrary": "^11.21",
         "spatie/laravel-permission": "^6.25"

@@ -35,6 +35,8 @@ Route::view('profile', 'profile')
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
 
+    Route::get('people/export', [PeopleController::class, 'export'])->name('people.export');
+    Route::post('people/import', [PeopleController::class, 'import'])->name('people.import');
     Route::resource('people', PeopleController::class);
     Route::resource('events', EventController::class);
     Route::resource('groups', GroupController::class);

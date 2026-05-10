@@ -15,11 +15,28 @@ $locale = app()->getLocale();
 $versions = [
 
     [
-        'version' => 'v1.11.0',
+        'version' => 'v1.12.0',
         'latest'  => true,
         'badge'   => [
             'text'  => ['hu' => 'Aktuális, Legújabb', 'en' => 'Current, Latest'],
             'style' => 'background:rgba(10,179,156,0.1);color:#0ab39c;',
+        ],
+        'date' => ['hu' => '2026. május 10.', 'en' => 'May 10, 2026'],
+        'items' => [
+            ['hu' => '<strong>Zászló ikonok a nyelvváltóban (sidebar):</strong> A HU / EN nyelvváltó gombok melletti zászlók korábban emoji karakterekként (<code>🇭🇺</code>, <code>🇬🇧</code>) voltak megadva, amelyek Windows rendszeren nem jelennek meg (Chrome / Edge sem rendereli a regionális jelző emoji-kat). Javítás: a <a href="https://flagicons.lipis.dev" target="_blank">flag-icons</a> SVG könyvtár (CDN, v7.2.3) betöltésre kerül, és az emoji helyett <code>&lt;span class="fi fi-hu"&gt;</code> / <code>&lt;span class="fi fi-gb"&gt;</code> elemek kerülnek használatba. Az ikonok most minden platformon és böngészőben egységesen jelennek meg.',
+             'en'  => '<strong>Flag icons in the language switcher (sidebar):</strong> The flags next to the HU / EN language switcher buttons were previously emoji characters (<code>🇭🇺</code>, <code>🇬🇧</code>), which do not render on Windows (Chrome / Edge does not support regional indicator emoji sequences). Fix: the <a href="https://flagicons.lipis.dev" target="_blank">flag-icons</a> SVG library (CDN, v7.2.3) is now loaded and <code>&lt;span class="fi fi-hu"&gt;</code> / <code>&lt;span class="fi fi-gb"&gt;</code> elements replace the emoji. Flags now render consistently across all platforms and browsers.'],
+            ['hu' => '<strong>README — teljes funkciólista ✅ / 🔲 jelölésekkel:</strong> A projekt README-je gyökeresen átdolgozásra került. Az összes meglévő funkció ✅ jelöléssel, az összes tervezett fejlesztés 🔲 jelöléssel szerepel, modulonként csoportosítva: Kapcsolatok (CRM), Csoportok, Események, Email kampányok, Adományok, Projektek & Feladatok, Dashboard, Felhasználók & Szerepkörök, Link gyűjtemény, Beállítások, Súgó, Többnyelvűség, Integrációk & API, Advanced / Enterprise. Így GitHub-on bármely érdeklődő egyetlen pillantással átláthatja, mi elérhető és mi van tervezőasztalon.',
+             'en'  => '<strong>README — comprehensive feature list with ✅ / 🔲 markers:</strong> The project README was comprehensively rewritten. All implemented features are marked ✅ and all planned features are marked 🔲, grouped by module: Contacts (CRM), Groups, Events, Email Campaigns, Donations, Projects & Tasks, Dashboard, Users & Roles, Link Collection, Settings, Help & Documentation, Multi-language, Integrations & API, Advanced / Enterprise. This gives anyone visiting the GitHub repo an instant overview of what is available and what is on the roadmap.'],
+            ['hu' => '<strong>Open Core tábla és Advanced / Enterprise szekció szinkronizálása:</strong> A README Open Core összehasonlító táblája és a Features lista Advanced / Enterprise szekciója összhangba hozásra került. A Kétfaktoros hitelesítés (TOTP) és a REST API for mobile clients tételek kizárólag az Enterprise szekcióba kerültek (korábban a Felhasználók & Szerepkörök, ill. Integrációk & API szekciókban is szerepeltek). Az Open Core tábla bővült: Dokumentumtároló, Kérdőív & űrlapkészítő, Petíció / aláírásgyűjtés, Önkéntes órakövetés sorokkal.',
+             'en'  => '<strong>Open Core table and Advanced / Enterprise section synchronised:</strong> The README Open Core comparison table and the Advanced / Enterprise section in the Features list have been brought into full alignment. Two-factor authentication (TOTP) and REST API for mobile clients are now exclusively listed under the Enterprise section (previously they also appeared under Users & Roles and Integrations & API). The Open Core table was expanded with new rows: Document storage, Survey & form builder, Petition / signature collection, Volunteer hours tracking.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.11.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Hibajavítás', 'en' => 'Bug Fix'],
+            'style' => 'background:rgba(240,101,72,0.1);color:#f06548;',
         ],
         'date' => ['hu' => '2026. május 8.', 'en' => 'May 8, 2026'],
         'items' => [

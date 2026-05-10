@@ -3,15 +3,6 @@
 @section('title', __('dashboard.title'))
 @section('header', __('dashboard.title'))
 
-@section('header-actions')
-    <a href="{{ route('admin.sugo') }}" target="_blank"
-        style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:6px;border:1.5px solid #dee2e6;background:#fff;color:#495057;font-size:0.8rem;font-weight:500;cursor:pointer;text-decoration:none">
-        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        {{ __('dashboard.help') }}
-    </a>
-@endsection
 
 @section('content')
 

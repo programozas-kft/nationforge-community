@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\EventRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -94,5 +95,61 @@ class EventController extends Controller
     {
         $event->delete();
         return redirect()->route('admin.events.index')->with('success', 'Esemény törölve!');
+    }
+
+    public function checkinScanner(Event $event)
+    {
+        $event->load('registrations');
+        return view('admin.events.checkin', compact('event'));
+    }
+
+    public function checkin(Request $request, Event $event)
+    {
+        $token = $request->input('token');
+
+        $registration = EventRegistration::where('token', $token)
+            ->where('event_id', $event->id)
+            ->first();
+
+        if (! $registration) {
+            return response()->json(['success' => false, 'message' => __('events.checkin_not_found')], 404);
+        }
+
+        if ($registration->checked_in_at) {
+            return response()->json([
+                'success'  => false,
+                'already'  => true,
+                'message'  => __('events.checkin_already'),
+                'name'     => $registration->name,
+                'guests'   => $registration->guests,
+                'checked_in_at' => $registration->checked_in_at->format('Y. m. d. H:i'),
+            ]);
+        }
+
+        $registration->update(['checked_in_at' => now()]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('events.checkin_ok'),
+            'name'    => $registration->name,
+            'guests'  => $registration->guests,
+        ]);
+    }
+
+    public function checkinManual(Request $request, Event $event)
+    {
+        $registration = EventRegistration::findOrFail($request->input('registration_id'));
+
+        if ($registration->event_id !== $event->id) {
+            abort(403);
+        }
+
+        if ($registration->checked_in_at) {
+            $registration->update(['checked_in_at' => null]);
+        } else {
+            $registration->update(['checked_in_at' => now()]);
+        }
+
+        return back()->with('success', __('events.checkin_updated'));
     }
 }

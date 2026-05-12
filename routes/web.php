@@ -19,6 +19,7 @@ Route::view('/', 'welcome');
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
 // Public event registration
+Route::get('/e/ticket/{token}', [EventRegistrationController::class, 'ticket'])->name('events.ticket');
 Route::get('/e/{slug}', [EventRegistrationController::class, 'show'])->name('events.public');
 Route::post('/e/{slug}/register', [EventRegistrationController::class, 'register'])->name('events.register');
 Route::get('/e/{slug}/confirmed', [EventRegistrationController::class, 'confirmed'])->name('events.confirmed');
@@ -46,6 +47,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('people/{person}/lead', [PeopleController::class, 'updateLead'])->name('people.lead.update');
     Route::resource('people', PeopleController::class);
     Route::resource('events', EventController::class);
+    Route::get('events/{event}/checkin', [EventController::class, 'checkinScanner'])->name('events.checkin');
+    Route::post('events/{event}/checkin', [EventController::class, 'checkin'])->name('events.checkin.store');
+    Route::post('events/{event}/checkin-manual', [EventController::class, 'checkinManual'])->name('events.checkin.manual');
 
     // Volunteer shifts (nested under events)
     Route::post('events/{event}/shifts', [\App\Http\Controllers\Admin\VolunteerShiftController::class, 'store'])->name('events.shifts.store');

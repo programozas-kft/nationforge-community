@@ -100,16 +100,31 @@
 
         {{-- Public registrations --}}
         <div class="nf-card overflow-hidden">
-            <div class="nf-card-header" style="display:flex;align-items:center;justify-content:space-between">
+            <div class="nf-card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
                 <span>{{ __('events.registrations') }} ({{ $event->registrations->count() }})</span>
-                @if($event->status === 'published')
-                <a href="{{ route('events.public', $event->slug) }}" target="_blank"
-                   style="font-size:0.75rem;color:#405189;display:inline-flex;align-items:center;gap:4px">
-                    {{ __('events.reg_link') }}
-                    <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                </a>
-                @endif
+                <div style="display:flex;align-items:center;gap:8px">
+                    <a href="{{ route('admin.events.checkin', $event) }}"
+                       style="font-size:0.75rem;background:#405189;color:#fff;padding:5px 12px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;font-weight:600">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6.364 1.636l-.707.707M20 12h-1M17.657 17.657l-.707-.707M12 20v-1m-5.657-1.636l.707-.707M4 12h1M6.343 6.343l.707.707M9 12a3 3 0 116 0 3 3 0 01-6 0z"/></svg>
+                        {{ __('events.checkin_scanner') }}
+                    </a>
+                    @if($event->status === 'published')
+                    <a href="{{ route('events.public', $event->slug) }}" target="_blank"
+                       style="font-size:0.75rem;color:#405189;display:inline-flex;align-items:center;gap:4px">
+                        {{ __('events.reg_link') }}
+                        <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </a>
+                    @endif
+                </div>
             </div>
+            @php $checkedInCount = $event->registrations->whereNotNull('checked_in_at')->count(); @endphp
+            @if($event->registrations->count() > 0)
+            <div style="padding:8px 16px;background:#f8f9fa;border-bottom:1px solid #e9ebec;font-size:0.78rem;color:#6c757d;display:flex;gap:16px">
+                <span>{{ __('events.checkin_total') }}: <strong style="color:#212529">{{ $event->registrations->count() }}</strong></span>
+                <span>{{ __('events.checkin_done') }}: <strong style="color:#0ab39c">{{ $checkedInCount }}</strong></span>
+                <span>{{ __('events.checkin_pending_count') }}: <strong style="color:#f7b84b">{{ $event->registrations->count() - $checkedInCount }}</strong></span>
+            </div>
+            @endif
             <table class="nf-table">
                 <thead>
                     <tr>
@@ -117,7 +132,9 @@
                         <th>{{ __('common.email') }}</th>
                         <th>{{ __('common.phone') }}</th>
                         <th>{{ __('events.col_guests') }}</th>
+                        <th>{{ __('events.col_checkin') }}</th>
                         <th>{{ __('common.registered') }}</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -127,10 +144,29 @@
                         <td style="color:#405189;font-size:0.82rem">{{ $reg->email }}</td>
                         <td style="color:#6c757d;font-size:0.82rem">{{ $reg->phone ?? '—' }}</td>
                         <td style="color:#6c757d">{{ $reg->guests }}</td>
+                        <td>
+                            @if($reg->checked_in_at)
+                                <span style="color:#0ab39c;font-size:0.78rem;font-weight:600;display:flex;align-items:center;gap:4px">
+                                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    {{ $reg->checked_in_at->format('H:i') }}
+                                </span>
+                            @else
+                                <span style="color:#adb5bd;font-size:0.78rem">—</span>
+                            @endif
+                        </td>
                         <td style="color:#adb5bd;font-size:0.8rem">{{ $reg->created_at->format('Y. m. d. H:i') }}</td>
+                        <td>
+                            <form method="POST" action="{{ route('admin.events.checkin.manual', $event) }}">
+                                @csrf
+                                <input type="hidden" name="registration_id" value="{{ $reg->id }}">
+                                <button type="submit" style="font-size:0.72rem;padding:3px 8px;border-radius:4px;border:1px solid {{ $reg->checked_in_at ? '#dc3545' : '#0ab39c' }};background:transparent;color:{{ $reg->checked_in_at ? '#dc3545' : '#0ab39c' }};cursor:pointer;white-space:nowrap">
+                                    {{ $reg->checked_in_at ? __('events.checkin_undo') : __('events.checkin_btn') }}
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     @empty
-                    <tr><td colspan="5" style="text-align:center;padding:32px;color:#adb5bd">{{ __('events.no_regs') }}</td></tr>
+                    <tr><td colspan="7" style="text-align:center;padding:32px;color:#adb5bd">{{ __('events.no_regs') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>

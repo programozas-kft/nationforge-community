@@ -61,13 +61,23 @@ class EventRegistrationController extends Controller
             ]);
         }
 
-        return redirect()->route('events.confirmed', $slug);
+        return redirect()->route('events.confirmed', $slug)->with('ticket_token', $registration->token);
     }
 
     public function confirmed(string $slug)
     {
         $event = Event::where('slug', $slug)->firstOrFail();
+        $ticketToken = session('ticket_token');
 
-        return view('public.events.confirmed', compact('event'));
+        return view('public.events.confirmed', compact('event', 'ticketToken'));
+    }
+
+    public function ticket(string $token)
+    {
+        $registration = \App\Models\EventRegistration::where('token', $token)
+            ->with('event')
+            ->firstOrFail();
+
+        return view('public.events.ticket', compact('registration'));
     }
 }

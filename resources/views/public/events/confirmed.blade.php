@@ -94,6 +94,12 @@
         @endif
     </div>
 
+    @if($ticketToken ?? null)
+    <a href="{{ route('events.ticket', $ticketToken) }}"
+       style="display:inline-block;margin-top:28px;padding:11px 28px;background:#0ab39c;color:#fff;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.875rem">
+        🎟 {{ __('events.view_ticket') }}
+    </a>
+    @endif
     <a href="{{ route('events.public', $event->slug) }}" class="btn-back">{{ __('events.back_to_event') }}</a>
 </div>
 

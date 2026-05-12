@@ -69,11 +69,11 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ **Public event registration page** (name, email, phone, guests, notes, token)
 - ✅ Status workflow: Draft → Published → Completed / Cancelled
 - ✅ Cover image, featured flag, tags, soft deletes
-- 🔲 Registration confirmation email (automatic after sign-up)
-- 🔲 Volunteer shift scheduling (model ready, UI pending)
-- 🔲 Event check-in via QR code
+- ✅ Registration confirmation email (automatic after sign-up)
+- ✅ Volunteer shift scheduling with sign-up & attendance tracking
+- ✅ **Event check-in via QR code** (camera scanner + personal ticket page)
+- ✅ **Waitlist management** (auto-promotion, email notifications)
 - 🔲 Online payment for paid tickets (Stripe / Barion)
-- 🔲 Waitlist management
 
 ### Email Campaigns
 - ✅ Compose and send HTML / Markdown email campaigns
@@ -265,6 +265,8 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 | Duplicate detection & merge | ✅ | ✅ |
 | Activity log per contact | ✅ | ✅ |
 | Lead scoring (pipeline + stars) | ✅ | ✅ |
+| Event QR code check-in | ✅ | ✅ |
+| Waitlist management with auto-promotion | ✅ | ✅ |
 | Advanced analytics & reports | — | ✅ |
 | Multi-organization / Multi-tenant | — | ✅ |
 | White-label & custom domain | — | ✅ |

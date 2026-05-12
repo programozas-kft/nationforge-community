@@ -23,6 +23,7 @@ Route::get('/e/ticket/{token}', [EventRegistrationController::class, 'ticket'])-
 Route::get('/e/{slug}', [EventRegistrationController::class, 'show'])->name('events.public');
 Route::post('/e/{slug}/register', [EventRegistrationController::class, 'register'])->name('events.register');
 Route::get('/e/{slug}/confirmed', [EventRegistrationController::class, 'confirmed'])->name('events.confirmed');
+Route::get('/e/{slug}/waitlisted', [EventRegistrationController::class, 'waitlisted'])->name('events.waitlisted');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -50,6 +51,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('events/{event}/checkin', [EventController::class, 'checkinScanner'])->name('events.checkin');
     Route::post('events/{event}/checkin', [EventController::class, 'checkin'])->name('events.checkin.store');
     Route::post('events/{event}/checkin-manual', [EventController::class, 'checkinManual'])->name('events.checkin.manual');
+    Route::delete('events/{event}/registrations/{registration}', [EventController::class, 'destroyRegistration'])->name('events.registrations.destroy');
+    Route::delete('events/{event}/waitlist/{registration}', [EventController::class, 'destroyWaitlistEntry'])->name('events.waitlist.destroy');
+    Route::post('events/{event}/waitlist/{registration}/promote', [EventController::class, 'promoteWaitlist'])->name('events.waitlist.promote');
 
     // Volunteer shifts (nested under events)
     Route::post('events/{event}/shifts', [\App\Http\Controllers\Admin\VolunteerShiftController::class, 'store'])->name('events.shifts.store');

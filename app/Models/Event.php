@@ -13,7 +13,7 @@ class Event extends Model
         'title', 'slug', 'description', 'cover_image', 'type', 'status',
         'starts_at', 'ends_at', 'is_online', 'online_url', 'venue_name',
         'address', 'city', 'postal_code', 'latitude', 'longitude',
-        'capacity', 'ticket_price', 'created_by', 'group_id',
+        'capacity', 'waitlist_enabled', 'ticket_price', 'created_by', 'group_id',
         'rsvp_count', 'is_featured', 'custom_fields',
     ];
 
@@ -22,6 +22,7 @@ class Event extends Model
         'ends_at' => 'datetime',
         'is_online' => 'boolean',
         'is_featured' => 'boolean',
+        'waitlist_enabled' => 'boolean',
         'custom_fields' => 'array',
         'ticket_price' => 'decimal:2',
         'latitude' => 'decimal:7',
@@ -44,6 +45,16 @@ class Event extends Model
     }
 
     public function registrations()
+    {
+        return $this->hasMany(EventRegistration::class)->where('waitlisted', false);
+    }
+
+    public function waitlist()
+    {
+        return $this->hasMany(EventRegistration::class)->where('waitlisted', true)->orderBy('waitlist_position');
+    }
+
+    public function allRegistrations()
     {
         return $this->hasMany(EventRegistration::class);
     }

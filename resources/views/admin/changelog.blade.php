@@ -15,11 +15,32 @@ $locale = app()->getLocale();
 $versions = [
 
     [
-        'version' => 'v1.12.0',
+        'version' => 'v1.13.0',
         'latest'  => true,
         'badge'   => [
             'text'  => ['hu' => 'Aktuális, Legújabb', 'en' => 'Current, Latest'],
             'style' => 'background:rgba(10,179,156,0.1);color:#0ab39c;',
+        ],
+        'date' => ['hu' => '2026. május 12.', 'en' => 'May 12, 2026'],
+        'items' => [
+            ['hu' => '<strong>Esemény bejelentkezés QR-kóddal:</strong> Minden regisztrációhoz egyedi QR-kód generálódik JavaScript alapon (CDN: <code>qrcode.js</code>), amelyet a résztvevő a saját jegy oldalán (<code>/e/ticket/{token}</code>) tekinthet meg. Az admin panel esemény részletoldalán megjelent a <em>Bejelentkezés (ideje)</em> oszlop és egy <em>QR Szkenner</em> gomb. A szkenner oldal (<code>/admin/events/{id}/checkin</code>) kameraalapú QR-beolvasást tesz lehetővé (<code>html5-qrcode</code> CDN, <code>v2.3.8</code>), valós idejű visszajelzéssel (sikeres / már bejelentkezett / ismeretlen token). Manuális token-beviteli mező is elérhető. Az <code>event_registrations</code> táblához <code>checked_in_at</code> (nullable timestamp) oszlop adódott. Statisztikai összesítő sor: összesen / bejelentkezett / még nem érkezett meg.',
+             'en'  => '<strong>Event check-in via QR code:</strong> Every registration now has a unique JavaScript-generated QR code (CDN: <code>qrcode.js</code>) accessible on the attendee\'s personal ticket page (<code>/e/ticket/{token}</code>). The admin event detail page now shows a <em>Check-in (time)</em> column and a <em>QR Scanner</em> button. The scanner page (<code>/admin/events/{id}/checkin</code>) supports camera-based QR scanning (<code>html5-qrcode</code> CDN v2.3.8) with real-time feedback (success / already checked in / unknown token). A manual token input field is also available. A <code>checked_in_at</code> (nullable timestamp) column was added to <code>event_registrations</code>. Summary row shows: total / checked in / not yet arrived.'],
+            ['hu' => '<strong>Belépőjegy oldal (publikus):</strong> Sikeres regisztráció után a megerősítő oldalon megjelenik a <em>„Jegyem megtekintése"</em> gomb (token session flash alapján). A jegy oldala tartalmazza az esemény adatait, a résztvevő nevét, kísérők számát, és a QR-kódot, amely a <code>token</code> értékét kódolja. Ha a résztvevő már be van jelentkezve, zöld sáv jelzi a bejelentkezés időpontját. Az oldal nyomtatásra optimalizált.',
+             'en'  => '<strong>Personal ticket page (public):</strong> After a successful registration, a <em>"View my ticket"</em> button appears on the confirmation page (using a session flash of the token). The ticket page displays the event details, attendee name, number of guests, and the QR code encoding the <code>token</code> value. If the attendee is already checked in, a green banner shows the check-in timestamp. The page is print-optimised.'],
+            ['hu' => '<strong>Várólistakezelés:</strong> Az admin esemény szerkesztő formján megjelent a <em>Várólista engedélyezve</em> kapcsoló. Ha az esemény betelt és a várólista aktív, a publikus regisztrációs oldalon sárga „Feliratkozás a várólistára" űrlap jelenik meg a várakozók aktuális számával. A várólistán szereplők pozíció szerint sorrendben jelennek meg az admin részletoldalon, ahol <em>Előléptet</em> és <em>Töröl</em> gombok is elérhetők. Ha egy adminisztrátor töröl egy megerősített regisztrációt, az első várólistás automatikusan előlép és emailes értesítést kap. Az <code>event_registrations</code> táblához <code>waitlisted</code> (boolean) és <code>waitlist_position</code> (smallint) oszlopok, az <code>events</code> táblához <code>waitlist_enabled</code> (boolean) oszlop adódott.',
+             'en'  => '<strong>Waitlist management:</strong> A <em>Waitlist enabled</em> toggle was added to the admin event edit form. When the event is full and the waitlist is active, the public registration page displays a yellow "Join the waiting list" form showing the current number of waiting people. Waitlisted entries appear sorted by position on the admin detail page, with <em>Promote</em> and <em>Remove</em> buttons. When an admin deletes a confirmed registration, the first waitlisted person is automatically promoted and receives a notification email. The <code>event_registrations</code> table gained <code>waitlisted</code> (boolean) and <code>waitlist_position</code> (smallint) columns; the <code>events</code> table gained <code>waitlist_enabled</code> (boolean).'],
+            ['hu' => '<strong>Várólistás email értesítők (2 db):</strong> <em>WaitlistConfirmation</em> – sárga stílusú visszaigazoló email, amelyet a várólistára kerülő személy kap, a pozíciószámával. <em>WaitlistPromotion</em> – zöld stílusú „hely felszabadult" értesítő, amelyet az előléptetett személy kap, belépőjegy linkkel. Mindkét email HU/EN kétnyelvű (a küldéskori alkalmazáslocale alapján).',
+             'en'  => '<strong>Waitlist email notifications (×2):</strong> <em>WaitlistConfirmation</em> — a yellow-styled confirmation email sent to the person who joined the waitlist, including their position number. <em>WaitlistPromotion</em> — a green-styled "spot available" notification sent to the promoted person, with a ticket link. Both emails are bilingual HU/EN (driven by the application locale at send time).'],
+            ['hu' => '<strong>Regisztráció törlése adminból:</strong> Az admin esemény részletoldalon minden regisztrációs sor kapott egy <em>×</em> törlés gombot. Törléskor a rendszer automatikusan ellenőrzi a várólistát, és ha van, az első pozíción lévő várólistás előléptetésre kerül és emailt kap. A várólistán lévők pozíciói automatikusan átrendeződnek.',
+             'en'  => '<strong>Registration deletion from admin:</strong> Each registration row on the admin event detail page now has a <em>×</em> delete button. On deletion, the system automatically checks the waitlist and, if present, promotes the first waitlisted entry and sends them a notification email. Waitlist positions are automatically reordered after removal.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.12.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
         ],
         'date' => ['hu' => '2026. május 10.', 'en' => 'May 10, 2026'],
         'items' => [

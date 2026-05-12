@@ -218,11 +218,42 @@
     </div>
 
     <div class="form-card">
-        @if($isFull)
+        @if($isFull && !$event->waitlist_enabled)
             <p class="form-title">{{ __('events.registration') }}</p>
             <div class="full-badge" style="margin-top:12px">
                 {{ __('events.full_notice') }}
             </div>
+        @elseif($isFull && $event->waitlist_enabled)
+            <p class="form-title">{{ __('events.waitlist_form_title') }}</p>
+            <p class="form-sub">{{ __('events.waitlist_form_sub', ['count' => $waitlistCount]) }}</p>
+
+            @if($errors->any())
+                <div style="background:rgba(240,101,72,0.08);border:1px solid #f06548;border-radius:7px;padding:10px 14px;margin-bottom:14px;font-size:0.8rem;color:#f06548">
+                    @foreach($errors->all() as $e) <div>{{ $e }}</div> @endforeach
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('events.register', $event->slug) }}">
+                @csrf
+                <div class="form-group">
+                    <label class="form-label">{{ __('common.full_name') }} <span style="color:#f06548">*</span></label>
+                    <input type="text" name="name" class="form-input" value="{{ old('name') }}" required placeholder="{{ __('events.name_placeholder') }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ __('common.email') }} <span style="color:#f06548">*</span></label>
+                    <input type="email" name="email" class="form-input" value="{{ old('email') }}" required placeholder="{{ __('events.email_placeholder') }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ __('common.phone') }}</label>
+                    <input type="tel" name="phone" class="form-input" value="{{ old('phone') }}" placeholder="{{ __('events.phone_placeholder') }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{{ __('events.guests_label') }}</label>
+                    <input type="number" name="guests" class="form-input" value="{{ old('guests', 0) }}" min="0" max="10">
+                </div>
+                <button type="submit" class="btn-submit" style="background:#f7b84b">{{ __('events.waitlist_submit') }}</button>
+            </form>
+            <p class="privacy-note">{{ __('events.privacy_note') }}</p>
         @else
             <p class="form-title">{{ __('events.reg_title') }}</p>
             <p class="form-sub">{{ __('events.reg_subtitle') }}</p>

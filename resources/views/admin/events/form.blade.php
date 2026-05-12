@@ -101,6 +101,17 @@
             </div>
 
             <div>
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="hidden" name="waitlist_enabled" value="0">
+                    <input type="checkbox" name="waitlist_enabled" value="1"
+                           @checked(old('waitlist_enabled', $event->waitlist_enabled))
+                           class="w-4 h-4 rounded" style="accent-color:#405189">
+                    <span class="nf-label mb-0">{{ __('events.waitlist_enabled') }}</span>
+                </label>
+                <p style="font-size:0.75rem;color:#6c757d;margin-top:3px;margin-left:24px">{{ __('events.waitlist_enabled_hint') }}</p>
+            </div>
+
+            <div>
                 <label class="nf-label">{{ __('common.description') }}</label>
                 <textarea name="description" rows="4" class="nf-input resize-none">{{ old('description', $event->description) }}</textarea>
             </div>

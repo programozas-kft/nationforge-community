@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\EventRegistrationConfirmation;
+use App\Mail\WaitlistConfirmation;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use Illuminate\Http\Request;
@@ -21,8 +22,9 @@ class EventRegistrationController extends Controller
         $registrationCount = $event->registrations()->count();
         $spotsLeft = $event->capacity ? $event->capacity - $registrationCount : null;
         $isFull = $spotsLeft !== null && $spotsLeft <= 0;
+        $waitlistCount = $isFull && $event->waitlist_enabled ? $event->waitlist()->count() : 0;
 
-        return view('public.events.show', compact('event', 'registrationCount', 'spotsLeft', 'isFull'));
+        return view('public.events.show', compact('event', 'registrationCount', 'spotsLeft', 'isFull', 'waitlistCount'));
     }
 
     public function register(Request $request, string $slug)
@@ -32,8 +34,10 @@ class EventRegistrationController extends Controller
             ->firstOrFail();
 
         $registrationCount = $event->registrations()->count();
-        if ($event->capacity && $registrationCount >= $event->capacity) {
-            return back()->withErrors(['capacity' => 'Az esemény betelt.']);
+        $isFull = $event->capacity && $registrationCount >= $event->capacity;
+
+        if ($isFull && ! $event->waitlist_enabled) {
+            return back()->withErrors(['capacity' => __('events.full_notice')]);
         }
 
         $data = $request->validate([
@@ -45,8 +49,29 @@ class EventRegistrationController extends Controller
         ]);
 
         $data['event_id'] = $event->id;
-        $data['guests'] = $data['guests'] ?? 0;
-        $data['token'] = Str::random(48);
+        $data['guests']   = $data['guests'] ?? 0;
+        $data['token']    = Str::random(48);
+
+        if ($isFull && $event->waitlist_enabled) {
+            $nextPosition = ($event->waitlist()->max('waitlist_position') ?? 0) + 1;
+            $data['waitlisted']        = true;
+            $data['waitlist_position'] = $nextPosition;
+
+            $registration = EventRegistration::create($data);
+
+            try {
+                Mail::to($registration->email, $registration->name)
+                    ->send(new WaitlistConfirmation($registration->load('event')));
+            } catch (\Throwable $e) {
+                Log::warning('Waitlist confirmation email failed', [
+                    'registration_id' => $registration->id,
+                    'error'           => $e->getMessage(),
+                ]);
+            }
+
+            return redirect()->route('events.waitlisted', $slug)
+                ->with('waitlist_position', $nextPosition);
+        }
 
         $registration = EventRegistration::create($data);
 
@@ -72,9 +97,17 @@ class EventRegistrationController extends Controller
         return view('public.events.confirmed', compact('event', 'ticketToken'));
     }
 
+    public function waitlisted(string $slug)
+    {
+        $event = Event::where('slug', $slug)->firstOrFail();
+        $position = session('waitlist_position');
+
+        return view('public.events.waitlisted', compact('event', 'position'));
+    }
+
     public function ticket(string $token)
     {
-        $registration = \App\Models\EventRegistration::where('token', $token)
+        $registration = EventRegistration::where('token', $token)
             ->with('event')
             ->firstOrFail();
 

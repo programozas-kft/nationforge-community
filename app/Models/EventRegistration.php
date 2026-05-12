@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class EventRegistration extends Model
 {
-    protected $fillable = ['event_id', 'name', 'email', 'phone', 'guests', 'notes', 'token', 'checked_in_at'];
+    protected $fillable = ['event_id', 'name', 'email', 'phone', 'guests', 'notes', 'token', 'checked_in_at', 'waitlisted', 'waitlist_position'];
 
     protected $casts = [
         'checked_in_at' => 'datetime',
+        'waitlisted'     => 'boolean',
     ];
 
     public function event()

@@ -85,6 +85,12 @@
                     <span class="font-semibold" style="color:#f7b84b">{{ number_format($event->ticket_price, 0, ',', ' ') }} Ft</span>
                 </div>
                 @endif
+                <div class="flex justify-between">
+                    <span class="text-gray-500">{{ __('events.waitlist_enabled') }}</span>
+                    <span class="nf-badge {{ $event->waitlist_enabled ? 'badge-success' : 'badge-secondary' }}">
+                        {{ $event->waitlist_enabled ? __('common.yes') : __('common.no') }}
+                    </span>
+                </div>
             </div>
         </div>
 
@@ -155,12 +161,19 @@
                             @endif
                         </td>
                         <td style="color:#adb5bd;font-size:0.8rem">{{ $reg->created_at->format('Y. m. d. H:i') }}</td>
-                        <td>
+                        <td style="display:flex;gap:4px;align-items:center">
                             <form method="POST" action="{{ route('admin.events.checkin.manual', $event) }}">
                                 @csrf
                                 <input type="hidden" name="registration_id" value="{{ $reg->id }}">
                                 <button type="submit" style="font-size:0.72rem;padding:3px 8px;border-radius:4px;border:1px solid {{ $reg->checked_in_at ? '#dc3545' : '#0ab39c' }};background:transparent;color:{{ $reg->checked_in_at ? '#dc3545' : '#0ab39c' }};cursor:pointer;white-space:nowrap">
                                     {{ $reg->checked_in_at ? __('events.checkin_undo') : __('events.checkin_btn') }}
+                                </button>
+                            </form>
+                            <form method="POST" action="{{ route('admin.events.registrations.destroy', [$event, $reg]) }}"
+                                  onsubmit="return confirm('{{ __('events.reg_delete_confirm') }}')">
+                                @csrf @method('DELETE')
+                                <button type="submit" style="font-size:0.72rem;padding:3px 7px;border-radius:4px;border:1px solid #dc3545;background:transparent;color:#dc3545;cursor:pointer">
+                                    ×
                                 </button>
                             </form>
                         </td>
@@ -171,6 +184,63 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- Waiting list --}}
+        @if($event->waitlist_enabled || $event->waitlist->count() > 0)
+        <div class="nf-card overflow-hidden">
+            <div class="nf-card-header" style="display:flex;align-items:center;justify-content:space-between">
+                <span style="display:flex;align-items:center;gap:6px">
+                    <svg width="14" height="14" fill="none" stroke="#f7b84b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {{ __('events.waitlist_title') }} ({{ $event->waitlist->count() }})
+                </span>
+                @if(! $event->waitlist_enabled)
+                <span style="font-size:0.72rem;color:#adb5bd">{{ __('events.waitlist_disabled_note') }}</span>
+                @endif
+            </div>
+            <table class="nf-table">
+                <thead>
+                    <tr>
+                        <th style="width:36px">#</th>
+                        <th>{{ __('common.name') }}</th>
+                        <th>{{ __('common.email') }}</th>
+                        <th>{{ __('events.col_guests') }}</th>
+                        <th>{{ __('common.registered') }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($event->waitlist as $wl)
+                    <tr>
+                        <td style="color:#f7b84b;font-weight:700;font-size:0.85rem">{{ $wl->waitlist_position }}</td>
+                        <td style="font-weight:500;color:#343a40">{{ $wl->name }}</td>
+                        <td style="color:#405189;font-size:0.82rem">{{ $wl->email }}</td>
+                        <td style="color:#6c757d">{{ $wl->guests > 0 ? '+' . $wl->guests : '—' }}</td>
+                        <td style="color:#adb5bd;font-size:0.8rem">{{ $wl->created_at->format('Y. m. d. H:i') }}</td>
+                        <td style="display:flex;gap:4px;align-items:center">
+                            @if($event->capacity && $event->registrations->count() < $event->capacity)
+                            <form method="POST" action="{{ route('admin.events.waitlist.promote', [$event, $wl]) }}">
+                                @csrf
+                                <button type="submit" style="font-size:0.72rem;padding:3px 8px;border-radius:4px;border:1px solid #0ab39c;background:transparent;color:#0ab39c;cursor:pointer;white-space:nowrap">
+                                    {{ __('events.waitlist_promote_btn') }}
+                                </button>
+                            </form>
+                            @endif
+                            <form method="POST" action="{{ route('admin.events.waitlist.destroy', [$event, $wl]) }}"
+                                  onsubmit="return confirm('{{ __('events.waitlist_delete_confirm') }}')">
+                                @csrf @method('DELETE')
+                                <button type="submit" style="font-size:0.72rem;padding:3px 7px;border-radius:4px;border:1px solid #dc3545;background:transparent;color:#dc3545;cursor:pointer">
+                                    ×
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="6" style="text-align:center;padding:24px;color:#adb5bd">{{ __('events.waitlist_empty') }}</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        @endif
 
         {{-- Volunteer shifts --}}
         @include('admin.events._shifts', ['event' => $event, 'people' => $people])

@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title'        => 'Calendar',
+    'prev'         => 'Previous month',
+    'next'         => 'Next month',
+    'today'        => 'Today',
+    'new_event'    => 'New event',
+    'modal_title'  => 'New event for the group',
+    'event_title'  => 'Event title',
+    'starts_at'    => 'Starts at',
+    'ends_at'      => 'Ends at',
+    'type'         => 'Type',
+    'venue'        => 'Venue',
+    'city'         => 'City',
+    'is_online'    => 'Online event',
+    'online_url'   => 'Online URL',
+    'description'  => 'Description',
+    'create'       => 'Create',
+    'cancel'       => 'Cancel',
+    'empty'        => 'No events this month.',
+    'more'         => ':count more',
+    'created'      => 'Event created!',
+    'weekdays'     => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    'months' => [
+        1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
+        5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
+        9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December',
+    ],
+];

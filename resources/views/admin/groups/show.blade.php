@@ -147,6 +147,8 @@
         </div>
 
         @include('admin.groups._files', ['group' => $group])
+
+        @include('admin.groups._calendar', ['group' => $group, 'month' => $month, 'events' => $events])
     </div>
 
     {{-- Right column: Chat --}}

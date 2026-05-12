@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventRegistrationConfirmation;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class EventRegistrationController extends Controller
@@ -45,7 +48,18 @@ class EventRegistrationController extends Controller
         $data['guests'] = $data['guests'] ?? 0;
         $data['token'] = Str::random(48);
 
-        EventRegistration::create($data);
+        $registration = EventRegistration::create($data);
+
+        try {
+            Mail::to($registration->email, $registration->name)
+                ->send(new EventRegistrationConfirmation($registration->load('event')));
+        } catch (\Throwable $e) {
+            Log::warning('Event registration confirmation email failed', [
+                'registration_id' => $registration->id,
+                'email'           => $registration->email,
+                'error'           => $e->getMessage(),
+            ]);
+        }
 
         return redirect()->route('events.confirmed', $slug);
     }

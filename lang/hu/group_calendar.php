@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title'        => 'Naptár',
+    'prev'         => 'Előző hónap',
+    'next'         => 'Következő hónap',
+    'today'        => 'Ma',
+    'new_event'    => 'Új esemény',
+    'modal_title'  => 'Új esemény a csoportnak',
+    'event_title'  => 'Esemény címe',
+    'starts_at'    => 'Kezdés',
+    'ends_at'      => 'Befejezés',
+    'type'         => 'Típus',
+    'venue'        => 'Helyszín',
+    'city'         => 'Város',
+    'is_online'    => 'Online esemény',
+    'online_url'   => 'Online URL',
+    'description'  => 'Leírás',
+    'create'       => 'Létrehozás',
+    'cancel'       => 'Mégse',
+    'empty'        => 'Nincs esemény ebben a hónapban.',
+    'more'         => ':count további',
+    'created'      => 'Esemény létrehozva!',
+    'weekdays'     => ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'],
+    'months' => [
+        1 => 'Január', 2 => 'Február', 3 => 'Március', 4 => 'Április',
+        5 => 'Május', 6 => 'Június', 7 => 'Július', 8 => 'Augusztus',
+        9 => 'Szeptember', 10 => 'Október', 11 => 'November', 12 => 'December',
+    ],
+];

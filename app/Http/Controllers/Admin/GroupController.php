@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use App\Models\Group;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -39,10 +41,52 @@ class GroupController extends Controller
         return redirect()->route('admin.groups.index')->with('success', 'Csoport létrehozva!');
     }
 
-    public function show(Group $group)
+    public function show(Group $group, Request $request)
     {
         $group->load(['people', 'users.roles', 'files.uploader']);
-        return view('admin.groups.show', compact('group'));
+
+        // Calendar month derived from ?cal=YYYY-MM (defaults to current month)
+        $cal = $request->query('cal');
+        try {
+            $month = $cal ? Carbon::createFromFormat('Y-m', $cal)->startOfMonth() : Carbon::now()->startOfMonth();
+        } catch (\Throwable) {
+            $month = Carbon::now()->startOfMonth();
+        }
+
+        $events = $group->events()
+            ->whereBetween('starts_at', [$month->copy()->startOfMonth(), $month->copy()->endOfMonth()])
+            ->orderBy('starts_at')
+            ->get()
+            ->groupBy(fn ($e) => $e->starts_at->format('Y-m-d'));
+
+        return view('admin.groups.show', compact('group', 'month', 'events'));
+    }
+
+    public function storeEvent(Request $request, Group $group)
+    {
+        $data = $request->validate([
+            'title'      => 'required|string|max:200',
+            'type'       => 'required|in:meetup,rally,webinar,fundraiser,volunteer,conference,other',
+            'starts_at'  => 'required|date',
+            'ends_at'    => 'nullable|date|after:starts_at',
+            'is_online'  => 'boolean',
+            'online_url' => 'nullable|url',
+            'venue_name' => 'nullable|string|max:200',
+            'city'       => 'nullable|string|max:100',
+            'description'=> 'nullable|string',
+        ]);
+
+        $data['slug']       = Str::slug($data['title']) . '-' . Str::random(5);
+        $data['status']     = 'published';
+        $data['is_online']  = $request->boolean('is_online');
+        $data['created_by'] = auth()->id();
+        $data['group_id']   = $group->id;
+
+        Event::create($data);
+
+        $month = Carbon::parse($data['starts_at'])->format('Y-m');
+        return redirect()->route('admin.groups.show', ['group' => $group, 'cal' => $month])
+            ->with('success', __('group_calendar.created'));
     }
 
     public function edit(Group $group)

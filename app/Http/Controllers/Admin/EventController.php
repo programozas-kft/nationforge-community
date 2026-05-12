@@ -49,8 +49,16 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
-        $event->load('rsvps.person', 'registrations');
-        return view('admin.events.show', compact('event'));
+        $event->load([
+            'rsvps.person',
+            'registrations',
+            'shifts.signups.person',
+        ]);
+
+        $people = \App\Models\Person::orderBy('last_name')->orderBy('first_name')
+            ->get(['id', 'first_name', 'last_name']);
+
+        return view('admin.events.show', compact('event', 'people'));
     }
 
     public function edit(Event $event)

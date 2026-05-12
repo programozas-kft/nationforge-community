@@ -50,7 +50,7 @@ class Event extends Model
 
     public function shifts()
     {
-        return $this->hasMany(VolunteerShift::class);
+        return $this->hasMany(VolunteerShift::class)->orderBy('starts_at');
     }
 
     public function tags()

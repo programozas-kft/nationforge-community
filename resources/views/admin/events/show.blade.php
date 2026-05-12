@@ -136,6 +136,9 @@
             </table>
         </div>
 
+        {{-- Volunteer shifts --}}
+        @include('admin.events._shifts', ['event' => $event, 'people' => $people])
+
         {{-- Internal RSVP --}}
         <div class="nf-card overflow-hidden">
             <div class="nf-card-header">{{ __('events.internal_rsvp') }} ({{ $event->rsvps->count() }})</div>

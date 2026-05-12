@@ -46,6 +46,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('people/{person}/lead', [PeopleController::class, 'updateLead'])->name('people.lead.update');
     Route::resource('people', PeopleController::class);
     Route::resource('events', EventController::class);
+
+    // Volunteer shifts (nested under events)
+    Route::post('events/{event}/shifts', [\App\Http\Controllers\Admin\VolunteerShiftController::class, 'store'])->name('events.shifts.store');
+    Route::put('events/{event}/shifts/{shift}', [\App\Http\Controllers\Admin\VolunteerShiftController::class, 'update'])->name('events.shifts.update');
+    Route::delete('events/{event}/shifts/{shift}', [\App\Http\Controllers\Admin\VolunteerShiftController::class, 'destroy'])->name('events.shifts.destroy');
+    Route::post('events/{event}/shifts/{shift}/signups', [\App\Http\Controllers\Admin\VolunteerShiftController::class, 'storeSignup'])->name('events.shifts.signups.store');
+    Route::patch('events/{event}/shifts/{shift}/signups/{signup}/attended', [\App\Http\Controllers\Admin\VolunteerShiftController::class, 'toggleAttended'])->name('events.shifts.signups.attended');
+    Route::delete('events/{event}/shifts/{shift}/signups/{signup}', [\App\Http\Controllers\Admin\VolunteerShiftController::class, 'destroySignup'])->name('events.shifts.signups.destroy');
     Route::resource('groups', GroupController::class);
     Route::post('groups/{group}/events', [GroupController::class, 'storeEvent'])->name('groups.events.store');
     Route::post('groups/{group}/files', [\App\Http\Controllers\Admin\GroupFileController::class, 'store'])->name('groups.files.store');

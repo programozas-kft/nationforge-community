@@ -57,14 +57,14 @@ class Person extends Model implements HasMedia
         return $this->hasMany(EventRsvp::class);
     }
 
-    public function tags()
-    {
-        return $this->morphToMany(Tag::class, 'taggable');
-    }
-
     public function volunteerSignups()
     {
         return $this->hasMany(VolunteerSignup::class);
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function scopeActive($query)

@@ -58,8 +58,8 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Cover image, member list with role badges
 - ✅ Built-in **real-time group chat** (Livewire)
 - ✅ Soft deletes
-- 🔲 File sharing within groups
-- 🔲 Group-level calendar
+- ✅ File sharing within groups (upload, download, delete; 20 MB limit; PDF, Office, images, ZIP)
+- ✅ Group-level calendar (monthly view, linked to group events)
 
 ### Events
 - ✅ Types: Meetup, Rally, Webinar, Fundraiser, Volunteer, Conference

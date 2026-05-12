@@ -41,4 +41,5 @@ return [
     'full_name'    => 'Full name',
     'title_label'  => 'Title',
     'online'       => 'Online',
+    'deleted_user' => 'Deleted user',
 ];

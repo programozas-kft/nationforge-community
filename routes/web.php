@@ -47,6 +47,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('people', PeopleController::class);
     Route::resource('events', EventController::class);
     Route::resource('groups', GroupController::class);
+    Route::post('groups/{group}/files', [\App\Http\Controllers\Admin\GroupFileController::class, 'store'])->name('groups.files.store');
+    Route::get('groups/{group}/files/{file}/download', [\App\Http\Controllers\Admin\GroupFileController::class, 'download'])->name('groups.files.download');
+    Route::delete('groups/{group}/files/{file}', [\App\Http\Controllers\Admin\GroupFileController::class, 'destroy'])->name('groups.files.destroy');
     Route::resource('donations', DonationController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
 
     // Admin kezelő

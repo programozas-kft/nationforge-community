@@ -41,4 +41,5 @@ return [
     'full_name'    => 'Teljes név',
     'title_label'  => 'Cím',
     'online'       => 'Online',
+    'deleted_user' => 'Törölt felhasználó',
 ];

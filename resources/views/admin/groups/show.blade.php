@@ -145,6 +145,8 @@
                 </tbody>
             </table>
         </div>
+
+        @include('admin.groups._files', ['group' => $group])
     </div>
 
     {{-- Right column: Chat --}}

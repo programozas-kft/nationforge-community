@@ -50,4 +50,9 @@ class Group extends Model
         return $this->belongsToMany(User::class, 'group_user')
             ->withPivot('role');
     }
+
+    public function files()
+    {
+        return $this->hasMany(GroupFile::class);
+    }
 }

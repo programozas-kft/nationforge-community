@@ -41,7 +41,7 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
-        $group->load(['people', 'users.roles']);
+        $group->load(['people', 'users.roles', 'files.uploader']);
         return view('admin.groups.show', compact('group'));
     }
 

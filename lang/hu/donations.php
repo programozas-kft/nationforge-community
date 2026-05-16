@@ -35,4 +35,43 @@ return [
         'failed'    => 'Sikertelen',
         'refunded'  => 'Visszatérítve',
     ],
+
+    // Publikus adományozási oldal
+    'public_title'       => 'Támogass minket',
+    'amount_label'       => 'Adomány összege',
+    'amount_placeholder' => 'Egyéni összeg',
+    'your_info'          => 'Adataid',
+    'name_label'         => 'Neved',
+    'name_placeholder'   => 'Teljes neved',
+    'email_label'        => 'Email cím',
+    'email_placeholder'  => 'email@cimed.hu',
+    'email_hint'         => 'Erre a címre küldünk visszaigazolást.',
+    'message_label'      => 'Üzenet (opcionális)',
+    'message_placeholder'=> 'Hagyj üzenetet…',
+    'anonymous_label'    => 'Névtelen adományozás',
+    'total_label'        => 'Adományod összege',
+    'submit'             => 'Adományozok →',
+    'secure_hint'        => 'Biztonságos fizetés. Adataid védve vannak.',
+    'payment_error'      => 'Fizetés sikertelen. Kérjük, próbáld újra.',
+    'payment_cancelled'  => 'A fizetést megszakítottad.',
+
+    // Köszönő oldal
+    'thanks_title'         => 'Köszönjük az adományod!',
+    'thanks_desc_payment'  => 'Adományodat sikeresen feldolgoztuk. Köszönjük a támogatást!',
+    'thanks_desc_transfer' => 'Adományodat rögzítettük. Kérjük, indítsd el az átutalást az alábbi adatokkal.',
+    'bank_details'         => 'Banki átutalás adatai',
+    'bank_name'            => 'Kedvezményezett',
+    'bank_iban'            => 'IBAN / Számlaszám',
+    'bank_note'            => 'Közlemény',
+    'bank_reference'       => 'Hivatkozás',
+    'back_to_home'         => '← Vissza a főoldalra',
+
+    // Visszaigazoló email
+    'email_subject'      => 'Köszönjük az adományod!',
+    'email_heading'      => 'Köszönjük a támogatást!',
+    'email_hi'           => 'Kedves :name!',
+    'email_hi_anon'      => 'Kedves Adományozó!',
+    'email_body'         => 'Megkaptuk adományodat. Köszönjük a nagylelkűségedet és a támogatásodat!',
+    'email_amount'       => 'Adomány összege',
+    'email_footer'       => 'Ez egy automatikus értesítő. Kérjük, ne válaszolj erre az emailre.',
 ];

@@ -35,4 +35,43 @@ return [
         'failed'    => 'Failed',
         'refunded'  => 'Refunded',
     ],
+
+    // Public donation form
+    'public_title'       => 'Support Us',
+    'amount_label'       => 'Donation amount',
+    'amount_placeholder' => 'Custom amount',
+    'your_info'          => 'Your information',
+    'name_label'         => 'Name',
+    'name_placeholder'   => 'Your name',
+    'email_label'        => 'Email address',
+    'email_placeholder'  => 'your@email.com',
+    'email_hint'         => 'We\'ll send a confirmation to this address.',
+    'message_label'      => 'Message (optional)',
+    'message_placeholder'=> 'Leave a message…',
+    'anonymous_label'    => 'Donate anonymously',
+    'total_label'        => 'You are donating',
+    'submit'             => 'Donate now →',
+    'secure_hint'        => 'Secure payment. Your data is protected.',
+    'payment_error'      => 'Payment failed. Please try again.',
+    'payment_cancelled'  => 'Payment was cancelled.',
+
+    // Thank-you page
+    'thanks_title'         => 'Thank you for your donation!',
+    'thanks_desc_payment'  => 'Your donation has been successfully processed. You are making a difference!',
+    'thanks_desc_transfer' => 'Your donation has been registered. Please complete the bank transfer using the details below.',
+    'bank_details'         => 'Bank transfer details',
+    'bank_name'            => 'Account holder',
+    'bank_iban'            => 'IBAN / Account number',
+    'bank_note'            => 'Reference note',
+    'bank_reference'       => 'Reference',
+    'back_to_home'         => '← Back to homepage',
+
+    // Confirmation email
+    'email_subject'      => 'Thank you for your donation!',
+    'email_heading'      => 'Thank you for your support!',
+    'email_hi'           => 'Dear :name,',
+    'email_hi_anon'      => 'Dear donor,',
+    'email_body'         => 'We have received your donation. Thank you for your generosity and support!',
+    'email_amount'       => 'Donation amount',
+    'email_footer'       => 'This is an automated message. Please do not reply to this email.',
 ];

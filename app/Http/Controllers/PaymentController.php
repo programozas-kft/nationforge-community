@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\DonationFormController;
 use App\Mail\EventRegistrationConfirmation;
+use App\Models\Donation;
 use App\Models\EventRegistration;
 use App\Models\Setting;
 use App\Services\BarionPaymentService;
@@ -75,16 +77,25 @@ class PaymentController extends Controller
 
         if ($event->type === 'checkout.session.completed') {
             $session = $event->data->object;
-            $token   = $session->metadata->registration_token ?? null;
 
-            if ($token) {
-                $registration = EventRegistration::where('token', $token)->with('event')->first();
+            $regToken = $session->metadata->registration_token ?? null;
+            if ($regToken) {
+                $registration = EventRegistration::where('token', $regToken)->with('event')->first();
                 if ($registration && $registration->payment_status === 'pending') {
                     $registration->update([
                         'payment_status' => 'paid',
                         'paid_amount'    => $registration->event->ticket_price * ($registration->guests + 1),
                     ]);
                     $this->sendConfirmation($registration);
+                }
+            }
+
+            $donationToken = $session->metadata->donation_token ?? null;
+            if ($donationToken) {
+                $donation = Donation::where('token', $donationToken)->first();
+                if ($donation && $donation->status === 'pending') {
+                    $donation->update(['status' => 'completed']);
+                    DonationFormController::sendConfirmation($donation);
                 }
             }
         }
@@ -148,6 +159,73 @@ class PaymentController extends Controller
         }
 
         return response('', 200);
+    }
+
+    // ── Donation callbacks ────────────────────────────────────────
+
+    public function stripeSuccessDonation(string $token, Request $request)
+    {
+        $donation  = Donation::where('token', $token)->firstOrFail();
+        $sessionId = $request->query('session_id');
+
+        if ($donation->status === 'completed') {
+            return redirect()->route('donate.thanks', $token);
+        }
+
+        $ok = false;
+        try {
+            $session = \Stripe\Checkout\Session::retrieve($sessionId);
+            \Stripe\Stripe::setApiKey(Setting::get('stripe_secret_key', ''));
+            if ($session->payment_status === 'paid') {
+                $donation->update(['status' => 'completed']);
+                DonationFormController::sendConfirmation($donation);
+                $ok = true;
+            }
+        } catch (\Throwable $e) {
+            Log::error('Donation Stripe confirm failed', ['error' => $e->getMessage(), 'token' => $token]);
+        }
+
+        if (!$ok) {
+            $donation->update(['status' => 'failed']);
+            return redirect()->route('donate')->with('payment_error', __('donations.payment_error'));
+        }
+
+        return redirect()->route('donate.thanks', $token);
+    }
+
+    public function stripeCancelDonation(string $token)
+    {
+        $donation = Donation::where('token', $token)->firstOrFail();
+        if ($donation->status === 'pending') {
+            $donation->update(['status' => 'failed']);
+        }
+        return redirect()->route('donate')->with('payment_error', __('donations.payment_cancelled'));
+    }
+
+    public function barionCallbackDonation(string $token, Request $request)
+    {
+        $donation  = Donation::where('token', $token)->firstOrFail();
+        $paymentId = $request->query('paymentId') ?? $donation->transaction_id;
+
+        if ($donation->status === 'completed') {
+            return redirect()->route('donate.thanks', $token);
+        }
+
+        $ok = false;
+        try {
+            $ok = $paymentId && (new BarionPaymentService())->verifyPayment($paymentId);
+        } catch (\Throwable $e) {
+            Log::error('Donation Barion verify failed', ['error' => $e->getMessage(), 'token' => $token]);
+        }
+
+        if ($ok) {
+            $donation->update(['status' => 'completed']);
+            DonationFormController::sendConfirmation($donation);
+            return redirect()->route('donate.thanks', $token);
+        }
+
+        $donation->update(['status' => 'failed']);
+        return redirect()->route('donate')->with('payment_error', __('donations.payment_error'));
     }
 
     // ── Segéd ────────────────────────────────────────────────────

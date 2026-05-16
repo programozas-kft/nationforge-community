@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Donation;
 use App\Models\EventRegistration;
 use App\Models\Setting;
 use Stripe\Checkout\Session;
@@ -61,6 +62,36 @@ class StripePaymentService
         ]);
 
         return true;
+    }
+
+    public function createDonationSession(Donation $donation): string
+    {
+        $currency   = strtolower($donation->currency);
+        $unitAmount = (int) ($donation->amount * 100); // Stripe uses smallest currency unit
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items'           => [[
+                'price_data' => [
+                    'currency'     => $currency,
+                    'unit_amount'  => $unitAmount,
+                    'product_data' => ['name' => Setting::get('brand_org_name', config('app.name')) . ' – Donation'],
+                ],
+                'quantity' => 1,
+            ]],
+            'mode'           => 'payment',
+            'customer_email' => $donation->donor_email ?: null,
+            'success_url'    => route('payment.donation.stripe.success', $donation->token) . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url'     => route('payment.donation.stripe.cancel', $donation->token),
+            'metadata'       => ['donation_token' => $donation->token],
+        ]);
+
+        $donation->update([
+            'payment_method' => 'stripe',
+            'transaction_id' => $session->id,
+        ]);
+
+        return $session->url;
     }
 
     public function constructWebhookEvent(string $payload, string $sigHeader, string $secret): \Stripe\Event

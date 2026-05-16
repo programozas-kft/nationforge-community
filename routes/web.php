@@ -31,7 +31,16 @@ Route::prefix('payment')->name('payment.')->group(function () {
         ->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
     Route::get('barion/callback/{token}', [\App\Http\Controllers\PaymentController::class, 'barionCallback'])->name('barion.callback');
     Route::get('barion/ipn',              [\App\Http\Controllers\PaymentController::class, 'barionIpn'])->name('barion.ipn');
+    // Donation-specific callbacks
+    Route::get('donation/stripe/success/{token}', [\App\Http\Controllers\PaymentController::class, 'stripeSuccessDonation'])->name('donation.stripe.success');
+    Route::get('donation/stripe/cancel/{token}',  [\App\Http\Controllers\PaymentController::class, 'stripeCancelDonation'])->name('donation.stripe.cancel');
+    Route::get('donation/barion/callback/{token}', [\App\Http\Controllers\PaymentController::class, 'barionCallbackDonation'])->name('donation.barion.callback');
 });
+
+// Public donation form
+Route::get('/donate',               [\App\Http\Controllers\DonationFormController::class, 'show'])->name('donate');
+Route::post('/donate',              [\App\Http\Controllers\DonationFormController::class, 'submit'])->name('donate.submit');
+Route::get('/donate/thanks/{token}',[\App\Http\Controllers\DonationFormController::class, 'thanks'])->name('donate.thanks');
 
 // Public event registration
 Route::get('/e/ticket/{token}', [EventRegistrationController::class, 'ticket'])->name('events.ticket');
@@ -98,6 +107,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('settings/report', [SettingsController::class, 'updateReport'])->name('settings.report');
     Route::post('settings/report/test', [SettingsController::class, 'testReport'])->name('settings.report.test');
     Route::post('settings/payment', [SettingsController::class, 'updatePayment'])->name('settings.payment');
+    Route::post('settings/donation', [SettingsController::class, 'updateDonationPage'])->name('settings.donation');
 
     Route::get('links', [LinkController::class, 'index'])->name('links.index');
     Route::post('links', [LinkController::class, 'store'])->name('links.store');

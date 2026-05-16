@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Donation extends Model
 {
     protected $fillable = [
-        'person_id', 'amount', 'currency', 'status', 'payment_method',
+        'token', 'person_id', 'donor_name', 'donor_email',
+        'amount', 'currency', 'status', 'payment_method',
         'transaction_id', 'campaign', 'message', 'is_recurring',
         'recurring_interval', 'next_charge_at', 'is_anonymous', 'payment_data',
     ];

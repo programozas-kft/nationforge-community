@@ -93,8 +93,8 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Per-campaign tracking label
 - ✅ Monthly donation totals on dashboard
 - ✅ Recurring donation fields (interval, next charge date)
-- 🔲 Public online donation form
-- 🔲 Donation receipt / acknowledgment email
+- ✅ Public online donation form
+- ✅ Donation receipt / acknowledgment email
 - 🔲 Export for accounting (CSV, PDF)
 
 ### Projects & Tasks

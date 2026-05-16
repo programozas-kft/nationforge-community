@@ -398,6 +398,95 @@
         </form>
     </div>
 
+    {{-- ── DONATION PAGE ───────────────────────────────── --}}
+    <div id="donation-page" style="margin-top:32px;margin-bottom:32px">
+        <form method="POST" action="{{ route('admin.settings.donation') }}">
+            @csrf
+            <div class="nf-card" style="padding:24px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e9ebec">
+                    <div>
+                        <h2 style="font-size:0.875rem;font-weight:600;color:#343a40;margin:0 0 2px">{{ __('settings.donation_page_title') }}</h2>
+                        <p style="font-size:0.78rem;color:#6c757d;margin:0">{!! __('settings.donation_page_desc') !!}</p>
+                    </div>
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                        <span style="font-size:0.8rem;color:#6c757d">{{ __('settings.donation_page_enabled') }}</span>
+                        <input type="hidden" name="donation_page_enabled" value="0">
+                        <input type="checkbox" name="donation_page_enabled" value="1"
+                               {{ $donationConfig['enabled'] ? 'checked' : '' }}
+                               style="width:16px;height:16px;accent-color:#405189">
+                    </label>
+                </div>
+
+                @if($donationConfig['enabled'])
+                    <div style="margin-bottom:12px;padding:10px 14px;background:#f0fff8;border:1px solid #c3f0e0;border-radius:8px;font-size:0.8rem;color:#0ab39c">
+                        {{ __('settings.donation_page_url') }}:
+                        <a href="{{ url('/donate') }}" target="_blank" style="color:#0ab39c;font-weight:600">{{ url('/donate') }}</a>
+                    </div>
+                @endif
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                    <div>
+                        <label class="nf-label">{{ __('settings.donation_title_field') }}</label>
+                        <input type="text" name="donation_page_title" class="nf-input"
+                               value="{{ $donationConfig['title'] }}"
+                               placeholder="{{ __('donations.public_title') }}">
+                    </div>
+                    <div>
+                        <label class="nf-label">{{ __('settings.donation_currency') }}</label>
+                        <select name="donation_currency" class="nf-select">
+                            <option value="HUF" {{ $donationConfig['currency'] === 'HUF' ? 'selected' : '' }}>HUF – Magyar forint</option>
+                            <option value="EUR" {{ $donationConfig['currency'] === 'EUR' ? 'selected' : '' }}>EUR – Euro</option>
+                            <option value="USD" {{ $donationConfig['currency'] === 'USD' ? 'selected' : '' }}>USD – US Dollar</option>
+                        </select>
+                    </div>
+                    <div style="grid-column:1/-1">
+                        <label class="nf-label">{{ __('settings.donation_description_field') }}</label>
+                        <textarea name="donation_page_description" class="nf-input" rows="2">{{ $donationConfig['description'] }}</textarea>
+                    </div>
+                    <div>
+                        <label class="nf-label">{{ __('settings.donation_presets') }}</label>
+                        <input type="text" name="donation_presets" class="nf-input"
+                               value="{{ $donationConfig['presets'] }}"
+                               placeholder="1000,2000,5000,10000">
+                        <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('settings.donation_presets_hint') }}</p>
+                    </div>
+                    <div>
+                        <label class="nf-label">{{ __('settings.donation_campaign') }}</label>
+                        <input type="text" name="donation_campaign" class="nf-input"
+                               value="{{ $donationConfig['campaign'] }}"
+                               placeholder="general">
+                        <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('settings.donation_campaign_hint') }}</p>
+                    </div>
+                </div>
+
+                <div style="padding-top:16px;border-top:1px solid #f0f0f5;margin-bottom:16px">
+                    <p style="font-size:0.8rem;font-weight:600;color:#495057;margin-bottom:12px">{{ __('settings.donation_bank_title') }}</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+                        <div>
+                            <label class="nf-label">{{ __('settings.donation_bank_name') }}</label>
+                            <input type="text" name="donation_bank_name" class="nf-input" value="{{ $donationConfig['bank_name'] }}">
+                        </div>
+                        <div>
+                            <label class="nf-label">{{ __('settings.donation_bank_iban') }}</label>
+                            <input type="text" name="donation_bank_iban" class="nf-input"
+                                   value="{{ $donationConfig['bank_iban'] }}"
+                                   placeholder="HU12 3456 7890 …" style="font-family:monospace">
+                        </div>
+                        <div>
+                            <label class="nf-label">{{ __('settings.donation_bank_note') }}</label>
+                            <input type="text" name="donation_bank_note" class="nf-input" value="{{ $donationConfig['bank_note'] }}">
+                        </div>
+                    </div>
+                    <p style="font-size:0.75rem;color:#adb5bd;margin-top:8px">Ezek az adatok akkor jelennek meg, ha nincs online fizetési szolgáltató beállítva, vagy az adományozó átutalással fizet.</p>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end">
+                    <button type="submit" class="btn-primary">{{ __('settings.donation_save') }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
     {{-- ── LINKGYŰJTEMÉNY ───────────────────────────────── --}}
     <div id="links" style="margin-top:32px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">

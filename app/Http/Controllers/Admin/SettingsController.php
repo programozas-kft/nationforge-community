@@ -46,8 +46,22 @@ class SettingsController extends Controller
             'hour'          => (int) Setting::get('report_hour', 8),
             'recipients'    => Setting::get('report_recipients', ''),
         ];
+        $donationConfig = [
+            'enabled'     => Setting::get('donation_page_enabled', '0') === '1',
+            'title'       => Setting::get('donation_page_title', ''),
+            'description' => Setting::get('donation_page_description', ''),
+            'presets'     => Setting::get('donation_presets', '1000,2000,5000,10000'),
+            'currency'    => Setting::get('donation_currency', 'HUF'),
+            'campaign'    => Setting::get('donation_campaign', ''),
+            'bank_name'   => Setting::get('donation_bank_name', ''),
+            'bank_iban'   => Setting::get('donation_bank_iban', ''),
+            'bank_note'   => Setting::get('donation_bank_note', ''),
+        ];
+        $paymentConfig = [
+            'provider' => Setting::get('payment_provider', ''),
+        ];
         $links = Link::orderBy('sort_order')->orderBy('title')->get();
-        return view('admin.settings.index', compact('settings', 'mailConfig', 'branding', 'reportConfig', 'links'));
+        return view('admin.settings.index', compact('settings', 'mailConfig', 'branding', 'reportConfig', 'donationConfig', 'paymentConfig', 'links'));
     }
 
     public function updateBranding(Request $request)
@@ -188,6 +202,32 @@ class SettingsController extends Controller
         Setting::set('report_recipients',   $request->input('report_recipients', ''));
 
         return redirect()->route('admin.settings')->with('success', __('settings.report_saved'));
+    }
+
+    public function updateDonationPage(Request $request)
+    {
+        $request->validate([
+            'donation_page_title'       => 'nullable|string|max:150',
+            'donation_page_description' => 'nullable|string|max:500',
+            'donation_presets'          => 'nullable|string|max:100',
+            'donation_currency'         => 'nullable|in:HUF,EUR,USD',
+            'donation_campaign'         => 'nullable|string|max:100',
+            'donation_bank_name'        => 'nullable|string|max:150',
+            'donation_bank_iban'        => 'nullable|string|max:50',
+            'donation_bank_note'        => 'nullable|string|max:200',
+        ]);
+
+        Setting::set('donation_page_enabled',     $request->boolean('donation_page_enabled') ? '1' : '0');
+        Setting::set('donation_page_title',       $request->input('donation_page_title', ''));
+        Setting::set('donation_page_description', $request->input('donation_page_description', ''));
+        Setting::set('donation_presets',          $request->input('donation_presets', '1000,2000,5000,10000'));
+        Setting::set('donation_currency',         $request->input('donation_currency', 'HUF'));
+        Setting::set('donation_campaign',         $request->input('donation_campaign', ''));
+        Setting::set('donation_bank_name',        $request->input('donation_bank_name', ''));
+        Setting::set('donation_bank_iban',        $request->input('donation_bank_iban', ''));
+        Setting::set('donation_bank_note',        $request->input('donation_bank_note', ''));
+
+        return redirect()->route('admin.settings')->with('success', __('settings.donation_saved'));
     }
 
     public function testReport(Request $request)

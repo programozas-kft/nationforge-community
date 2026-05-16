@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Donation;
 use App\Models\EventRegistration;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Http;
@@ -72,6 +73,57 @@ class BarionPaymentService
             'payment_provider'  => 'barion',
             'payment_intent_id' => $paymentId,
             'paid_amount'       => $total,
+        ]);
+
+        return $data['GatewayUrl'] ?? null;
+    }
+
+    public function createDonationPayment(Donation $donation): ?string
+    {
+        $txId    = 'NF-DON-' . Str::upper(Str::random(10));
+        $orgName = Setting::get('brand_org_name', config('app.name'));
+
+        $response = Http::post($this->baseUrl . '/v2/Payment/Start', [
+            'POSKey'           => $this->posKey,
+            'PaymentType'      => 'Immediate',
+            'GuestCheckOut'    => true,
+            'FundingSources'   => ['All'],
+            'PaymentRequestId' => $txId,
+            'PayerHint'        => $donation->donor_email ?: null,
+            'Transactions'     => [[
+                'POSTransactionId' => $txId,
+                'Payee'            => $this->merchantEmail,
+                'Total'            => $donation->amount,
+                'Comment'          => 'Donation – ' . $orgName,
+                'Items'            => [[
+                    'Name'        => 'Donation',
+                    'Description' => $orgName,
+                    'Quantity'    => 1,
+                    'Unit'        => 'piece',
+                    'UnitPrice'   => $donation->amount,
+                    'ItemTotal'   => $donation->amount,
+                    'SKU'         => 'donation',
+                ]],
+            ]],
+            'Currency'    => $donation->currency,
+            'RedirectUrl' => route('payment.donation.barion.callback', $donation->token),
+            'CallbackUrl' => route('payment.barion.ipn'),
+        ]);
+
+        if (!$response->successful()) {
+            return null;
+        }
+
+        $data      = $response->json();
+        $paymentId = $data['PaymentId'] ?? null;
+
+        if (!$paymentId || !empty($data['Errors'])) {
+            return null;
+        }
+
+        $donation->update([
+            'payment_method' => 'other',
+            'transaction_id' => $paymentId,
         ]);
 
         return $data['GatewayUrl'] ?? null;

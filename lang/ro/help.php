@@ -19,4 +19,6 @@ return [
     'updated'      => 'Articol de ajutor actualizat!',
     'tab_hu'       => 'Magyar',
     'tab_en'       => 'English',
+    'video_url_label' => 'URL video (YouTube / Vimeo)',
+    'video_url_hint'  => 'Opțional. Dacă este furnizat, videoclipul va apărea la sfârșitul articolului.',
 ];

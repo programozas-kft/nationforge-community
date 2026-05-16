@@ -136,7 +136,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Built-in help article editor (Markdown-like, bilingual HU/EN)
 - ✅ Image lightbox support
 - ✅ Accessible to all users from the admin panel
-- 🔲 Video embed support in help articles
+- ✅ Video embed support in help articles (YouTube & Vimeo)
 
 ### Multi-language
 - ✅ Full HU / EN bilingual admin panel

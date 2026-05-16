@@ -28,9 +28,10 @@ class HelpController extends Controller
             'content'    => 'required|string|max:5000',
             'title_en'   => 'nullable|string|max:200',
             'content_en' => 'nullable|string|max:5000',
+            'video_url'  => 'nullable|url|max:500',
         ]);
 
-        $help->update($request->only('title', 'content', 'title_en', 'content_en'));
+        $help->update($request->only('title', 'content', 'title_en', 'content_en', 'video_url'));
 
         return redirect()->route('admin.help.index')->with('success', __('help.updated'));
     }

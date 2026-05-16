@@ -19,4 +19,6 @@ return [
     'updated'      => 'Hilfeartikel aktualisiert!',
     'tab_hu'       => 'Magyar',
     'tab_en'       => 'English',
+    'video_url_label' => 'Video-URL (YouTube / Vimeo)',
+    'video_url_hint'  => 'Optional. Wenn angegeben, wird das Video am Ende des Artikels angezeigt.',
 ];

@@ -19,4 +19,6 @@ return [
     'updated'      => 'Článok pomoci aktualizovaný!',
     'tab_hu'       => 'Magyar',
     'tab_en'       => 'English',
+    'video_url_label' => 'URL videa (YouTube / Vimeo)',
+    'video_url_hint'  => 'Voliteľné. Ak je zadané, video sa zobrazí na konci článku.',
 ];

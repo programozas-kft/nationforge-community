@@ -27,7 +27,7 @@
                 <span style="font-weight:600;color:#343a40;font-size:0.875rem">{{ $article->title }}</span>
                 <span style="font-size:0.72rem;color:#adb5bd;background:#e9ebec;padding:2px 8px;border-radius:20px">{{ $article->menu_key }}</span>
             </div>
-            <button onclick="openEditHelp({{ $article->id }}, {{ json_encode($article->title) }}, {{ json_encode($article->content) }}, {{ json_encode($article->title_en) }}, {{ json_encode($article->content_en) }})"
+            <button onclick="openEditHelp({{ $article->id }}, {{ json_encode($article->title) }}, {{ json_encode($article->content) }}, {{ json_encode($article->title_en) }}, {{ json_encode($article->content_en) }}, {{ json_encode($article->video_url) }})"
                 style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:5px;border:1px solid #dee2e6;background:#fff;color:#495057;font-size:0.78rem;cursor:pointer">
                 <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 {{ __('help.edit_btn') }}
@@ -93,6 +93,13 @@
                         <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('help.markdown_hint') }}</p>
                     </div>
                 </div>
+                {{-- Video URL (shared, not per-language) --}}
+                <div style="border-top:1px solid #e9ebec;padding-top:14px">
+                    <label class="nf-label">{{ __('help.video_url_label') }}</label>
+                    <input type="url" name="video_url" id="help_video_url" class="nf-input"
+                        placeholder="https://www.youtube.com/watch?v=... or https://vimeo.com/...">
+                    <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('help.video_url_hint') }}</p>
+                </div>
             </div>
             <div class="nf-modal-footer">
                 <button type="button" class="btn-ghost" onclick="closeModal('modal-help-edit')">{{ __('common.cancel') }}</button>
@@ -104,13 +111,14 @@
 
 @push('scripts')
 <script>
-function openEditHelp(id, title, content, titleEn, contentEn) {
+function openEditHelp(id, title, content, titleEn, contentEn, videoUrl) {
     const form = document.getElementById('help-edit-form');
     form.action = form.dataset.base + '/' + id;
     document.getElementById('help_title').value      = title;
     document.getElementById('help_content').value    = content;
     document.getElementById('help_title_en').value   = titleEn   || '';
     document.getElementById('help_content_en').value = contentEn || '';
+    document.getElementById('help_video_url').value  = videoUrl  || '';
     switchHelpLang('hu');
     openModal('modal-help-edit');
 }

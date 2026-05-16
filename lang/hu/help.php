@@ -19,4 +19,6 @@ return [
     'updated'        => 'Súgó frissítve!',
     'tab_hu'         => 'Magyar',
     'tab_en'         => 'English',
+    'video_url_label' => 'Videó URL (YouTube / Vimeo)',
+    'video_url_hint'  => 'Opcionális. Ha megadod, a videó a cikk végén jelenik meg.',
 ];

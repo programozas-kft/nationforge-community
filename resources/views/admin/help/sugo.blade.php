@@ -168,6 +168,15 @@
                 <div class="prose prose-blue max-w-none text-gray-600 leading-relaxed help-content" style="font-size:0.95rem;">
                     {!! str_replace('src="/img/', 'src="' . asset('img/') . '/', Str::markdown($displayContent)) !!}
                 </div>
+                @php $embedUrl = \App\Models\HelpArticle::toEmbedUrl($art->video_url); @endphp
+                @if($embedUrl)
+                <div style="margin-top:24px;position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;border:1px solid #e9ebec">
+                    <iframe src="{{ $embedUrl }}"
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen loading="lazy"></iframe>
+                </div>
+                @endif
             </div>
             @empty
             <div class="text-center py-20">

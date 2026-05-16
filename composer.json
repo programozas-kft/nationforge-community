@@ -15,7 +15,8 @@
         "phpoffice/phpspreadsheet": "^5.7",
         "resend/resend-laravel": "^1.4",
         "spatie/laravel-medialibrary": "^11.21",
-        "spatie/laravel-permission": "^6.25"
+        "spatie/laravel-permission": "^6.25",
+        "stripe/stripe-php": "^20.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

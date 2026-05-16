@@ -218,6 +218,22 @@
     </div>
 
     <div class="form-card">
+        @if(session('payment_error'))
+        <div style="background:rgba(240,101,72,0.08);border:1px solid #f06548;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:0.82rem;color:#f06548;font-weight:500">
+            ⚠ {{ session('payment_error') }}
+        </div>
+        @endif
+        @if(session('payment_cancelled'))
+        <div style="background:rgba(247,184,75,0.1);border:1px solid #f7b84b;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:0.82rem;color:#856404;font-weight:500">
+            {{ session('payment_cancelled') }}
+        </div>
+        @endif
+        @if(session('payment_init_error'))
+        <div style="background:rgba(240,101,72,0.08);border:1px solid #f06548;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:0.82rem;color:#f06548;font-weight:500">
+            ⚠ {{ session('payment_init_error') }}
+        </div>
+        @endif
+
         @if($isFull && !$event->waitlist_enabled)
             <p class="form-title">{{ __('events.registration') }}</p>
             <div class="full-badge" style="margin-top:12px">
@@ -255,8 +271,21 @@
             </form>
             <p class="privacy-note">{{ __('events.privacy_note') }}</p>
         @else
-            <p class="form-title">{{ __('events.reg_title') }}</p>
-            <p class="form-sub">{{ __('events.reg_subtitle') }}</p>
+        @php
+            $isPaidEvent = $event->ticket_price > 0 && \App\Models\Setting::get('payment_provider');
+            $totalPrice  = $isPaidEvent ? $event->ticket_price : 0;
+        @endphp
+            <p class="form-title">{{ $isPaidEvent ? __('events.payment_required') : __('events.reg_title') }}</p>
+            <p class="form-sub">{{ $isPaidEvent ? __('events.payment_required_sub') : __('events.reg_subtitle') }}</p>
+
+            @if($isPaidEvent)
+            <div style="background:#f8f9fa;border:1px solid #e9ebec;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:0.82rem;color:#6c757d">{{ __('events.pay_total') }}</span>
+                <span style="font-size:1.1rem;font-weight:700;color:#343a40" id="pay-total-display">
+                    {{ number_format($event->ticket_price, 0, ',', ' ') }} Ft
+                </span>
+            </div>
+            @endif
 
             @if($errors->any())
                 <div style="background:rgba(240,101,72,0.08);border:1px solid #f06548;border-radius:7px;padding:10px 14px;margin-bottom:14px;font-size:0.8rem;color:#f06548">
@@ -286,7 +315,9 @@
                     <label class="form-label">{{ __('common.notes') }}</label>
                     <textarea name="notes" class="form-input" rows="3" placeholder="{{ __('events.notes_placeholder') }}">{{ old('notes') }}</textarea>
                 </div>
-                <button type="submit" class="btn-submit">{{ __('events.reg_submit') }}</button>
+                <button type="submit" class="btn-submit">
+                    {{ $isPaidEvent ? __('events.pay_submit') : __('events.reg_submit') }}
+                </button>
             </form>
             <p class="privacy-note">{{ __('events.privacy_note') }}</p>
         @endif

@@ -23,6 +23,16 @@ Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('local
 Route::get('/invite/{token}', [\App\Http\Controllers\InviteRegistrationController::class, 'show'])->name('invite.register');
 Route::post('/invite/{token}', [\App\Http\Controllers\InviteRegistrationController::class, 'register'])->name('invite.register.submit');
 
+// Payment callbacks
+Route::prefix('payment')->name('payment.')->group(function () {
+    Route::get('stripe/success/{token}', [\App\Http\Controllers\PaymentController::class, 'stripeSuccess'])->name('stripe.success');
+    Route::get('stripe/cancel/{token}',  [\App\Http\Controllers\PaymentController::class, 'stripeCancel'])->name('stripe.cancel');
+    Route::post('stripe/webhook',        [\App\Http\Controllers\PaymentController::class, 'stripeWebhook'])->name('stripe.webhook')
+        ->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
+    Route::get('barion/callback/{token}', [\App\Http\Controllers\PaymentController::class, 'barionCallback'])->name('barion.callback');
+    Route::get('barion/ipn',              [\App\Http\Controllers\PaymentController::class, 'barionIpn'])->name('barion.ipn');
+});
+
 // Public event registration
 Route::get('/e/ticket/{token}', [EventRegistrationController::class, 'ticket'])->name('events.ticket');
 Route::get('/e/{slug}', [EventRegistrationController::class, 'show'])->name('events.public');
@@ -87,6 +97,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('settings/mail', [SettingsController::class, 'updateMail'])->name('settings.mail');
     Route::post('settings/report', [SettingsController::class, 'updateReport'])->name('settings.report');
     Route::post('settings/report/test', [SettingsController::class, 'testReport'])->name('settings.report.test');
+    Route::post('settings/payment', [SettingsController::class, 'updatePayment'])->name('settings.payment');
 
     Route::get('links', [LinkController::class, 'index'])->name('links.index');
     Route::post('links', [LinkController::class, 'store'])->name('links.store');

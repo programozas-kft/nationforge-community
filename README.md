@@ -73,7 +73,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Volunteer shift scheduling with sign-up & attendance tracking
 - ✅ **Event check-in via QR code** (camera scanner + personal ticket page)
 - ✅ **Waitlist management** (auto-promotion, email notifications)
-- 🔲 Online payment for paid tickets (Stripe / Barion)
+- ✅ Online payment for paid tickets (Stripe / Barion)
 
 ### Email Campaigns
 - ✅ Compose and send HTML / Markdown email campaigns

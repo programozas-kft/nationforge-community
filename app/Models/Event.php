@@ -46,7 +46,10 @@ class Event extends Model
 
     public function registrations()
     {
-        return $this->hasMany(EventRegistration::class)->where('waitlisted', false);
+        // Csak megerősített regisztrációk számítanak a kapacitás szempontjából
+        return $this->hasMany(EventRegistration::class)
+            ->where('waitlisted', false)
+            ->whereIn('payment_status', ['free', 'paid']);
     }
 
     public function waitlist()

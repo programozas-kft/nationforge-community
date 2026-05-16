@@ -223,6 +223,94 @@
         </form>
     </div>
 
+    {{-- ── ONLINE PAYMENT ──────────────────────────────────── --}}
+    @php
+        $paymentProvider = \App\Models\Setting::get('payment_provider', '');
+        $hasStripeKey    = !empty(\App\Models\Setting::get('stripe_secret_key'));
+        $hasBarionKey    = !empty(\App\Models\Setting::get('barion_api_key'));
+        $barionEnv       = \App\Models\Setting::get('barion_environment', 'test');
+        $stripeWebhookUrl = route('payment.stripe.webhook');
+    @endphp
+    <div id="payment" style="margin-top:32px;margin-bottom:32px">
+        <form method="POST" action="{{ route('admin.settings.payment') }}">
+            @csrf
+            <div class="nf-card" style="padding:24px">
+                <h2 style="font-size:0.875rem;font-weight:600;color:#343a40;margin:0 0 6px;padding-bottom:12px;border-bottom:1px solid #e9ebec">
+                    {{ __('settings.payment_title') }}
+                </h2>
+                <p style="font-size:0.78rem;color:#6c757d;margin:0 0 18px">{{ __('settings.payment_desc') }}</p>
+
+                {{-- Provider selector --}}
+                <div style="margin-bottom:20px">
+                    <label class="nf-label">{{ __('settings.payment_provider') }}</label>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap">
+                        @foreach(['' => __('settings.payment_none'), 'stripe' => __('settings.payment_stripe'), 'barion' => __('settings.payment_barion')] as $val => $label)
+                        <label style="display:flex;align-items:center;gap:7px;padding:9px 16px;border:1.5px solid {{ $paymentProvider === $val ? '#405189' : '#dee2e6' }};border-radius:7px;cursor:pointer;font-size:0.82rem;font-weight:500;color:{{ $paymentProvider === $val ? '#405189' : '#495057' }};transition:all 0.15s"
+                               id="pay-opt-{{ $val ?: 'none' }}"
+                               onclick="selectProvider('{{ $val }}')">
+                            <input type="radio" name="payment_provider" value="{{ $val }}" {{ $paymentProvider === $val ? 'checked' : '' }}
+                                   style="accent-color:#405189;width:14px;height:14px">
+                            {{ $label }}
+                        </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Stripe fields --}}
+                <div id="pay-stripe" style="display:{{ $paymentProvider === 'stripe' ? 'block' : 'none' }}">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:4px">
+                        <div>
+                            <label class="nf-label">{{ __('settings.payment_stripe_pk') }}</label>
+                            <input type="password" name="stripe_publishable" class="nf-input" autocomplete="new-password"
+                                   placeholder="{{ $hasStripeKey ? '••••••••  ('.__('settings.payment_key_hint').')' : 'pk_live_…' }}">
+                        </div>
+                        <div>
+                            <label class="nf-label">{{ __('settings.payment_stripe_sk') }}</label>
+                            <input type="password" name="stripe_secret" class="nf-input" autocomplete="new-password"
+                                   placeholder="{{ $hasStripeKey ? '••••••••  ('.__('settings.payment_key_hint').')' : 'sk_live_…' }}">
+                        </div>
+                        <div style="grid-column:span 2">
+                            <label class="nf-label">{{ __('settings.payment_stripe_wh') }}</label>
+                            <input type="password" name="stripe_webhook_sec" class="nf-input" autocomplete="new-password"
+                                   placeholder="whsec_…">
+                            <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">
+                                {!! __('settings.payment_stripe_wh_hint', ['url' => '<code style="font-size:0.78rem;background:#f3f3f9;padding:1px 5px;border-radius:3px">' . $stripeWebhookUrl . '</code>']) !!}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Barion fields --}}
+                <div id="pay-barion" style="display:{{ $paymentProvider === 'barion' ? 'block' : 'none' }}">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:4px">
+                        <div>
+                            <label class="nf-label">{{ __('settings.payment_barion_key') }}</label>
+                            <input type="password" name="barion_api_key" class="nf-input" autocomplete="new-password"
+                                   placeholder="{{ $hasBarionKey ? '••••••••  ('.__('settings.payment_key_hint').')' : 'POSKey…' }}">
+                        </div>
+                        <div>
+                            <label class="nf-label">{{ __('settings.payment_barion_email') }}</label>
+                            <input type="email" name="barion_merchant" class="nf-input"
+                                   value="{{ \App\Models\Setting::get('barion_merchant_email', '') }}"
+                                   placeholder="merchant@barion.com">
+                        </div>
+                        <div>
+                            <label class="nf-label">{{ __('settings.payment_barion_env') }}</label>
+                            <select name="barion_environment" class="nf-select">
+                                <option value="test" {{ $barionEnv === 'test' ? 'selected' : '' }}>{{ __('settings.payment_barion_test') }}</option>
+                                <option value="live" {{ $barionEnv === 'live' ? 'selected' : '' }}>{{ __('settings.payment_barion_live') }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:18px">
+                    <button type="submit" class="btn-teal">{{ __('settings.payment_save') }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
     {{-- ── SCHEDULED REPORTS ──────────────────────────────── --}}
     <div id="report" style="margin-top:32px;margin-bottom:32px">
         <form method="POST" action="{{ route('admin.settings.report') }}">
@@ -535,6 +623,19 @@ function updateColorPreview(hex) {
     if (preview && hex.match(/^#[0-9a-fA-F]{6}$/)) {
         preview.style.background = `linear-gradient(90deg, ${hex}, ${hex}cc)`;
     }
+}
+
+function selectProvider(val) {
+    ['none', 'stripe', 'barion'].forEach(v => {
+        const opt = document.getElementById('pay-opt-' + v);
+        const isActive = v === (val || 'none');
+        if (opt) {
+            opt.style.borderColor = isActive ? '#405189' : '#dee2e6';
+            opt.style.color       = isActive ? '#405189' : '#495057';
+        }
+    });
+    document.getElementById('pay-stripe').style.display = val === 'stripe' ? 'block' : 'none';
+    document.getElementById('pay-barion').style.display = val === 'barion' ? 'block' : 'none';
 }
 
 function toggleReportFields() {

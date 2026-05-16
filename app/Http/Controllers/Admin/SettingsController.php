@@ -135,6 +135,40 @@ class SettingsController extends Controller
         return redirect()->route('admin.settings')->with('success', __('settings.mail_saved'));
     }
 
+    public function updatePayment(Request $request)
+    {
+        $request->validate([
+            'payment_provider'    => 'nullable|in:,stripe,barion',
+            'stripe_publishable'  => 'nullable|string|max:200',
+            'stripe_secret'       => 'nullable|string|max:200',
+            'stripe_webhook_sec'  => 'nullable|string|max:200',
+            'barion_api_key'      => 'nullable|string|max:200',
+            'barion_merchant'     => 'nullable|email|max:150',
+            'barion_environment'  => 'nullable|in:test,live',
+        ]);
+
+        Setting::set('payment_provider', $request->input('payment_provider', ''));
+
+        if ($request->filled('stripe_publishable')) {
+            Setting::set('stripe_publishable_key', $request->stripe_publishable);
+        }
+        if ($request->filled('stripe_secret')) {
+            Setting::set('stripe_secret_key', $request->stripe_secret);
+        }
+        if ($request->filled('stripe_webhook_sec')) {
+            Setting::set('stripe_webhook_secret', $request->stripe_webhook_sec);
+        }
+        if ($request->filled('barion_api_key')) {
+            Setting::set('barion_api_key', $request->barion_api_key);
+        }
+        if ($request->filled('barion_merchant')) {
+            Setting::set('barion_merchant_email', $request->barion_merchant);
+        }
+        Setting::set('barion_environment', $request->input('barion_environment', 'test'));
+
+        return redirect()->route('admin.settings')->with('success', __('settings.payment_saved'));
+    }
+
     public function updateReport(Request $request)
     {
         $request->validate([

@@ -6,6 +6,9 @@ use App\Mail\EventRegistrationConfirmation;
 use App\Mail\WaitlistConfirmation;
 use App\Models\Event;
 use App\Models\EventRegistration;
+use App\Models\Setting;
+use App\Services\BarionPaymentService;
+use App\Services\StripePaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -74,6 +77,32 @@ class EventRegistrationController extends Controller
         }
 
         $registration = EventRegistration::create($data);
+
+        // Fizetéses esemény → átirányítás a fizetési átjáróhoz
+        $provider = Setting::get('payment_provider', '');
+        if ($event->ticket_price > 0 && $provider) {
+            try {
+                $url = match ($provider) {
+                    'stripe' => (new StripePaymentService())->createCheckoutSession($registration),
+                    'barion' => (new BarionPaymentService())->createPayment($registration),
+                    default  => null,
+                };
+
+                if ($url) {
+                    return redirect($url);
+                }
+            } catch (\Throwable $e) {
+                Log::error('Payment init failed', ['error' => $e->getMessage(), 'registration_id' => $registration->id]);
+            }
+
+            // Fizetési inicializáció sikertelen → regisztráció törlése, hibaüzenet
+            $registration->delete();
+            return redirect()->route('events.public', $slug)
+                ->with('payment_init_error', __('events.payment_init_error'));
+        }
+
+        // Ingyenes esemény → azonnali visszaigazolás
+        $registration->update(['payment_status' => 'free']);
 
         try {
             Mail::to($registration->email, $registration->name)

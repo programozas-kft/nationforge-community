@@ -16,6 +16,8 @@ $statusMap = [
     'sent'    => ['label' => __('campaigns.status_sent'),    'style' => 'background:rgba(10,179,156,0.1);color:#0ab39c;'],
     'failed'  => ['label' => __('campaigns.status_failed'),  'style' => 'background:rgba(240,101,72,0.1);color:#f06548;'],
 ];
+
+$allStatuses = ['prospect','supporter','member','volunteer','donor','vip','inactive'];
 @endphp
 
 {{-- Resend key warning --}}
@@ -57,6 +59,7 @@ $statusMap = [
                 <th>{{ __('campaigns.name_label') }}</th>
                 <th>{{ __('campaigns.subject_label') }}</th>
                 <th>{{ __('common.status') }}</th>
+                <th>{{ __('campaigns.seg_label') }}</th>
                 <th>{{ __('campaigns.recipients_hint') }}</th>
                 <th>{{ __('campaigns.sent_at') }}</th>
                 <th></th>
@@ -64,6 +67,10 @@ $statusMap = [
         </thead>
         <tbody>
             @foreach($campaigns as $c)
+            @php
+                $seg = $c->segment_filters ?? [];
+                $segType = $seg['type'] ?? 'all';
+            @endphp
             <tr>
                 <td style="font-weight:500">{{ $c->name }}</td>
                 <td style="color:#6c757d;font-size:.85rem;">{{ $c->subject }}</td>
@@ -72,6 +79,29 @@ $statusMap = [
                         {{ $statusMap[$c->status]['label'] ?? $c->status }}
                     </span>
                 </td>
+                <td style="font-size:.82rem;color:#6c757d;">
+                    @if($segType === 'group')
+                        @php $ids = $seg['group_ids'] ?? []; @endphp
+                        <span class="nf-badge badge-info" style="font-size:.7rem">{{ __('campaigns.seg_group') }}</span>
+                        @if($ids)
+                            <span style="margin-left:4px">{{ $groups->whereIn('id', $ids)->pluck('name')->join(', ') }}</span>
+                        @endif
+                    @elseif($segType === 'tag')
+                        @php $ids = $seg['tag_ids'] ?? []; @endphp
+                        <span class="nf-badge badge-warning" style="font-size:.7rem">{{ __('campaigns.seg_tag') }}</span>
+                        @if($ids)
+                            <span style="margin-left:4px">{{ $tags->whereIn('id', $ids)->pluck('name')->join(', ') }}</span>
+                        @endif
+                    @elseif($segType === 'status')
+                        @php $sts = $seg['statuses'] ?? []; @endphp
+                        <span class="nf-badge badge-primary" style="font-size:.7rem">{{ __('campaigns.seg_status') }}</span>
+                        @if($sts)
+                            <span style="margin-left:4px">{{ collect($sts)->map(fn($s) => __('people.statuses.'.$s))->join(', ') }}</span>
+                        @endif
+                    @else
+                        <span class="nf-badge badge-secondary" style="font-size:.7rem">{{ __('campaigns.seg_all') }}</span>
+                    @endif
+                </td>
                 <td style="font-size:.85rem;color:#6c757d;">
                     @if($c->isSent())
                         {{ $c->sent_count }} / {{ $c->recipients_count }}
@@ -79,13 +109,13 @@ $statusMap = [
                             <span style="color:#f06548"> ({{ $c->failed_count }} {{ __('campaigns.failed_count') }})</span>
                         @endif
                     @else
-                        {{ $subscriberCount }} {{ __('campaigns.recipients_hint') }}
+                        —
                     @endif
                 </td>
                 <td style="font-size:.85rem;color:#6c757d;">{{ $c->sent_at?->format('Y.m.d H:i') ?? '—' }}</td>
                 <td style="text-align:right;white-space:nowrap">
                     @if($c->isDraft())
-                    <button onclick="openEditCampaign({{ $c->id }}, {{ json_encode($c->name) }}, {{ json_encode($c->subject) }}, {{ json_encode($c->body_html) }}, {{ json_encode($c->from_name) }}, {{ json_encode($c->from_email) }})"
+                    <button onclick="openEditCampaign({{ $c->id }}, {{ json_encode($c->name) }}, {{ json_encode($c->subject) }}, {{ json_encode($c->body_html) }}, {{ json_encode($c->from_name) }}, {{ json_encode($c->from_email) }}, {{ json_encode($c->segment_filters ?? ['type'=>'all']) }})"
                         class="btn-ghost" style="margin-right:4px">{{ __('common.edit') }}</button>
                     <form method="POST" action="{{ route('admin.campaigns.send', $c) }}" style="display:inline"
                           onsubmit="return confirm('{{ __('campaigns.send_confirm') }}')">
@@ -108,14 +138,14 @@ $statusMap = [
     @endif
 </div>
 
-{{-- Create Modal --}}
+{{-- ===================== CREATE MODAL ===================== --}}
 <div id="modal-campaign-create" class="nf-overlay">
-    <div class="nf-modal" style="max-width:680px;width:95%">
+    <div class="nf-modal" style="max-width:720px;width:95%">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('campaigns.new') }}</span>
             <button onclick="closeModal('modal-campaign-create')" class="nf-modal-close">✕</button>
         </div>
-        <form method="POST" action="{{ route('admin.campaigns.store') }}">
+        <form id="campaign-create-form" method="POST" action="{{ route('admin.campaigns.store') }}">
             @csrf
             <div class="nf-modal-body" style="display:grid;gap:14px">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -138,6 +168,10 @@ $statusMap = [
                         <input type="email" name="from_email" class="nf-input" placeholder="{{ config('mail.from.address') }}">
                     </div>
                 </div>
+
+                {{-- Audience segment --}}
+                @include('admin.campaigns._segment_panel', ['prefix' => 'c', 'seg' => ['type' => 'all'], 'groups' => $groups, 'tags' => $tags, 'allStatuses' => $allStatuses, 'subscriberCount' => $subscriberCount])
+
                 <div>
                     <div class="flex items-center justify-between" style="margin-bottom:6px">
                         <label class="nf-label" style="margin:0">{{ __('campaigns.body_label') }} <span style="color:#f06548">*</span></label>
@@ -152,9 +186,6 @@ $statusMap = [
                         placeholder="{{ __('campaigns.placeholder') }}"></textarea>
                     <p style="font-size:.72rem;color:#adb5bd;margin-top:4px">{{ __('campaigns.markdown_hint') }}</p>
                 </div>
-                <div style="padding:10px 12px;background:#f8f9fa;border-radius:6px;font-size:.8rem;color:#6c757d;">
-                    📧 {{ $subscriberCount }} {{ __('campaigns.recipients_hint') }}
-                </div>
             </div>
             <div class="nf-modal-footer">
                 <button type="button" class="btn-ghost" onclick="closeModal('modal-campaign-create')">{{ __('common.cancel') }}</button>
@@ -164,9 +195,9 @@ $statusMap = [
     </div>
 </div>
 
-{{-- Edit Modal --}}
+{{-- ===================== EDIT MODAL ===================== --}}
 <div id="modal-campaign-edit" class="nf-overlay">
-    <div class="nf-modal" style="max-width:680px;width:95%">
+    <div class="nf-modal" style="max-width:720px;width:95%">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('campaigns.edit') }}</span>
             <button onclick="closeModal('modal-campaign-edit')" class="nf-modal-close">✕</button>
@@ -194,6 +225,10 @@ $statusMap = [
                         <input type="email" name="from_email" id="edit_from_email" class="nf-input">
                     </div>
                 </div>
+
+                {{-- Audience segment --}}
+                @include('admin.campaigns._segment_panel', ['prefix' => 'e', 'seg' => ['type' => 'all'], 'groups' => $groups, 'tags' => $tags, 'allStatuses' => $allStatuses, 'subscriberCount' => $subscriberCount])
+
                 <div>
                     <div class="flex items-center justify-between" style="margin-bottom:6px">
                         <label class="nf-label" style="margin:0">{{ __('campaigns.body_label') }} <span style="color:#f06548">*</span></label>
@@ -216,7 +251,7 @@ $statusMap = [
     </div>
 </div>
 
-{{-- Template Picker Modal --}}
+{{-- ===================== TEMPLATE PICKER MODAL ===================== --}}
 <div id="modal-tpl-picker" class="nf-overlay">
     <div class="nf-modal" style="max-width:860px;width:96%">
         <div class="nf-modal-header">
@@ -244,18 +279,99 @@ $statusMap = [
 
 @push('scripts')
 <script>
-function openEditCampaign(id, name, subject, body, fromName, fromEmail) {
+const RECIPIENT_COUNT_URL = '{{ route("admin.campaigns.recipient-count") }}';
+
+// ── Segment panel logic ───────────────────────────────────────────────────────
+
+function onSegmentTypeChange(select, prefix) {
+    const type = select.value;
+    ['group','tag','status'].forEach(t => {
+        document.getElementById(prefix + '_seg_' + t).style.display = type === t ? '' : 'none';
+    });
+    refreshSegmentCount(prefix);
+}
+
+let _segTimer = null;
+function scheduleSegCount(prefix) {
+    clearTimeout(_segTimer);
+    _segTimer = setTimeout(() => refreshSegmentCount(prefix), 350);
+}
+
+function refreshSegmentCount(prefix) {
+    const formId   = prefix === 'c' ? 'campaign-create-form' : 'campaign-edit-form';
+    const form     = document.getElementById(formId);
+    const type     = form.querySelector('[name="segment_type"]').value;
+    const params   = new URLSearchParams({ type });
+
+    if (type === 'group') {
+        [...form.querySelectorAll('[name="segment_group_ids[]"] option:checked')]
+            .forEach(o => params.append('group_ids[]', o.value));
+    } else if (type === 'tag') {
+        [...form.querySelectorAll('[name="segment_tag_ids[]"] option:checked')]
+            .forEach(o => params.append('tag_ids[]', o.value));
+    } else if (type === 'status') {
+        [...form.querySelectorAll('[name="segment_statuses[]"]:checked')]
+            .forEach(o => params.append('statuses[]', o.value));
+    }
+
+    const el = document.getElementById(prefix + '_seg_count_val');
+    if (el) el.textContent = '…';
+
+    fetch(RECIPIENT_COUNT_URL + '?' + params)
+        .then(r => r.json())
+        .then(d => { if (el) el.textContent = d.count; })
+        .catch(() => { if (el) el.textContent = '?'; });
+}
+
+// ── Edit modal open ───────────────────────────────────────────────────────────
+
+function openEditCampaign(id, name, subject, body, fromName, fromEmail, segmentFilters) {
     const form = document.getElementById('campaign-edit-form');
     form.action = form.dataset.base + '/' + id;
+
     document.getElementById('edit_name').value       = name;
     document.getElementById('edit_subject').value    = subject;
     document.getElementById('edit_body').value       = body;
     document.getElementById('edit_from_name').value  = fromName || '';
     document.getElementById('edit_from_email').value = fromEmail || '';
+
+    // Apply segment filters
+    const seg  = segmentFilters || { type: 'all' };
+    const type = seg.type || 'all';
+
+    const typeSelect = form.querySelector('[name="segment_type"]');
+    if (typeSelect) {
+        typeSelect.value = type;
+        onSegmentTypeChange(typeSelect, 'e');
+    }
+
+    // Restore group selection
+    const groupSel = form.querySelector('[name="segment_group_ids[]"]');
+    if (groupSel && seg.group_ids) {
+        [...groupSel.options].forEach(o => {
+            o.selected = seg.group_ids.includes(parseInt(o.value));
+        });
+    }
+
+    // Restore tag selection
+    const tagSel = form.querySelector('[name="segment_tag_ids[]"]');
+    if (tagSel && seg.tag_ids) {
+        [...tagSel.options].forEach(o => {
+            o.selected = seg.tag_ids.includes(parseInt(o.value));
+        });
+    }
+
+    // Restore status checkboxes
+    form.querySelectorAll('[name="segment_statuses[]"]').forEach(cb => {
+        cb.checked = seg.statuses ? seg.statuses.includes(cb.value) : false;
+    });
+
+    refreshSegmentCount('e');
     openModal('modal-campaign-edit');
 }
 
-// Template picker
+// ── Template picker ───────────────────────────────────────────────────────────
+
 let pickerTargetId = null;
 let templatesCache = null;
 

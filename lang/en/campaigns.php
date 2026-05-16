@@ -57,4 +57,19 @@ return [
     'tpl_cat_promotional'  => 'Promotional',
     'tpl_cat_custom'       => 'Custom',
     'use_template_btn'  => 'Use template',
+
+    // Audience segmentation
+    'seg_label'            => 'Audience',
+    'seg_all'              => 'All newsletter subscribers',
+    'seg_group'            => 'Group members',
+    'seg_tag'              => 'Tagged contacts',
+    'seg_status'           => 'By member status',
+    'seg_groups'           => 'Groups',
+    'seg_tags'             => 'Tags',
+    'seg_statuses'         => 'Member statuses',
+    'seg_multiselect_hint' => 'hold Ctrl / ⌘ to select multiple',
+    'seg_no_groups'        => 'No groups found.',
+    'seg_no_tags'          => 'No tags found.',
+    'seg_estimated'        => 'Estimated recipients',
+    'seg_recipients'       => 'contacts',
 ];

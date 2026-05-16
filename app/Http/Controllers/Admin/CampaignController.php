@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\CampaignMail;
 use App\Models\EmailCampaign;
+use App\Models\Group;
 use App\Models\Person;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -14,30 +16,35 @@ class CampaignController extends Controller
     public function index()
     {
         $campaigns = EmailCampaign::latest()->get();
+        $groups    = Group::orderBy('name')->get(['id', 'name']);
+        $tags      = Tag::orderBy('name')->get(['id', 'name', 'color']);
+
         $subscriberCount = Person::whereNotNull('email')
             ->where('email', '!=', '')
             ->where('is_subscribed', true)
             ->count();
-        return view('admin.campaigns.index', compact('campaigns', 'subscriberCount'));
+
+        return view('admin.campaigns.index', compact('campaigns', 'subscriberCount', 'groups', 'tags'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name'      => 'required|string|max:200',
-            'subject'   => 'required|string|max:255',
-            'body_html' => 'required|string',
-            'from_name' => 'nullable|string|max:100',
-            'from_email'=> 'nullable|email|max:150',
+            'name'       => 'required|string|max:200',
+            'subject'    => 'required|string|max:255',
+            'body_html'  => 'required|string',
+            'from_name'  => 'nullable|string|max:100',
+            'from_email' => 'nullable|email|max:150',
         ]);
 
         EmailCampaign::create([
-            'name'       => $request->name,
-            'subject'    => $request->subject,
-            'body_html'  => $request->body_html,
-            'from_name'  => $request->from_name  ?: config('mail.from.name'),
-            'from_email' => $request->from_email ?: config('mail.from.address'),
-            'status'     => 'draft',
+            'name'            => $request->name,
+            'subject'         => $request->subject,
+            'body_html'       => $request->body_html,
+            'from_name'       => $request->from_name  ?: config('mail.from.name'),
+            'from_email'      => $request->from_email ?: config('mail.from.address'),
+            'status'          => 'draft',
+            'segment_filters' => $this->parseSegmentFilters($request),
         ]);
 
         return back()->with('success', __('campaigns.created'));
@@ -50,14 +57,17 @@ class CampaignController extends Controller
         }
 
         $request->validate([
-            'name'      => 'required|string|max:200',
-            'subject'   => 'required|string|max:255',
-            'body_html' => 'required|string',
-            'from_name' => 'nullable|string|max:100',
-            'from_email'=> 'nullable|email|max:150',
+            'name'       => 'required|string|max:200',
+            'subject'    => 'required|string|max:255',
+            'body_html'  => 'required|string',
+            'from_name'  => 'nullable|string|max:100',
+            'from_email' => 'nullable|email|max:150',
         ]);
 
-        $campaign->update($request->only('name', 'subject', 'body_html', 'from_name', 'from_email'));
+        $campaign->update([
+            ...$request->only('name', 'subject', 'body_html', 'from_name', 'from_email'),
+            'segment_filters' => $this->parseSegmentFilters($request),
+        ]);
 
         return back()->with('success', __('campaigns.updated'));
     }
@@ -79,11 +89,7 @@ class CampaignController extends Controller
             return back()->with('error', __('campaigns.no_resend_key'));
         }
 
-        $recipients = Person::whereNotNull('email')
-            ->where('email', '!=', '')
-            ->where('is_subscribed', true)
-            ->get()
-            ->pluck('email', 'full_name');
+        $recipients = $campaign->buildRecipientsQuery()->get()->pluck('email', 'full_name');
 
         if ($recipients->isEmpty()) {
             return back()->with('error', __('campaigns.no_recipients'));
@@ -103,18 +109,39 @@ class CampaignController extends Controller
             }
         }
 
-        try {
-            $campaign->update([
-                'status'           => $failed > 0 && $sent === 0 ? 'failed' : 'sent',
-                'sent_at'          => now(),
-                'sent_count'       => $sent,
-                'failed_count'     => $failed,
-                'recipients_count' => $recipients->count(),
-            ]);
-        } catch (\Exception) {
-            $campaign->update(['status' => 'sent', 'sent_at' => now()]);
-        }
+        $campaign->update([
+            'status'           => $failed > 0 && $sent === 0 ? 'failed' : 'sent',
+            'sent_at'          => now(),
+            'sent_count'       => $sent,
+            'failed_count'     => $failed,
+            'recipients_count' => $recipients->count(),
+        ]);
 
         return back()->with('success', __('campaigns.sent_ok', ['count' => $sent]));
+    }
+
+    public function recipientCount(Request $request)
+    {
+        $temp = new EmailCampaign([
+            'segment_filters' => $this->parseSegmentFilters($request),
+        ]);
+
+        return response()->json(['count' => $temp->buildRecipientsQuery()->count()]);
+    }
+
+    private function parseSegmentFilters(Request $request): array
+    {
+        $type    = $request->input('segment_type', 'all');
+        $filters = ['type' => $type];
+
+        if ($type === 'group') {
+            $filters['group_ids'] = array_map('intval', (array) $request->input('segment_group_ids', []));
+        } elseif ($type === 'tag') {
+            $filters['tag_ids'] = array_map('intval', (array) $request->input('segment_tag_ids', []));
+        } elseif ($type === 'status') {
+            $filters['statuses'] = (array) $request->input('segment_statuses', []);
+        }
+
+        return $filters;
     }
 }

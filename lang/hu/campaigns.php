@@ -57,4 +57,19 @@ return [
     'tpl_cat_promotional'  => 'Promóciós',
     'tpl_cat_custom'       => 'Egyéni',
     'use_template_btn'  => 'Sablon betöltése',
+
+    // Célcsoport szegmentálás
+    'seg_label'            => 'Célcsoport',
+    'seg_all'              => 'Összes hírlevél feliratkozó',
+    'seg_group'            => 'Csoport tagjai',
+    'seg_tag'              => 'Tagelt kontaktok',
+    'seg_status'           => 'Tag státusz szerint',
+    'seg_groups'           => 'Csoportok',
+    'seg_tags'             => 'Tagek',
+    'seg_statuses'         => 'Tag státuszok',
+    'seg_multiselect_hint' => 'Ctrl / ⌘ nyomvatartásával több is választható',
+    'seg_no_groups'        => 'Nincs csoport.',
+    'seg_no_tags'          => 'Nincs tag.',
+    'seg_estimated'        => 'Becsült fogadók',
+    'seg_recipients'       => 'kontakt',
 ];

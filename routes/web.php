@@ -126,6 +126,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('tasks/{task}/attachments/{attachment}/download', [\App\Http\Controllers\Admin\TaskAttachmentController::class, 'download'])->name('tasks.attachments.download');
     Route::delete('tasks/{task}/attachments/{attachment}', [\App\Http\Controllers\Admin\TaskAttachmentController::class, 'destroy'])->name('tasks.attachments.destroy');
 
+    Route::get('campaigns/recipient-count', [\App\Http\Controllers\Admin\CampaignController::class, 'recipientCount'])->name('campaigns.recipient-count');
     Route::get('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'index'])->name('campaigns.index');
     Route::post('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'store'])->name('campaigns.store');
     Route::put('campaigns/{campaign}', [\App\Http\Controllers\Admin\CampaignController::class, 'update'])->name('campaigns.update');

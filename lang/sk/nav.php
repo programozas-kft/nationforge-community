@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'menu'           => 'Menu',
+    'organizing'     => 'Organizácia',
+    'administration' => 'Správa',
+    'dashboard'      => 'Prehľad',
+    'contacts'       => 'Kontakty',
+    'groups'         => 'Skupiny',
+    'events'         => 'Udalosti',
+    'donations'      => 'Dary',
+    'projects'       => 'Projekty',
+    'tasks'          => 'Úlohy',
+    'users'          => 'Používatelia',
+    'settings'       => 'Nastavenia',
+    'changelog'      => 'Zmeny',
+    'help'           => 'Pomoc',
+    'logout'         => 'Odhlásiť sa',
+    'open_tasks'     => 'otvorené',
+    'links'          => 'Zbierka odkazov',
+    'news'           => 'Správy',
+    'infographics'   => 'Infografiky',
+    'campaigns'      => 'E-mailové kampane',
+];

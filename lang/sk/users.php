@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title'              => 'Používatelia',
+    'new'                => 'Nový používateľ',
+    'edit_title'         => 'Upraviť používateľa',
+    'col_photo'          => 'Fotografia',
+    'col_name'           => 'Meno',
+    'col_email'          => 'E-mail',
+    'col_role'           => 'Rola',
+    'col_groups'         => 'Skupiny',
+    'col_registered'     => 'Zaregistrovaný',
+    'empty'              => 'Žiadni používatelia.',
+    'you'                => 'Vy',
+    'full_name'          => 'Celé meno',
+    'password'           => 'Heslo',
+    'new_password'       => 'Nové heslo',
+    'password_confirm'   => 'Potvrdiť heslo',
+    'password_placeholder' => 'Nechajte prázdne pre zachovanie aktuálneho hesla',
+    'role'               => 'Rola',
+    'groups'             => 'Skupiny',
+    'no_groups'          => 'Žiadne skupiny.',
+    'photo_upload'       => 'Nahrať fotografiu',
+    'roles' => [
+        'super-admin' => 'Super Admin',
+        'admin'       => 'Admin',
+        'editor'      => 'Redaktor',
+        'member'      => 'Člen',
+    ],
+];

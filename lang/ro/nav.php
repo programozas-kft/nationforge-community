@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'menu'           => 'Meniu',
+    'organizing'     => 'Organizare',
+    'administration' => 'Administrare',
+    'dashboard'      => 'Panou de control',
+    'contacts'       => 'Contacte',
+    'groups'         => 'Grupuri',
+    'events'         => 'Evenimente',
+    'donations'      => 'Donații',
+    'projects'       => 'Proiecte',
+    'tasks'          => 'Sarcini',
+    'users'          => 'Utilizatori',
+    'settings'       => 'Setări',
+    'changelog'      => 'Jurnal modificări',
+    'help'           => 'Ajutor',
+    'logout'         => 'Deconectare',
+    'open_tasks'     => 'deschise',
+    'links'          => 'Colecție linkuri',
+    'news'           => 'Știri',
+    'infographics'   => 'Infografice',
+    'campaigns'      => 'Campanii e-mail',
+];

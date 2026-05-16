@@ -1,0 +1,38 @@
+<?php
+
+return [
+    'title'            => 'Dary',
+    'new'              => 'Nový dar',
+    'edit_title'       => 'Upraviť dar',
+    'col_donor'        => 'Darca',
+    'col_amount'       => 'Suma',
+    'col_date'         => 'Dátum',
+    'col_status'       => 'Stav',
+    'col_notes'        => 'Poznámky',
+    'empty'            => 'Zatiaľ žiadne dary.',
+    'amount'           => 'Suma (HUF)',
+    'donor'            => 'Darca',
+    'payment_status'   => 'Stav platby',
+    'payment_method'   => 'Spôsob platby',
+    'currency'         => 'Mena',
+    'campaign'         => 'Kampaň',
+    'recurring'        => 'Opakujúci sa dar',
+    'anonymous'        => 'Anonymný',
+    'total_completed'  => 'Celkové dokončené dary',
+    'show_title'       => 'Detaily daru',
+    'none'             => 'Žiadne dary.',
+    'col_method'       => 'Spôsob',
+    'col_recurring'    => 'Opakujúci sa',
+    'method' => [
+        'cash'     => 'Hotovosť',
+        'transfer' => 'Prevod',
+        'card'     => 'Karta',
+        'other'    => 'Iné',
+    ],
+    'status' => [
+        'pending'   => 'Čakajúci',
+        'completed' => 'Dokončený',
+        'failed'    => 'Neúspešný',
+        'refunded'  => 'Vrátený',
+    ],
+];

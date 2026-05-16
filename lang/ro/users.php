@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title'              => 'Utilizatori',
+    'new'                => 'Utilizator nou',
+    'edit_title'         => 'Editează utilizator',
+    'col_photo'          => 'Fotografie',
+    'col_name'           => 'Nume',
+    'col_email'          => 'E-mail',
+    'col_role'           => 'Rol',
+    'col_groups'         => 'Grupuri',
+    'col_registered'     => 'Înregistrat',
+    'empty'              => 'Niciun utilizator.',
+    'you'                => 'Tu',
+    'full_name'          => 'Nume complet',
+    'password'           => 'Parolă',
+    'new_password'       => 'Parolă nouă',
+    'password_confirm'   => 'Confirmă parola',
+    'password_placeholder' => 'Lasă gol pentru a păstra parola actuală',
+    'role'               => 'Rol',
+    'groups'             => 'Grupuri',
+    'no_groups'          => 'Niciun grup.',
+    'photo_upload'       => 'Încarcă fotografie',
+    'roles' => [
+        'super-admin' => 'Super Admin',
+        'admin'       => 'Admin',
+        'editor'      => 'Editor',
+        'member'      => 'Membru',
+    ],
+];

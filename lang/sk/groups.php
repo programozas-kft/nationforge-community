@@ -1,0 +1,35 @@
+<?php
+
+return [
+    'title'          => 'Skupiny',
+    'new'            => 'Nová skupina',
+    'edit_title'     => 'Upraviť skupinu',
+    'create_title'   => 'Nová skupina',
+    'col_name'       => 'Skupina',
+    'col_type'       => 'Typ',
+    'col_privacy'    => 'Súkromie',
+    'col_members'    => 'Členovia',
+    'empty'          => 'Zatiaľ žiadne skupiny.',
+    'members'        => 'Členovia',
+    'chat'           => 'Chat',
+    'description'    => 'Popis',
+    'active_group'   => 'Aktívna skupina',
+    'name'           => 'Názov skupiny',
+    'member_count'   => 'Počet členov',
+    'col_status_role'=> 'Stav / Rola',
+    'type_contact'   => 'Kontakt',
+    'type_user'      => 'Používateľ',
+    'no_members'     => 'Žiadni členovia.',
+    'privacy' => [
+        'public'  => 'Verejná',
+        'private' => 'Súkromná',
+        'secret'  => 'Tajná',
+    ],
+    'type' => [
+        'community' => 'Komunita',
+        'campaign'  => 'Kampaň',
+        'chapter'   => 'Pobočka',
+        'committee' => 'Výbor',
+        'team'      => 'Tím',
+    ],
+];

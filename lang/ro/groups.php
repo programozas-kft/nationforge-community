@@ -1,0 +1,35 @@
+<?php
+
+return [
+    'title'          => 'Grupuri',
+    'new'            => 'Grup nou',
+    'edit_title'     => 'Editează grup',
+    'create_title'   => 'Grup nou',
+    'col_name'       => 'Grup',
+    'col_type'       => 'Tip',
+    'col_privacy'    => 'Confidențialitate',
+    'col_members'    => 'Membri',
+    'empty'          => 'Niciun grup încă.',
+    'members'        => 'Membri',
+    'chat'           => 'Chat',
+    'description'    => 'Descriere',
+    'active_group'   => 'Grup activ',
+    'name'           => 'Numele grupului',
+    'member_count'   => 'Număr membri',
+    'col_status_role'=> 'Status / Rol',
+    'type_contact'   => 'Contact',
+    'type_user'      => 'Utilizator',
+    'no_members'     => 'Niciun membru.',
+    'privacy' => [
+        'public'  => 'Public',
+        'private' => 'Privat',
+        'secret'  => 'Secret',
+    ],
+    'type' => [
+        'community' => 'Comunitate',
+        'campaign'  => 'Campanie',
+        'chapter'   => 'Filială',
+        'committee' => 'Comitet',
+        'team'      => 'Echipă',
+    ],
+];

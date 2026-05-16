@@ -1,0 +1,35 @@
+<?php
+
+return [
+    'title'          => 'Gruppen',
+    'new'            => 'Neue Gruppe',
+    'edit_title'     => 'Gruppe bearbeiten',
+    'create_title'   => 'Neue Gruppe',
+    'col_name'       => 'Gruppe',
+    'col_type'       => 'Typ',
+    'col_privacy'    => 'Sichtbarkeit',
+    'col_members'    => 'Mitglieder',
+    'empty'          => 'Noch keine Gruppen.',
+    'members'        => 'Mitglieder',
+    'chat'           => 'Chat',
+    'description'    => 'Beschreibung',
+    'active_group'   => 'Aktive Gruppe',
+    'name'           => 'Gruppenname',
+    'member_count'   => 'Mitgliederzahl',
+    'col_status_role'=> 'Status / Rolle',
+    'type_contact'   => 'Kontakt',
+    'type_user'      => 'Benutzer',
+    'no_members'     => 'Keine Mitglieder.',
+    'privacy' => [
+        'public'  => 'Öffentlich',
+        'private' => 'Privat',
+        'secret'  => 'Geheim',
+    ],
+    'type' => [
+        'community' => 'Gemeinschaft',
+        'campaign'  => 'Kampagne',
+        'chapter'   => 'Ortsgruppe',
+        'committee' => 'Komitee',
+        'team'      => 'Team',
+    ],
+];

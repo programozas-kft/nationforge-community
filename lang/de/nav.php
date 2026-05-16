@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'menu'           => 'Menü',
+    'organizing'     => 'Organisation',
+    'administration' => 'Verwaltung',
+    'dashboard'      => 'Dashboard',
+    'contacts'       => 'Kontakte',
+    'groups'         => 'Gruppen',
+    'events'         => 'Veranstaltungen',
+    'donations'      => 'Spenden',
+    'projects'       => 'Projekte',
+    'tasks'          => 'Aufgaben',
+    'users'          => 'Benutzer',
+    'settings'       => 'Einstellungen',
+    'changelog'      => 'Changelog',
+    'help'           => 'Hilfe',
+    'logout'         => 'Abmelden',
+    'open_tasks'     => 'offen',
+    'links'          => 'Link-Sammlung',
+    'news'           => 'Neuigkeiten',
+    'infographics'   => 'Infografiken',
+    'campaigns'      => 'E-Mail-Kampagnen',
+];

@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title'       => 'Kalendár',
+    'prev'        => 'Predchádzajúci mesiac',
+    'next'        => 'Nasledujúci mesiac',
+    'today'       => 'Dnes',
+    'new_event'   => 'Nová udalosť',
+    'modal_title' => 'Nová udalosť skupiny',
+    'event_title' => 'Názov udalosti',
+    'starts_at'   => 'Začína o',
+    'ends_at'     => 'Končí o',
+    'type'        => 'Typ',
+    'venue'       => 'Miesto konania',
+    'city'        => 'Mesto',
+    'is_online'   => 'Online udalosť',
+    'online_url'  => 'Online URL',
+    'description' => 'Popis',
+    'create'      => 'Vytvoriť',
+    'cancel'      => 'Zrušiť',
+    'empty'       => 'Žiadne udalosti v tomto mesiaci.',
+    'more'        => 'ďalšie :count',
+    'created'     => 'Udalosť vytvorená!',
+    'weekdays'    => ['Po', 'Ut', 'St', 'Št', 'Pi', 'So', 'Ne'],
+    'months'      => [
+        1 => 'Január', 2 => 'Február', 3 => 'Marec', 4 => 'Apríl',
+        5 => 'Máj', 6 => 'Jún', 7 => 'Júl', 8 => 'August',
+        9 => 'September', 10 => 'Október', 11 => 'November', 12 => 'December',
+    ],
+];

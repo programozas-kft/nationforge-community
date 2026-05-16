@@ -142,7 +142,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Full HU / EN bilingual admin panel
 - ✅ Language switcher in sidebar (SVG flag-icons)
 - ✅ Per-session locale switching
-- 🔲 Additional language packs (DE, RO, SK, …)
+- ✅ Additional language packs (DE, RO, SK, …)
 
 ### Integrations & API
 - 🔲 Webhook support (outgoing events)

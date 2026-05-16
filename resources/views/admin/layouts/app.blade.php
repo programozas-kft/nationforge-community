@@ -458,17 +458,20 @@
     <!-- User + language switcher -->
     <div class="sb-user">
         <!-- Language switcher -->
-        <div style="display:flex;gap:4px;margin-bottom:8px;padding:0 2px">
-            <a href="{{ route('locale.switch', 'hu') }}"
-               style="flex:1;text-align:center;padding:5px;border-radius:5px;font-size:0.72rem;font-weight:600;text-decoration:none;
-                      {{ app()->getLocale() === 'hu' ? 'background:rgba(255,255,255,0.2);color:#fff' : 'color:#5a6587' }}">
-                <span class="fi fi-hu" style="border-radius:2px"></span> HU
+        <div style="display:flex;gap:4px;margin-bottom:8px;padding:0 2px;flex-wrap:wrap">
+            @foreach([
+                'hu' => ['flag' => 'fi-hu', 'label' => 'HU'],
+                'en' => ['flag' => 'fi-gb', 'label' => 'EN'],
+                'de' => ['flag' => 'fi-de', 'label' => 'DE'],
+                'ro' => ['flag' => 'fi-ro', 'label' => 'RO'],
+                'sk' => ['flag' => 'fi-sk', 'label' => 'SK'],
+            ] as $loc => $info)
+            <a href="{{ route('locale.switch', $loc) }}"
+               style="flex:1;min-width:28%;text-align:center;padding:5px;border-radius:5px;font-size:0.72rem;font-weight:600;text-decoration:none;
+                      {{ app()->getLocale() === $loc ? 'background:rgba(255,255,255,0.2);color:#fff' : 'color:#5a6587' }}">
+                <span class="fi {{ $info['flag'] }}" style="border-radius:2px"></span> {{ $info['label'] }}
             </a>
-            <a href="{{ route('locale.switch', 'en') }}"
-               style="flex:1;text-align:center;padding:5px;border-radius:5px;font-size:0.72rem;font-weight:600;text-decoration:none;
-                      {{ app()->getLocale() === 'en' ? 'background:rgba(255,255,255,0.2);color:#fff' : 'color:#5a6587' }}">
-                <span class="fi fi-gb" style="border-radius:2px"></span> EN
-            </a>
+            @endforeach
         </div>
 
         <div class="sb-user-card">

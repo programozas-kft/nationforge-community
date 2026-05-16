@@ -1,0 +1,38 @@
+<?php
+
+return [
+    'title'            => 'Spenden',
+    'new'              => 'Neue Spende',
+    'edit_title'       => 'Spende bearbeiten',
+    'col_donor'        => 'Spender',
+    'col_amount'       => 'Betrag',
+    'col_date'         => 'Datum',
+    'col_status'       => 'Status',
+    'col_notes'        => 'Notizen',
+    'empty'            => 'Noch keine Spenden.',
+    'amount'           => 'Betrag (HUF)',
+    'donor'            => 'Spender',
+    'payment_status'   => 'Zahlungsstatus',
+    'payment_method'   => 'Zahlungsmethode',
+    'currency'         => 'Währung',
+    'campaign'         => 'Kampagne',
+    'recurring'        => 'Wiederkehrende Spende',
+    'anonymous'        => 'Anonym',
+    'total_completed'  => 'Abgeschlossene Spenden gesamt',
+    'show_title'       => 'Spendendetails',
+    'none'             => 'Keine Spenden.',
+    'col_method'       => 'Methode',
+    'col_recurring'    => 'Wiederkehrend',
+    'method' => [
+        'cash'     => 'Bargeld',
+        'transfer' => 'Überweisung',
+        'card'     => 'Karte',
+        'other'    => 'Sonstiges',
+    ],
+    'status' => [
+        'pending'   => 'Ausstehend',
+        'completed' => 'Abgeschlossen',
+        'failed'    => 'Fehlgeschlagen',
+        'refunded'  => 'Erstattet',
+    ],
+];

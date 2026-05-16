@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title'       => 'Calendar',
+    'prev'        => 'Luna anterioară',
+    'next'        => 'Luna următoare',
+    'today'       => 'Azi',
+    'new_event'   => 'Eveniment nou',
+    'modal_title' => 'Eveniment nou pentru grup',
+    'event_title' => 'Titlul evenimentului',
+    'starts_at'   => 'Începe la',
+    'ends_at'     => 'Se termină la',
+    'type'        => 'Tip',
+    'venue'       => 'Locație',
+    'city'        => 'Oraș',
+    'is_online'   => 'Eveniment online',
+    'online_url'  => 'URL online',
+    'description' => 'Descriere',
+    'create'      => 'Creează',
+    'cancel'      => 'Anulează',
+    'empty'       => 'Niciun eveniment în această lună.',
+    'more'        => 'încă :count',
+    'created'     => 'Eveniment creat!',
+    'weekdays'    => ['Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ', 'Du'],
+    'months'      => [
+        1 => 'Ianuarie', 2 => 'Februarie', 3 => 'Martie', 4 => 'Aprilie',
+        5 => 'Mai', 6 => 'Iunie', 7 => 'Iulie', 8 => 'August',
+        9 => 'Septembrie', 10 => 'Octombrie', 11 => 'Noiembrie', 12 => 'Decembrie',
+    ],
+];

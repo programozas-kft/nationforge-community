@@ -1,0 +1,38 @@
+<?php
+
+return [
+    'title'            => 'Donații',
+    'new'              => 'Donație nouă',
+    'edit_title'       => 'Editează donație',
+    'col_donor'        => 'Donator',
+    'col_amount'       => 'Sumă',
+    'col_date'         => 'Dată',
+    'col_status'       => 'Status',
+    'col_notes'        => 'Notițe',
+    'empty'            => 'Nicio donație încă.',
+    'amount'           => 'Sumă (HUF)',
+    'donor'            => 'Donator',
+    'payment_status'   => 'Status plată',
+    'payment_method'   => 'Metodă de plată',
+    'currency'         => 'Monedă',
+    'campaign'         => 'Campanie',
+    'recurring'        => 'Donație recurentă',
+    'anonymous'        => 'Anonim',
+    'total_completed'  => 'Total donații finalizate',
+    'show_title'       => 'Detalii donație',
+    'none'             => 'Nicio donație.',
+    'col_method'       => 'Metodă',
+    'col_recurring'    => 'Recurent',
+    'method' => [
+        'cash'     => 'Numerar',
+        'transfer' => 'Transfer',
+        'card'     => 'Card',
+        'other'    => 'Altele',
+    ],
+    'status' => [
+        'pending'   => 'În așteptare',
+        'completed' => 'Finalizat',
+        'failed'    => 'Eșuat',
+        'refunded'  => 'Rambursat',
+    ],
+];

@@ -117,7 +117,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Powered by [Spatie Laravel Permission](https://github.com/spatie/laravel-permission)
 - ✅ User photo upload
 - ✅ Users assignable to groups with roles
-- 🔲 Audit log (who changed what, when)
+- ✅ Audit log (who changed what, when — with field-level diff)
 - 🔲 Invitation-based user registration
 
 ### Link Collection & Quick Links

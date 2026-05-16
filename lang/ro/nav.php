@@ -12,6 +12,7 @@ return [
     'projects'       => 'Proiecte',
     'tasks'          => 'Sarcini',
     'users'          => 'Utilizatori',
+    'audit'          => 'Jurnal audit',
     'settings'       => 'Setări',
     'changelog'      => 'Jurnal modificări',
     'help'           => 'Ajutor',

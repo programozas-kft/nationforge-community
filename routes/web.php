@@ -71,6 +71,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Admin kezelő
     Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('audit', [\App\Http\Controllers\Admin\AuditController::class, 'index'])->name('audit');
     Route::get('settings', [SettingsController::class, 'index'])->name('settings');
     Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
     Route::post('settings/branding', [SettingsController::class, 'updateBranding'])->name('settings.branding');

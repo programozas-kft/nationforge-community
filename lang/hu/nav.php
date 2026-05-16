@@ -12,6 +12,7 @@ return [
     'projects'       => 'Projektek',
     'tasks'          => 'Feladatok',
     'users'          => 'Felhasználók',
+    'audit'          => 'Audit napló',
     'settings'       => 'Beállítások',
     'changelog'      => 'Verziókövetés',
     'help'           => 'Súgó',

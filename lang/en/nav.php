@@ -12,6 +12,7 @@ return [
     'projects'       => 'Projects',
     'tasks'          => 'Tasks',
     'users'          => 'Users',
+    'audit'          => 'Audit Log',
     'settings'       => 'Settings',
     'changelog'      => 'Changelog',
     'help'           => 'Help',

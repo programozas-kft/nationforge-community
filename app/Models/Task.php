@@ -31,6 +31,16 @@ class Task extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(TaskComment::class)->with('user')->latest();
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(TaskAttachment::class)->with('user')->latest();
+    }
+
     public function isOverdue(): bool
     {
         return $this->due_date && $this->due_date->isPast() && $this->status !== 'kesz';

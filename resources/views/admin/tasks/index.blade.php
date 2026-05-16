@@ -218,6 +218,10 @@
                     <td style="font-size:0.78rem;color:#adb5bd">{{ $task->creator->name ?? '—' }}</td>
                     <td onclick="event.stopPropagation()">
                         <div class="flex items-center gap-2">
+                            <a href="{{ route('admin.tasks.show', $task) }}"
+                               class="btn-ghost" style="padding:4px 10px;font-size:0.75rem">
+                                {{ __('tasks.details') }}
+                            </a>
                             <button onclick="openEditModalRow(this.closest('tr'))"
                                     class="btn-ghost" style="padding:4px 10px;font-size:0.75rem">
                                 {{ __('common.edit') }}

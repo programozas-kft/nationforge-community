@@ -107,8 +107,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('projects', \App\Http\Controllers\Admin\ProjectController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::post('projects/{project}/members', [\App\Http\Controllers\Admin\ProjectController::class, 'addMember'])->name('projects.members.add');
     Route::delete('projects/{project}/members/{user}', [\App\Http\Controllers\Admin\ProjectController::class, 'removeMember'])->name('projects.members.remove');
-    Route::resource('tasks', \App\Http\Controllers\Admin\TaskController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('tasks', \App\Http\Controllers\Admin\TaskController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
     Route::patch('tasks/{task}/status', [\App\Http\Controllers\Admin\TaskController::class, 'updateStatus'])->name('tasks.status');
+    Route::post('tasks/{task}/comments', [\App\Http\Controllers\Admin\TaskCommentController::class, 'store'])->name('tasks.comments.store');
+    Route::delete('tasks/{task}/comments/{comment}', [\App\Http\Controllers\Admin\TaskCommentController::class, 'destroy'])->name('tasks.comments.destroy');
+    Route::post('tasks/{task}/attachments', [\App\Http\Controllers\Admin\TaskAttachmentController::class, 'store'])->name('tasks.attachments.store');
+    Route::get('tasks/{task}/attachments/{attachment}/download', [\App\Http\Controllers\Admin\TaskAttachmentController::class, 'download'])->name('tasks.attachments.download');
+    Route::delete('tasks/{task}/attachments/{attachment}', [\App\Http\Controllers\Admin\TaskAttachmentController::class, 'destroy'])->name('tasks.attachments.destroy');
 
     Route::get('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'index'])->name('campaigns.index');
     Route::post('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'store'])->name('campaigns.store');

@@ -44,6 +44,12 @@ class TaskController extends Controller
         return view('admin.tasks.index', compact('tasks', 'users', 'projects', 'counts'));
     }
 
+    public function show(Task $task)
+    {
+        $task->load(['assignedUser', 'creator', 'project', 'comments.user', 'attachments.user']);
+        return view('admin.tasks.show', compact('task'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

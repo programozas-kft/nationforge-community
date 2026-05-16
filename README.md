@@ -102,7 +102,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Assigned team members (many-to-many)
 - ✅ Overdue detection & progress percentage (based on tasks)
 - ✅ Task list with status and deadlines per project
-- 🔲 Task comments & file attachments
+- ✅ Task comments & file attachments
 - 🔲 Gantt-style timeline view
 
 ### Dashboard

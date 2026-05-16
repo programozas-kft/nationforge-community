@@ -37,4 +37,13 @@ return [
     'add'             => 'Adaugă',
     'delete_confirm'  => 'Sigur doriți să ștergeți acest link?',
     'delete_user_confirm' => 'Sigur doriți să ștergeți acest utilizator?',
+    'branding_title'      => 'Aspect (Branding)',
+    'branding_logo'       => 'Sigla organizației',
+    'branding_org_name'   => 'Numele organizației (în bara laterală)',
+    'branding_org_name_hint' => 'Afișat în partea de sus a barei laterale în loc de numele aplicației.',
+    'branding_color'      => 'Culoare principală',
+    'branding_color_hint' => 'Culoarea de bază pentru bara laterală și navigare.',
+    'branding_save'       => 'Salvează aspectul',
+    'branding_saved'      => 'Setările de aspect salvate!',
+    'branding_remove_logo'=> 'Elimină sigla',
 ];

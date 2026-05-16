@@ -8,6 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @php
+        $brandPrimary = \App\Models\Setting::get('brand_primary_color', '#405189');
+        $brandDark    = \App\Models\Setting::darken($brandPrimary, 15);
+        $brandDeep    = \App\Models\Setting::darken($brandPrimary, 40);
+        $brandOrgName = \App\Models\Setting::get('brand_org_name', config('app.name'));
+        $brandLogo    = \App\Models\Setting::get('brand_logo');
+    @endphp
     <style>
         *, *::before, *::after { box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #f3f3f9; margin: 0; padding: 0; }
@@ -16,7 +23,7 @@
         /* ── QUICK LINKS BAR ─────────────────────────── */
         #quicklinks-bar {
             height: 38px;
-            background: #1e2a4a;
+            background: {{ $brandDeep }};
             display: flex;
             align-items: center;
             padding: 0 16px;
@@ -43,7 +50,7 @@
         #sidebar {
             width: 250px;
             min-width: 250px;
-            background: linear-gradient(180deg, #405189 0%, #364474 100%);
+            background: linear-gradient(180deg, {{ $brandPrimary }} 0%, {{ $brandDark }} 100%);
             display: flex;
             flex-direction: column;
             height: calc(100vh - 38px);
@@ -97,7 +104,7 @@
             width: 16px; height: 16px; flex-shrink: 0;
             opacity: 0.7;
         }
-        .sb-item.active .sb-item-icon { opacity: 1; color: #405189; }
+        .sb-item.active .sb-item-icon { opacity: 1; color: {{ $brandPrimary }}; }
         .sb-item.active_SKIP .sb-item-icon,
         .sb-item:hover  .sb-item-icon { opacity: 1; }
 
@@ -341,12 +348,17 @@
     <!-- Brand -->
     <a href="{{ route('admin.dashboard') }}" class="sb-brand" style="text-decoration:none">
         <div class="sb-logo-icon">
-            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="17,2 31,9.5 31,24.5 17,32 3,24.5 3,9.5" fill="#1a2a5e" stroke="#6b8cda" stroke-width="1.5"/>
-                <text x="17" y="23" text-anchor="middle" font-family="Inter,sans-serif" font-size="16" font-weight="700" fill="white">N</text>
-            </svg>
+            @if($brandLogo)
+                <img src="{{ asset('storage/' . $brandLogo) }}" alt="{{ $brandOrgName }}"
+                     style="width:34px;height:34px;object-fit:contain;border-radius:4px">
+            @else
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="17,2 31,9.5 31,24.5 17,32 3,24.5 3,9.5" fill="#1a2a5e" stroke="#6b8cda" stroke-width="1.5"/>
+                    <text x="17" y="23" text-anchor="middle" font-family="Inter,sans-serif" font-size="16" font-weight="700" fill="white">N</text>
+                </svg>
+            @endif
         </div>
-        <span class="sb-brand-name">NationForge</span>
+        <span class="sb-brand-name">{{ $brandOrgName }}</span>
     </a>
 
     <!-- MENU section -->

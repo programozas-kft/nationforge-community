@@ -37,4 +37,13 @@ return [
     'add'             => 'Hinzufügen',
     'delete_confirm'  => 'Möchten Sie diesen Link wirklich löschen?',
     'delete_user_confirm' => 'Möchten Sie diesen Benutzer wirklich löschen?',
+    'branding_title'      => 'Erscheinungsbild (Branding)',
+    'branding_logo'       => 'Organisationslogo',
+    'branding_org_name'   => 'Organisationsname (in der Seitenleiste)',
+    'branding_org_name_hint' => 'Wird oben in der Seitenleiste anstelle des App-Namens angezeigt.',
+    'branding_color'      => 'Primärfarbe',
+    'branding_color_hint' => 'Grundfarbe für die Seitenleiste und Navigation.',
+    'branding_save'       => 'Erscheinungsbild speichern',
+    'branding_saved'      => 'Erscheinungsbild gespeichert!',
+    'branding_remove_logo'=> 'Logo entfernen',
 ];

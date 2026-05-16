@@ -37,4 +37,13 @@ return [
     'add'             => 'Hozzáadás',
     'delete_confirm'  => 'Biztosan törli ezt a linket?',
     'delete_user_confirm' => 'Biztosan törli a felhasználót?',
+    'branding_title'      => 'Megjelenés (Branding)',
+    'branding_logo'       => 'Szervezet logója',
+    'branding_org_name'   => 'Szervezet neve (oldalsávban)',
+    'branding_org_name_hint' => 'Ez jelenik meg az oldalsáv tetején az alkalmazás neve helyett.',
+    'branding_color'      => 'Elsődleges szín',
+    'branding_color_hint' => 'Az oldalsáv és a navigáció alapszíne.',
+    'branding_save'       => 'Megjelenés mentése',
+    'branding_saved'      => 'Megjelenési beállítások mentve!',
+    'branding_remove_logo'=> 'Logó eltávolítása',
 ];

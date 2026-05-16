@@ -37,4 +37,13 @@ return [
     'add'             => 'Add',
     'delete_confirm'  => 'Are you sure you want to delete this link?',
     'delete_user_confirm' => 'Are you sure you want to delete this user?',
+    'branding_title'      => 'Appearance (Branding)',
+    'branding_logo'       => 'Organization logo',
+    'branding_org_name'   => 'Organization name (in sidebar)',
+    'branding_org_name_hint' => 'Displayed at the top of the sidebar instead of the app name.',
+    'branding_color'      => 'Primary color',
+    'branding_color_hint' => 'Base color for the sidebar and navigation.',
+    'branding_save'       => 'Save appearance',
+    'branding_saved'      => 'Appearance settings saved!',
+    'branding_remove_logo'=> 'Remove logo',
 ];

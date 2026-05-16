@@ -37,4 +37,13 @@ return [
     'add'             => 'Pridať',
     'delete_confirm'  => 'Naozaj chcete vymazať tento odkaz?',
     'delete_user_confirm' => 'Naozaj chcete vymazať tohto používateľa?',
+    'branding_title'      => 'Vzhľad (Branding)',
+    'branding_logo'       => 'Logo organizácie',
+    'branding_org_name'   => 'Názov organizácie (v bočnom paneli)',
+    'branding_org_name_hint' => 'Zobrazuje sa v hornej časti bočného panela namiesto názvu aplikácie.',
+    'branding_color'      => 'Primárna farba',
+    'branding_color_hint' => 'Základná farba pre bočný panel a navigáciu.',
+    'branding_save'       => 'Uložiť vzhľad',
+    'branding_saved'      => 'Nastavenia vzhľadu uložené!',
+    'branding_remove_logo'=> 'Odstrániť logo',
 ];

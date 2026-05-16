@@ -109,9 +109,8 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Stat cards: total contacts, upcoming events, donation totals, newsletter subscribers
 - ✅ **Chart.js charts**: monthly donations (bar), contact growth (dual-axis line), status distribution (doughnut)
 - ✅ Upcoming events panel, latest contacts feed
-- ✅ **Custom dashboard widget builder** (show/hide + drag-to-reorder per user, persisted in settings)
+- 🔲 Custom dashboard widget builder
 - 🔲 Scheduled summary reports via email
-- ✅ Custom dashboard widget builder (show/hide + reorder per user)
 
 ### Users & Roles
 - ✅ Role-based access control: **Super Admin, Admin, Editor, Member**
@@ -267,7 +266,6 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 | Activity log per contact | ✅ | ✅ |
 | Lead scoring (pipeline + stars) | ✅ | ✅ |
 | Event QR code check-in | ✅ | ✅ |
-| Custom dashboard widget builder | ✅ | ✅ |
 | Waitlist management with auto-promotion | ✅ | ✅ |
 | Advanced analytics & reports | — | ✅ |
 | Multi-organization / Multi-tenant | — | ✅ |

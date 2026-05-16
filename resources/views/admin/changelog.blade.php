@@ -15,11 +15,164 @@ $locale = app()->getLocale();
 $versions = [
 
     [
-        'version' => 'v1.13.0',
+        'version' => 'v1.22.0',
         'latest'  => true,
         'badge'   => [
             'text'  => ['hu' => 'Aktuális, Legújabb', 'en' => 'Current, Latest'],
             'style' => 'background:rgba(10,179,156,0.1);color:#0ab39c;',
+        ],
+        'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
+        'items' => [
+            ['hu' => '<strong>Email megnyitás nyomon követése (tracking pixel):</strong> Minden elküldött kampánylevélbe és drip-levélbe egy láthatatlan 1×1 pixeles GIF-kép kerül. Ha a fogadó megnyitja az emailt, a kép lekérése rögzíti a megnyitás tényét. Az <code>email_sends</code> és <code>drip_sends</code> táblákhoz <code>opened_at</code> (nullable timestamp) mező adódott; a kampány összesítő <code>opened_count</code> számlálója automatikusan növekszik.',
+             'en'  => '<strong>Email open tracking (pixel):</strong> Every sent campaign email and drip email now contains an invisible 1×1 GIF image. When the recipient opens the email, the image request records the open event. An <code>opened_at</code> (nullable timestamp) column was added to <code>email_sends</code> and <code>drip_sends</code>; the campaign summary <code>opened_count</code> counter increments automatically.'],
+            ['hu' => '<strong>Link-kattintás nyomon követése:</strong> Az emailben lévő összes külső link egy átirányító proxy URL-en keresztül kerül kiszolgálásra (<code>/track/click/{token}?to=...</code>). Kattintáskor a rendszer rögzíti a <code>clicked_at</code> időpontot és növeli a kampány <code>clicked_count</code> számlálóját, majd átirányít az eredeti célra. Az unsubscribe és nyomkövetési linkek kizárva az átírásból.',
+             'en'  => '<strong>Link click tracking:</strong> All external links in emails are served through a redirect proxy URL (<code>/track/click/{token}?to=...</code>). On click, the system records the <code>clicked_at</code> timestamp and increments the campaign\'s <code>clicked_count</code> counter, then redirects to the original destination. Unsubscribe and tracking links are excluded from rewriting.'],
+            ['hu' => '<strong>Megnyitások és kattintások megjelenítése a kampánylistában:</strong> Az Email kampányok táblázatában két új oszlop jelent meg: <em>Megnyitások</em> (abszolút szám + százalékos arány) és <em>Kattintások</em> — zöld kiemelő színnel. A statisztikák valós adatbázis-adatokon alapulnak.',
+             'en'  => '<strong>Opens and clicks displayed in campaign list:</strong> Two new columns appear in the Email Campaigns table: <em>Opens</em> (absolute count + percentage rate) and <em>Clicks</em> — highlighted in green. Statistics are based on live database data.'],
+            ['hu' => '<strong>EmailTrackingService:</strong> Új <code>App\\Services\\EmailTrackingService</code> osztály, amely egységesen kezeli a link-csomagolást (<code>wrapLinks()</code>), a pixel-befűzést (<code>injectPixel()</code>) és a teljes folyamatot (<code>process()</code>). A base64-kódolt GIF konstansként tárolódik — sem fájlrendszer, sem HTTP-lekérés nem szükséges a pixelhez.',
+             'en'  => '<strong>EmailTrackingService:</strong> New <code>App\\Services\\EmailTrackingService</code> class that uniformly handles link wrapping (<code>wrapLinks()</code>), pixel injection (<code>injectPixel()</code>) and the full pipeline (<code>process()</code>). The base64-encoded GIF is stored as a constant — no filesystem or HTTP request needed for the pixel.'],
+            ['hu' => '<strong>TrackingController (nyilvános végpontok):</strong> <code>GET /track/open/{token}</code> — visszaadja a GIF pixelt és frissíti az <code>opened_at</code> mezőt; <code>GET /track/click/{token}?to=URL</code> — átirányít a célra és frissíti a <code>clicked_at</code> mezőt. Biztonsági ellenőrzés: a <code>to</code> paraméter csak érvényes abszolút URL esetén kerül átirányításra (<code>FILTER_VALIDATE_URL</code>).',
+             'en'  => '<strong>TrackingController (public endpoints):</strong> <code>GET /track/open/{token}</code> — returns the GIF pixel and updates the <code>opened_at</code> field; <code>GET /track/click/{token}?to=URL</code> — redirects to the destination and updates the <code>clicked_at</code> field. Security check: the <code>to</code> parameter is only redirected for valid absolute URLs (<code>FILTER_VALIDATE_URL</code>).'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.21.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
+        'items' => [
+            ['hu' => '<strong>Egyérintéses leiratkozási oldal (publikus):</strong> Minden hírlevél-feliratkozónak egyedi <code>unsubscribe_token</code> kerül generálásra (meglévő rekordokra visszatöltő migráció is fut). Az emailekben megjelenik az <em>Leiratkozás / Unsubscribe</em> hivatkozás, amely az <code>/unsubscribe/{token}</code> oldalra vezet. Az oldal 4 állapotot kezel: aktív feliratkozó / leiratkozott / visszairatkozás opció / ismeretlen token.',
+             'en'  => '<strong>One-click unsubscribe page (public):</strong> Every newsletter subscriber receives a unique <code>unsubscribe_token</code> (a backfill migration runs for existing records). Emails now include an <em>Unsubscribe</em> link pointing to <code>/unsubscribe/{token}</code>. The page handles 4 states: active subscriber / unsubscribed / re-subscribe option / unknown token.'],
+            ['hu' => '<strong>RFC 8058 <code>List-Unsubscribe</code> fejlécek:</strong> Az elküldött emailek tartalmazzák a <code>List-Unsubscribe</code> és <code>List-Unsubscribe-Post: List-Unsubscribe=One-Click</code> fejléceket a Symfony <code>using:</code> callback-en keresztül. Ez lehetővé teszi a modernebb levelezők (Gmail, Outlook) számára, hogy egy kattintással leiratkozási gombot jelenítsenek meg.',
+             'en'  => '<strong>RFC 8058 <code>List-Unsubscribe</code> headers:</strong> Sent emails now include <code>List-Unsubscribe</code> and <code>List-Unsubscribe-Post: List-Unsubscribe=One-Click</code> headers via a Symfony <code>using:</code> callback. This allows modern email clients (Gmail, Outlook) to render a one-click unsubscribe button.'],
+            ['hu' => '<strong>Visszairatkozási lehetőség:</strong> A leiratkozott állapotban az oldal egy <em>Visszairatkozás</em> gombot is megjelenít. A visszairatkozás egy külön POST végponton (<code>/unsubscribe/{token}/resubscribe</code>) keresztül valósul meg, és az <code>is_subscribed</code> értéket <code>true</code>-ra állítja.',
+             'en'  => '<strong>Re-subscribe option:</strong> On the unsubscribed state, the page also shows a <em>Re-subscribe</em> button. Re-subscribing is handled through a separate POST endpoint (<code>/unsubscribe/{token}/resubscribe</code>) that sets <code>is_subscribed</code> back to <code>true</code>.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.20.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Új modul', 'en' => 'New module'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
+        'items' => [
+            ['hu' => '<strong>Automatizált csepp (drip) kampány modul:</strong> Új <code>/admin/drip-campaigns</code> oldal. Minden drip kampányhoz tetszőleges számú lépés adható meg — tárgy, feladó, HTML tartalom, és az előző lépéstől eltelt napok száma. Indítók: <em>Manuális</em>, <em>Csoporthoz csatlakozás</em>, <em>Tag hozzáadás</em>.',
+             'en'  => '<strong>Automated drip campaign module:</strong> New <code>/admin/drip-campaigns</code> page. Each drip campaign supports an unlimited number of steps — subject, sender, HTML content, and delay in days from the previous step. Triggers: <em>Manual</em>, <em>Group join</em>, <em>Tag added</em>.'],
+            ['hu' => '<strong>Drip beiratkozás és feldolgozás:</strong> Kontaktok manuálisan (admin gomb) vagy automatikusan (trigger) iratkozhatnak be egy drip kampányba. Az <code>drip:process</code> Artisan parancs 15 percenként fut: megkeresi az esedékes beiratkozásokat, elküldi a következő lépést, és beállítja a következő küldési időpontot. A kampány végeztével a beiratkozás <em>completed</em> státuszt kap.',
+             'en'  => '<strong>Drip enrollment and processing:</strong> Contacts can enroll in a drip campaign manually (admin button) or automatically (via trigger). The <code>drip:process</code> Artisan command runs every 15 minutes: it finds due enrollments, sends the next step, and sets the next send time. When the campaign ends, the enrollment receives <em>completed</em> status.'],
+            ['hu' => '<strong>Drip kampány admin felület:</strong> A részletoldalon 4 statisztikai kártya (aktív / lezárt / lemondott beiratkozások, összes lépés), szerkeszthető lépéslista modal alapon, beiratkozások listája emberenként és lépésenként. Kampány aktiválása / szüneteltetése egy kattintással.',
+             'en'  => '<strong>Drip campaign admin interface:</strong> The detail page shows 4 stat cards (active / completed / cancelled enrollments, total steps), editable step list via modals, and enrollments list per person and per step. Campaign activation / pausing with a single click.'],
+            ['hu' => '<strong>Adatbázis-séma:</strong> Három új tábla: <code>drip_campaigns</code> (kampány fejadatok, trigger típus és cél-csoport/tag), <code>drip_steps</code> (lépések pozíció szerint rendezve), <code>drip_enrollments</code> (beiratkozások státusszal, <code>next_send_at</code> indexszel), valamint <code>drip_sends</code> (küldési nyomkövetés, tracking tokennel).',
+             'en'  => '<strong>Database schema:</strong> Three new tables: <code>drip_campaigns</code> (campaign header, trigger type and target group/tag), <code>drip_steps</code> (steps ordered by position), <code>drip_enrollments</code> (enrollments with status, <code>next_send_at</code> index), and <code>drip_sends</code> (send tracking with tracking token).'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.19.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
+        'items' => [
+            ['hu' => '<strong>Kampány célcsoport szegmentálás:</strong> A kampány létrehozás és szerkesztés modalban megjelent a <em>Célcsoport</em> szekció. Az admin négy opció közül választhat: <em>Összes hírlevél feliratkozó</em>, <em>Csoport tagjai</em> (több csoport is kijelölhető), <em>Tagelt kontaktok</em> (több tag), <em>Tag státusz szerint</em> (több státusz). A szűrőkombináció JSON formában tárolódik az <code>email_campaigns.segment_filters</code> oszlopban.',
+             'en'  => '<strong>Campaign audience segmentation:</strong> A <em>Audience</em> section appeared in the campaign create and edit modal. Admins can choose from four options: <em>All newsletter subscribers</em>, <em>Group members</em> (multiple groups selectable), <em>Tagged contacts</em> (multiple tags), <em>By member status</em> (multiple statuses). The filter combination is stored as JSON in the <code>email_campaigns.segment_filters</code> column.'],
+            ['hu' => '<strong>Élő fogadószám előnézet:</strong> Szegmentációs beállítás módosításakor az oldal AJAX-on keresztül (<code>GET /admin/campaigns/recipient-count</code>) valós időben kéri le a becsült fogadók számát, és 500 ms-os debounce-szal jeleníti meg. A kampánylistában megjelent a <em>Szegmens</em> oszlop a típus jelzésével.',
+             'en'  => '<strong>Live recipient count preview:</strong> When the segmentation setting changes, the page fetches the estimated recipient count in real time via AJAX (<code>GET /admin/campaigns/recipient-count</code>) with a 500 ms debounce, and displays it immediately. A <em>Segment</em> column appeared in the campaign list indicating the type.'],
+            ['hu' => '<strong><code>buildRecipientsQuery()</code> metódus az <code>EmailCampaign</code> modellen:</strong> Egységes lekérdezés-építő, amely a <code>segment_filters</code> JSON alapján szűri a feliratkozott, érvényes email-lel rendelkező kontaktokat — csoportszűrő esetén <code>whereHas(\'groups\')</code>, tagszűrőnél <code>whereHas(\'tags\')</code>, státuszszűrőnél <code>whereIn(\'status\')</code>.',
+             'en'  => '<strong><code>buildRecipientsQuery()</code> method on <code>EmailCampaign</code> model:</strong> A unified query builder that filters subscribed contacts with valid emails based on the <code>segment_filters</code> JSON — using <code>whereHas(\'groups\')</code> for group filter, <code>whereHas(\'tags\')</code> for tag filter, <code>whereIn(\'status\')</code> for status filter.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.18.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
+        'items' => [
+            ['hu' => '<strong>Email sablonkönyvtár:</strong> Új <code>/admin/email-templates</code> oldal, amely kártyás elrendezésben mutatja a beépített (<em>Minimál, Hírlevél, Bejelentés, Promóciós</em>) és az egyéni sablonokat. Minden sablon szerkeszthető, előnézhető (iframe modal) és törlhető (kivéve a beépítetteket).',
+             'en'  => '<strong>Email template library:</strong> New <code>/admin/email-templates</code> page displaying built-in (<em>Minimal, Newsletter, Announcement, Promotional</em>) and custom templates in card layout. Every template can be edited, previewed (iframe modal) and deleted (except built-ins).'],
+            ['hu' => '<strong>Sablon betöltése a kampányszerkesztőbe:</strong> A kampány létrehozás és szerkesztés modalban megjelent a <em>„Sablon betöltése"</em> gomb. Megnyit egy sablonválasztó modalt, amelyből egy kattintással a kiválasztott sablon HTML tartalma betöltődik a szerkesztőbe. Az összes elérhető sablon listaszerűen és részletes előnézettel tekinthető meg.',
+             'en'  => '<strong>Loading a template into the campaign editor:</strong> A <em>"Use template"</em> button appeared in the campaign create and edit modal. It opens a template picker modal, from which a single click loads the selected template\'s HTML content into the editor. All available templates are listed with a detailed preview.'],
+            ['hu' => '<strong>Beépített sablonok (seeder):</strong> A telepítéskor 4 professzionális beépített sablon kerül az adatbázisba automatikusan, amelyek szervezeti arculathoz testreszabhatók. Az <code>email_templates</code> tábla tartalmazza: <code>name</code>, <code>description</code>, <code>category</code>, <code>body_html</code>, <code>is_system</code> (boolean) mezőket.',
+             'en'  => '<strong>Built-in templates (seeder):</strong> At installation, 4 professional built-in templates are automatically inserted into the database and can be customized for organizational branding. The <code>email_templates</code> table contains: <code>name</code>, <code>description</code>, <code>category</code>, <code>body_html</code>, <code>is_system</code> (boolean) columns.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.17.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
+        'items' => [
+            ['hu' => '<strong>Adomány export könyveléshez (CSV, XLSX, PDF):</strong> Az Adományok oldalon megjelent az <em>Export</em> gomb. Az exportálás szűrhető: kezdési és befejezési dátum, pénznem. Három formátum érhető el: CSV (UTF-8 BOM, pontosvesszős), Excel (XLSX, félkövér fejléc) és PDF (táblázatos elrendezés). A <code>phpoffice/phpspreadsheet</code> kezeli az XLSX-t, a <code>dompdf/dompdf</code> a PDF-t.',
+             'en'  => '<strong>Donation export for accounting (CSV, XLSX, PDF):</strong> An <em>Export</em> button appeared on the Donations page. Export is filterable by start date, end date and currency. Three formats are available: CSV (UTF-8 BOM, semicolon-separated), Excel (XLSX, bold header) and PDF (tabular layout). <code>phpoffice/phpspreadsheet</code> handles XLSX; <code>dompdf/dompdf</code> handles PDF.'],
+            ['hu' => '<strong>Exportált mezők:</strong> Dátum, Kapcsolat neve, Email, Összeg, Pénznem, Fizetési módszer, Státusz, Tranzakció ID, Kampány, Megjegyzés — ezek a könyvelési feldolgozáshoz szükséges legfontosabb adatok kerülnek exportálásra.',
+             'en'  => '<strong>Exported fields:</strong> Date, Contact name, Email, Amount, Currency, Payment method, Status, Transaction ID, Campaign, Notes — these essential data points needed for accounting processing are exported.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.16.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
+        'items' => [
+            ['hu' => '<strong>Nyilvános online adományozási oldal:</strong> A <code>/donate</code> URL bejelentkezés nélkül elérhető adományozási űrlapot jelenít meg — adományozó neve, email, összeg, pénznem, megjegyzés mezőkkel. Sikeres küldés után visszaigazoló email megy az adományozónak (<em>DonationReceiptMail</em>), és megjelenik egy köszönő oldal (<code>/donate/thanks/{token}</code>).',
+             'en'  => '<strong>Public online donation form:</strong> The <code>/donate</code> URL displays a donation form accessible without login — with donor name, email, amount, currency and notes fields. On successful submission, a receipt email is sent to the donor (<em>DonationReceiptMail</em>), and a thank-you page appears (<code>/donate/thanks/{token}</code>).'],
+            ['hu' => '<strong>Online fizetés Stripe / Barion integrációval:</strong> A nyilvános adományozási oldal támogatja a bankkártyás fizetést. Stripe esetén a rendszer egy Checkout Session-t hoz létre, és a visszatérési URL-en (<code>/payment/donation/stripe/success/{token}</code>) igazolja a fizetést. Barion integráció szintén elérhető (<code>/payment/donation/barion/callback/{token}</code>).',
+             'en'  => '<strong>Online payment with Stripe / Barion integration:</strong> The public donation form supports card payments. For Stripe, the system creates a Checkout Session and verifies the payment on the return URL (<code>/payment/donation/stripe/success/{token}</code>). Barion integration is also available (<code>/payment/donation/barion/callback/{token}</code>).'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.15.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
+        'items' => [
+            ['hu' => '<strong>Feladat megjegyzések:</strong> Minden feladathoz szöveges megjegyzések fűzhetők, megjelenítve az időpontot és a beküldő felhasználót. A megjegyzések szerkeszthetők és törölhetők. Az adatokat a <code>task_comments</code> tábla tárolja.',
+             'en'  => '<strong>Task comments:</strong> Text comments can be added to every task, showing the timestamp and the submitting user. Comments can be edited and deleted. Data is stored in the <code>task_comments</code> table.'],
+            ['hu' => '<strong>Feladat fájlmellékletek:</strong> Feladatokhoz fájlok csatolhatók (max. 10 MB) — a <code>task_attachments</code> tábla és a Spatie MediaLibrary kezeli a tárolást. A melléklet neve, mérete és feltöltési ideje megjelenik a feladat részletoldalán; letölthető és törölhető.',
+             'en'  => '<strong>Task file attachments:</strong> Files can be attached to tasks (max. 10 MB) — the <code>task_attachments</code> table and Spatie MediaLibrary handle storage. The attachment name, size and upload time appear on the task detail page; files are downloadable and deletable.'],
+            ['hu' => '<strong>Gantt-stílusú idővonal nézet (Projektek):</strong> A projekt részletoldalán megjelent egy <em>Gantt nézet</em> fül. A nézet az összes projekt-feladatot az idővonalán helyezi el — vízszintes sáv mutatja a kezdési és befejezési dátumot, határidőn túl esetén piros kiemelés.',
+             'en'  => '<strong>Gantt-style timeline view (Projects):</strong> A <em>Gantt view</em> tab appeared on the project detail page. The view places all project tasks on a timeline — a horizontal bar shows the start and end date, with red highlighting for overdue tasks.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.14.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
+        'items' => [
+            ['hu' => '<strong>Német (DE), Román (RO) és Szlovák (SK) nyelvcsomag:</strong> Az admin felület teljes szöveggel bővült három új nyelvvel. A <code>lang/de/</code>, <code>lang/ro/</code> és <code>lang/sk/</code> mappákban az összes modul fordítása elérhető (<code>common</code>, <code>nav</code>, <code>people</code>, <code>events</code>, <code>groups</code>, <code>donations</code>, <code>campaigns</code>, <code>projects</code>, <code>tasks</code>, <code>users</code>, <code>settings</code>, <code>help</code>, <code>changelog</code> stb.).',
+             'en'  => '<strong>German (DE), Romanian (RO) and Slovak (SK) language packs:</strong> The admin panel was extended with three new languages with full text coverage. All module translations are available in <code>lang/de/</code>, <code>lang/ro/</code> and <code>lang/sk/</code> folders (<code>common</code>, <code>nav</code>, <code>people</code>, <code>events</code>, <code>groups</code>, <code>donations</code>, <code>campaigns</code>, <code>projects</code>, <code>tasks</code>, <code>users</code>, <code>settings</code>, <code>help</code>, <code>changelog</code>, etc.).'],
+            ['hu' => '<strong>Nyelvváltó frissítése:</strong> Az oldalsáv HU/EN kapcsolója kiegészült a DE, RO és SK zászlókkal (<code>fi fi-de</code>, <code>fi fi-ro</code>, <code>fi fi-sk</code> SVG ikonok, flag-icons könyvtár). A locale-váltó végpont változatlan: <code>/locale/{locale}</code>.',
+             'en'  => '<strong>Language switcher updated:</strong> The HU/EN sidebar switcher was extended with DE, RO and SK flags (<code>fi fi-de</code>, <code>fi fi-ro</code>, <code>fi fi-sk</code> SVG icons, flag-icons library). The locale-switch endpoint is unchanged: <code>/locale/{locale}</code>.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.13.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
         ],
         'date' => ['hu' => '2026. május 12.', 'en' => 'May 12, 2026'],
         'items' => [

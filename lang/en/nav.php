@@ -22,4 +22,5 @@ return [
     'news'           => 'News',
     'infographics'   => 'Infographics',
     'campaigns'      => 'Email Campaigns',
+    'drip_campaigns' => 'Drip Campaigns',
 ];

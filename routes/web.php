@@ -126,6 +126,19 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('tasks/{task}/attachments/{attachment}/download', [\App\Http\Controllers\Admin\TaskAttachmentController::class, 'download'])->name('tasks.attachments.download');
     Route::delete('tasks/{task}/attachments/{attachment}', [\App\Http\Controllers\Admin\TaskAttachmentController::class, 'destroy'])->name('tasks.attachments.destroy');
 
+    // Drip campaigns
+    Route::get('drip-campaigns', [\App\Http\Controllers\Admin\DripCampaignController::class, 'index'])->name('drip-campaigns.index');
+    Route::post('drip-campaigns', [\App\Http\Controllers\Admin\DripCampaignController::class, 'store'])->name('drip-campaigns.store');
+    Route::get('drip-campaigns/{dripCampaign}', [\App\Http\Controllers\Admin\DripCampaignController::class, 'show'])->name('drip-campaigns.show');
+    Route::put('drip-campaigns/{dripCampaign}', [\App\Http\Controllers\Admin\DripCampaignController::class, 'update'])->name('drip-campaigns.update');
+    Route::delete('drip-campaigns/{dripCampaign}', [\App\Http\Controllers\Admin\DripCampaignController::class, 'destroy'])->name('drip-campaigns.destroy');
+    Route::post('drip-campaigns/{dripCampaign}/toggle-status', [\App\Http\Controllers\Admin\DripCampaignController::class, 'toggleStatus'])->name('drip-campaigns.toggle-status');
+    Route::post('drip-campaigns/{dripCampaign}/steps', [\App\Http\Controllers\Admin\DripCampaignController::class, 'storeStep'])->name('drip-campaigns.steps.store');
+    Route::put('drip-campaigns/{dripCampaign}/steps/{step}', [\App\Http\Controllers\Admin\DripCampaignController::class, 'updateStep'])->name('drip-campaigns.steps.update');
+    Route::delete('drip-campaigns/{dripCampaign}/steps/{step}', [\App\Http\Controllers\Admin\DripCampaignController::class, 'destroyStep'])->name('drip-campaigns.steps.destroy');
+    Route::post('drip-campaigns/{dripCampaign}/enroll', [\App\Http\Controllers\Admin\DripCampaignController::class, 'enroll'])->name('drip-campaigns.enroll');
+    Route::post('drip-campaigns/{dripCampaign}/enrollments/{enrollment}/cancel', [\App\Http\Controllers\Admin\DripCampaignController::class, 'cancelEnrollment'])->name('drip-campaigns.enrollments.cancel');
+
     Route::get('campaigns/recipient-count', [\App\Http\Controllers\Admin\CampaignController::class, 'recipientCount'])->name('campaigns.recipient-count');
     Route::get('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'index'])->name('campaigns.index');
     Route::post('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'store'])->name('campaigns.store');

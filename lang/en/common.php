@@ -42,4 +42,6 @@ return [
     'title_label'  => 'Title',
     'online'       => 'Online',
     'deleted_user' => 'Deleted user',
+    'view'         => 'View',
+    'days'         => 'days',
 ];

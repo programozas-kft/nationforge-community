@@ -83,7 +83,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Powered by [Resend](https://resend.com) transactional email API
 - ✅ Email template library (reusable layouts)
 - ✅ Audience segmentation (send to group / tag / status)
-- 🔲 Automated drip / sequence campaigns
+- ✅ Automated drip / sequence campaigns
 - 🔲 One-click unsubscribe landing page
 - 🔲 Open & click tracking
 

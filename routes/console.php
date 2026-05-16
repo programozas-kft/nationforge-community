@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 
 // Scheduled summary report — runs hourly; the command itself checks frequency/hour/day
 Schedule::command('report:send')->hourly();
+
+// Process drip campaign auto-enrollments and due sends
+Schedule::command('drip:process')->everyFifteenMinutes();

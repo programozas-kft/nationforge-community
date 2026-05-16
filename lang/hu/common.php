@@ -42,4 +42,6 @@ return [
     'title_label'  => 'Cím',
     'online'       => 'Online',
     'deleted_user' => 'Törölt felhasználó',
+    'view'         => 'Megtekintés',
+    'days'         => 'nap',
 ];

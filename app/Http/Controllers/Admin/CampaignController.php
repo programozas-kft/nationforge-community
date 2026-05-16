@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\CampaignMail;
 use App\Models\EmailCampaign;
+use App\Models\EmailSend;
 use App\Models\Group;
 use App\Models\Person;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class CampaignController extends Controller
 {
@@ -101,8 +103,18 @@ class CampaignController extends Controller
         $failed = 0;
 
         foreach ($recipients as $person) {
+            $token = Str::random(40);
+
+            EmailSend::create([
+                'campaign_id'    => $campaign->id,
+                'person_id'      => $person->id,
+                'tracking_token' => $token,
+                'sent_at'        => now(),
+            ]);
+
             try {
-                Mail::to($person->email, $person->full_name)->send(new CampaignMail($campaign, $person));
+                Mail::to($person->email, $person->full_name)
+                    ->send(new CampaignMail($campaign, $person, $token));
                 $sent++;
             } catch (\Exception) {
                 $failed++;

@@ -25,7 +25,7 @@
     <span class="header-logo">{{ config('app.name') }}</span>
   </div>
   <div class="body">
-    {!! $step->body_html !!}
+    {!! $processedBody !!}
   </div>
   <div class="footer">
     &copy; {{ date('Y') }} {{ config('app.name') }}<br>

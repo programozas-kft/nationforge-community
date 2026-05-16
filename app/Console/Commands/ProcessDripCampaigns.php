@@ -5,9 +5,11 @@ namespace App\Console\Commands;
 use App\Mail\DripMail;
 use App\Models\DripCampaign;
 use App\Models\DripEnrollment;
+use App\Models\DripSend;
 use App\Models\Person;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class ProcessDripCampaigns extends Command
 {
@@ -84,9 +86,19 @@ class ProcessDripCampaigns extends Command
                 continue;
             }
 
+            $token = Str::random(40);
+
+            DripSend::create([
+                'drip_step_id'       => $step->id,
+                'drip_enrollment_id' => $enrollment->id,
+                'person_id'          => $enrollment->person->id,
+                'tracking_token'     => $token,
+                'sent_at'            => now(),
+            ]);
+
             try {
                 Mail::to($enrollment->person->email, $enrollment->person->full_name)
-                    ->send(new DripMail($step, $enrollment->person));
+                    ->send(new DripMail($step, $enrollment->person, $token));
             } catch (\Exception $e) {
                 $this->warn("Failed sending to {$enrollment->person->email}: {$e->getMessage()}");
             }

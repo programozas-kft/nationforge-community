@@ -4,22 +4,28 @@ namespace App\Mail;
 
 use App\Models\DripStep;
 use App\Models\Person;
+use App\Services\EmailTrackingService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
+use Symfony\Component\Mime\Email as SymfonyEmail;
 
 class DripMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public string $processedBody;
+
     public function __construct(
         public DripStep $step,
         public Person   $person,
-    ) {}
+        public string   $trackingToken,
+    ) {
+        $this->processedBody = EmailTrackingService::process($step->body_html, $trackingToken);
+    }
 
     public function envelope(): Envelope
     {
@@ -31,10 +37,11 @@ class DripMail extends Mailable
                 $this->step->from_name  ?: config('mail.from.name'),
             ),
             subject: $this->step->subject,
-            headers: new Headers(text: [
-                'List-Unsubscribe'      => "<{$unsubscribeUrl}>",
-                'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
-            ]),
+            using: [function (SymfonyEmail $msg) use ($unsubscribeUrl) {
+                $msg->getHeaders()
+                    ->addTextHeader('List-Unsubscribe', "<{$unsubscribeUrl}>")
+                    ->addTextHeader('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click');
+            }],
         );
     }
 

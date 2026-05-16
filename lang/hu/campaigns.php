@@ -58,6 +58,9 @@ return [
     'tpl_cat_custom'       => 'Egyéni',
     'use_template_btn'  => 'Sablon betöltése',
 
+    'stat_opens'  => 'Megnyitások',
+    'stat_clicks' => 'Kattintások',
+
     // Célcsoport szegmentálás
     'seg_label'            => 'Célcsoport',
     'seg_all'              => 'Összes hírlevél feliratkozó',

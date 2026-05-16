@@ -58,6 +58,9 @@ return [
     'tpl_cat_custom'       => 'Custom',
     'use_template_btn'  => 'Use template',
 
+    'stat_opens'  => 'Opens',
+    'stat_clicks' => 'Clicks',
+
     // Audience segmentation
     'seg_label'            => 'Audience',
     'seg_all'              => 'All newsletter subscribers',

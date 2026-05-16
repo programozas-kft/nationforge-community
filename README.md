@@ -85,7 +85,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Audience segmentation (send to group / tag / status)
 - ✅ Automated drip / sequence campaigns
 - ✅ One-click unsubscribe landing page
-- 🔲 Open & click tracking
+- ✅ Open & click tracking
 
 ### Donations
 - ✅ Donor records linked to contacts (or anonymous)

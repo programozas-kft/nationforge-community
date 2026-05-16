@@ -37,6 +37,10 @@ Route::prefix('payment')->name('payment.')->group(function () {
     Route::get('donation/barion/callback/{token}', [\App\Http\Controllers\PaymentController::class, 'barionCallbackDonation'])->name('donation.barion.callback');
 });
 
+// Email tracking (open pixel + click redirect)
+Route::get('/track/open/{token}', [\App\Http\Controllers\TrackingController::class, 'open'])->name('track.open');
+Route::get('/track/click/{token}', [\App\Http\Controllers\TrackingController::class, 'click'])->name('track.click');
+
 // Unsubscribe
 Route::get('/unsubscribe/{token}', [\App\Http\Controllers\UnsubscribeController::class, 'show'])->name('unsubscribe');
 Route::post('/unsubscribe/{token}', [\App\Http\Controllers\UnsubscribeController::class, 'confirm'])->name('unsubscribe.confirm');

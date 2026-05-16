@@ -60,7 +60,9 @@ $allStatuses = ['prospect','supporter','member','volunteer','donor','vip','inact
                 <th>{{ __('campaigns.subject_label') }}</th>
                 <th>{{ __('common.status') }}</th>
                 <th>{{ __('campaigns.seg_label') }}</th>
-                <th>{{ __('campaigns.recipients_hint') }}</th>
+                <th>{{ __('campaigns.sent_count') }}</th>
+                <th>{{ __('campaigns.stat_opens') }}</th>
+                <th>{{ __('campaigns.stat_clicks') }}</th>
                 <th>{{ __('campaigns.sent_at') }}</th>
                 <th></th>
             </tr>
@@ -104,12 +106,30 @@ $allStatuses = ['prospect','supporter','member','volunteer','donor','vip','inact
                 </td>
                 <td style="font-size:.85rem;color:#6c757d;">
                     @if($c->isSent())
-                        {{ $c->sent_count }} / {{ $c->recipients_count }}
+                        {{ $c->sent_count }}
                         @if($c->failed_count > 0)
-                            <span style="color:#f06548"> ({{ $c->failed_count }} {{ __('campaigns.failed_count') }})</span>
+                            <span style="color:#f06548;font-size:.78rem"> ({{ $c->failed_count }} ✗)</span>
                         @endif
                     @else
                         —
+                    @endif
+                </td>
+                <td style="font-size:.85rem;text-align:center">
+                    @if($c->isSent() && $c->sent_count > 0)
+                        @php $openRate = round($c->opened_count / $c->sent_count * 100); @endphp
+                        <span style="color:#0ab39c;font-weight:600">{{ $c->opened_count }}</span>
+                        <span style="font-size:.75rem;color:#adb5bd"> {{ $openRate }}%</span>
+                    @else
+                        <span style="color:#dee2e6">—</span>
+                    @endif
+                </td>
+                <td style="font-size:.85rem;text-align:center">
+                    @if($c->isSent() && $c->sent_count > 0)
+                        @php $clickRate = round($c->clicked_count / $c->sent_count * 100); @endphp
+                        <span style="color:#405189;font-weight:600">{{ $c->clicked_count }}</span>
+                        <span style="font-size:.75rem;color:#adb5bd"> {{ $clickRate }}%</span>
+                    @else
+                        <span style="color:#dee2e6">—</span>
                     @endif
                 </td>
                 <td style="font-size:.85rem;color:#6c757d;">{{ $c->sent_at?->format('Y.m.d H:i') ?? '—' }}</td>

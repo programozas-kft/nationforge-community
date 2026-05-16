@@ -25,7 +25,7 @@
     <span class="header-logo">NationForge</span>
   </div>
   <div class="body">
-    {!! Str::markdown($campaign->body_html) !!}
+    {!! $processedBody !!}
   </div>
   <div class="footer">
     &copy; {{ date('Y') }} {{ config('app.name') }}<br>

@@ -130,7 +130,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ App name, mail from address / name configurable from admin UI
 - ✅ Changes written directly to `.env`
 - ✅ Branding settings (logo, primary color, org name — applied to sidebar in real time)
-- 🔲 SMTP / mailer configuration from UI
+- ✅ SMTP / mailer configuration from UI (SMTP, Resend API, log mode)
 
 ### Help & Documentation
 - ✅ Built-in help article editor (Markdown-like, bilingual HU/EN)

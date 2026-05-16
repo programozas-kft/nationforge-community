@@ -79,6 +79,83 @@
         </div>
     </form>
 
+    {{-- ── SMTP / MAILER ───────────────────────────────── --}}
+    <div id="smtp" style="margin-top:32px;margin-bottom:32px">
+        <form method="POST" action="{{ route('admin.settings.mail') }}">
+            @csrf
+            <div class="nf-card" style="padding:24px">
+                <h2 style="font-size:0.875rem;font-weight:600;color:#343a40;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid #e9ebec">
+                    {{ __('settings.smtp_title') }}
+                </h2>
+
+                {{-- Mailer selector --}}
+                <div style="margin-bottom:20px">
+                    <label class="nf-label">{{ __('settings.smtp_mailer') }}</label>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap">
+                        @foreach(['smtp' => __('settings.smtp_driver_smtp'), 'resend' => __('settings.smtp_driver_resend'), 'log' => __('settings.smtp_driver_log')] as $val => $label)
+                        <label style="display:flex;align-items:center;gap:7px;padding:9px 16px;border:1.5px solid {{ $mailConfig['mailer'] === $val ? '#405189' : '#dee2e6' }};border-radius:7px;cursor:pointer;font-size:0.82rem;font-weight:500;color:{{ $mailConfig['mailer'] === $val ? '#405189' : '#495057' }};transition:all 0.15s"
+                               id="mailer-opt-{{ $val }}"
+                               onclick="selectMailer('{{ $val }}')">
+                            <input type="radio" name="mail_mailer" value="{{ $val }}" {{ $mailConfig['mailer'] === $val ? 'checked' : '' }}
+                                   style="accent-color:#405189;width:14px;height:14px">
+                            {{ $label }}
+                        </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- SMTP fields --}}
+                <div id="smtp-fields" style="display:{{ $mailConfig['mailer'] === 'smtp' ? 'grid' : 'none' }};grid-template-columns:1fr 1fr;gap:16px;margin-bottom:4px">
+                    <div style="grid-column:span 1">
+                        <label class="nf-label">{{ __('settings.smtp_host') }}</label>
+                        <input type="text" name="mail_host" value="{{ $mailConfig['host'] }}" class="nf-input" placeholder="smtp.gmail.com">
+                    </div>
+                    <div>
+                        <label class="nf-label">{{ __('settings.smtp_port') }}</label>
+                        <input type="number" name="mail_port" value="{{ $mailConfig['port'] }}" class="nf-input" placeholder="587" min="1" max="65535">
+                    </div>
+                    <div>
+                        <label class="nf-label">{{ __('settings.smtp_encryption') }}</label>
+                        <select name="mail_scheme" class="nf-select">
+                            <option value="tls"  {{ ($mailConfig['scheme'] === 'tls'  || $mailConfig['scheme'] === null) ? 'selected' : '' }}>TLS (STARTTLS — port 587)</option>
+                            <option value="ssl"  {{ $mailConfig['scheme'] === 'ssl'  ? 'selected' : '' }}>SSL (port 465)</option>
+                            <option value="null" {{ $mailConfig['scheme'] === 'null' ? 'selected' : '' }}>{{ __('settings.smtp_no_encryption') }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="nf-label">{{ __('settings.smtp_username') }}</label>
+                        <input type="text" name="mail_username" value="{{ $mailConfig['username'] }}" class="nf-input" autocomplete="off">
+                    </div>
+                    <div style="grid-column:span 2">
+                        <label class="nf-label">{{ __('settings.smtp_password') }}</label>
+                        <input type="password" name="mail_password" class="nf-input" autocomplete="new-password"
+                               placeholder="{{ $mailConfig['has_pass'] ? '••••••••  ('.__('settings.smtp_pass_hint').')' : __('settings.smtp_pass_empty') }}">
+                        <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('settings.smtp_pass_hint') }}</p>
+                    </div>
+                </div>
+
+                {{-- Resend API key --}}
+                <div id="resend-fields" style="display:{{ $mailConfig['mailer'] === 'resend' ? 'block' : 'none' }};margin-bottom:4px">
+                    <label class="nf-label">Resend API Key</label>
+                    <input type="password" name="resend_api_key" class="nf-input" autocomplete="new-password"
+                           placeholder="{{ $mailConfig['resend_key'] ? '••••••••  ('.__('settings.smtp_pass_hint').')' : 're_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' }}">
+                    <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('settings.resend_hint') }}</p>
+                </div>
+
+                {{-- Log info --}}
+                <div id="log-fields" style="display:{{ $mailConfig['mailer'] === 'log' ? 'block' : 'none' }};margin-bottom:4px">
+                    <div style="background:#f3f3f9;border-radius:6px;padding:12px 16px;font-size:0.8rem;color:#6c757d">
+                        {{ __('settings.log_hint') }}
+                    </div>
+                </div>
+
+                <div style="margin-top:18px">
+                    <button type="submit" class="btn-teal">{{ __('settings.smtp_save') }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
     {{-- ── BRANDING ─────────────────────────────────────── --}}
     <div id="branding" style="margin-top:32px;margin-bottom:32px">
         <form method="POST" action="{{ route('admin.settings.branding') }}" enctype="multipart/form-data">
@@ -333,6 +410,19 @@
 
 @push('scripts')
 <script>
+function selectMailer(val) {
+    ['smtp', 'resend', 'log'].forEach(v => {
+        const opt = document.getElementById('mailer-opt-' + v);
+        const fields = document.getElementById(v + '-fields');
+        const isActive = v === val;
+        if (opt) {
+            opt.style.borderColor  = isActive ? '#405189' : '#dee2e6';
+            opt.style.color        = isActive ? '#405189' : '#495057';
+        }
+        if (fields) fields.style.display = isActive ? (v === 'smtp' ? 'grid' : 'block') : 'none';
+    });
+}
+
 function previewLogo(input) {
     if (!input.files || !input.files[0]) return;
     const reader = new FileReader();

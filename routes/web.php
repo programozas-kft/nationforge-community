@@ -18,6 +18,10 @@ Route::view('/', 'welcome');
 // Locale switcher
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
+// Invitation-based registration
+Route::get('/invite/{token}', [\App\Http\Controllers\InviteRegistrationController::class, 'show'])->name('invite.register');
+Route::post('/invite/{token}', [\App\Http\Controllers\InviteRegistrationController::class, 'register'])->name('invite.register.submit');
+
 // Public event registration
 Route::get('/e/ticket/{token}', [EventRegistrationController::class, 'ticket'])->name('events.ticket');
 Route::get('/e/{slug}', [EventRegistrationController::class, 'show'])->name('events.public');
@@ -71,6 +75,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Admin kezelő
     Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::post('invitations', [\App\Http\Controllers\Admin\InvitationController::class, 'store'])->name('invitations.store');
+    Route::post('invitations/{invitation}/resend', [\App\Http\Controllers\Admin\InvitationController::class, 'resend'])->name('invitations.resend');
+    Route::delete('invitations/{invitation}', [\App\Http\Controllers\Admin\InvitationController::class, 'destroy'])->name('invitations.destroy');
     Route::get('audit', [\App\Http\Controllers\Admin\AuditController::class, 'index'])->name('audit');
     Route::get('settings', [SettingsController::class, 'index'])->name('settings');
     Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');

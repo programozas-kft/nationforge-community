@@ -9,6 +9,10 @@
 @endsection
 
 @section('header-actions')
+    <a href="#" class="btn-ghost" onclick="openModal('modal-invite');return false;" style="display:inline-flex;align-items:center;gap:5px">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        {{ __('users.invite_btn') }}
+    </a>
     <a href="#" class="btn-primary" onclick="openModal('modal-create');return false;">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
         {{ __('users.new') }}
@@ -94,6 +98,111 @@
             @endforelse
         </tbody>
     </table>
+</div>
+
+{{-- PENDING INVITATIONS --}}
+@if($invitations->isNotEmpty())
+<div style="margin-top:24px">
+    <p style="font-size:0.8125rem;font-weight:600;color:#343a40;margin:0 0 10px">{{ __('users.pending_invites') }}</p>
+    <div class="nf-card" style="overflow:hidden">
+        <table class="nf-table">
+            <thead>
+                <tr>
+                    <th>{{ __('common.email') }}</th>
+                    <th>{{ __('users.col_role') }}</th>
+                    <th>{{ __('users.invite_sent_by') }}</th>
+                    <th>{{ __('users.invite_expires') }}</th>
+                    <th>{{ __('users.invite_status') }}</th>
+                    <th style="width:110px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($invitations as $inv)
+                <tr>
+                    <td style="font-weight:500;color:#343a40">{{ $inv->email }}</td>
+                    <td>
+                        <span class="nf-badge badge-primary">{{ ucfirst($inv->role) }}</span>
+                    </td>
+                    <td style="color:#6c757d;font-size:0.8rem">{{ $inv->invited_by_name ?? '—' }}</td>
+                    <td style="color:#6c757d;font-size:0.8rem">{{ $inv->expires_at->format('Y.m.d') }}</td>
+                    <td>
+                        @if($inv->isExpired())
+                            <span class="nf-badge badge-danger">{{ __('users.invite_expired') }}</span>
+                        @else
+                            <span class="nf-badge badge-warning">{{ __('users.invite_pending') }}</span>
+                        @endif
+                    </td>
+                    <td style="text-align:right;display:flex;gap:6px;justify-content:flex-end;align-items:center">
+                        <button onclick="copyInviteLink('{{ $inv->registrationUrl() }}')"
+                            title="{{ __('users.invite_copy') }}"
+                            style="background:none;border:none;cursor:pointer;color:#405189;padding:4px">
+                            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        </button>
+                        @if($inv->isPending())
+                        <form method="POST" action="{{ route('admin.invitations.resend', $inv) }}" style="display:inline">
+                            @csrf
+                            <button type="submit" title="{{ __('users.invite_resend') }}"
+                                style="background:none;border:none;cursor:pointer;color:#0ab39c;padding:4px">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                            </button>
+                        </form>
+                        @endif
+                        <form method="POST" action="{{ route('admin.invitations.destroy', $inv) }}" style="display:inline"
+                              onsubmit="return confirm('{{ __('users.invite_delete_confirm') }}')">
+                            @csrf @method('DELETE')
+                            <button type="submit" title="{{ __('common.delete') }}"
+                                style="background:none;border:none;cursor:pointer;color:#f06548;padding:4px">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+@endif
+
+{{-- INVITE MODAL --}}
+<div id="modal-invite" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-invite')">
+    <div class="nf-modal" style="max-width:440px">
+        <div class="nf-modal-header">
+            <span class="nf-modal-title">{{ __('users.invite_modal_title') }}</span>
+            <button class="nf-modal-close" onclick="closeModal('modal-invite')">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <form method="POST" action="{{ route('admin.invitations.store') }}">
+            @csrf
+            <div class="nf-modal-body" style="display:grid;gap:14px">
+                <div>
+                    <label class="nf-label">{{ __('common.email') }} <span style="color:#f06548">*</span></label>
+                    <input type="email" name="email" class="nf-input" required autofocus placeholder="valaki@example.com">
+                    <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('users.invite_email_hint') }}</p>
+                </div>
+                <div>
+                    <label class="nf-label">{{ __('users.role') }} <span style="color:#f06548">*</span></label>
+                    <select name="role" class="nf-select" required>
+                        @foreach($roles as $role)
+                        <option value="{{ $role->name }}">{{ __('users.roles.' . $role->name, [], null) ?: $role->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div style="background:#f8f9fa;border-radius:6px;padding:10px 14px;font-size:0.78rem;color:#6c757d;display:flex;gap:8px;align-items:flex-start">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {{ __('users.invite_info') }}
+                </div>
+            </div>
+            <div class="nf-modal-footer">
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-invite')">{{ __('common.cancel') }}</button>
+                <button type="submit" class="btn-teal">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    {{ __('users.invite_send') }}
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 {{-- CREATE MODAL --}}
@@ -249,6 +358,16 @@
 
 @push('scripts')
 <script>
+function copyInviteLink(url) {
+    navigator.clipboard.writeText(url).then(() => {
+        const tip = document.createElement('div');
+        tip.textContent = '{{ __("users.invite_copied") }}';
+        tip.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0ab39c;color:#fff;padding:8px 18px;border-radius:6px;font-size:0.82rem;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.15)';
+        document.body.appendChild(tip);
+        setTimeout(() => tip.remove(), 2000);
+    });
+}
+
 const EYE_OPEN = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>';
 const EYE_OFF  = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>';
 

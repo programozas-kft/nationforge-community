@@ -28,4 +28,16 @@ return [
         'promotion_intro'      => 'We\'re happy to inform you that a spot has opened up for: :event',
         'promotion_body'       => 'You have been moved to the confirmed attendee list. You can access your ticket using the button below.',
     ],
+    'invitation' => [
+        'subject'       => 'You\'re invited — :app',
+        'header_sub'    => 'You received an invitation',
+        'heading'       => 'You\'ve been invited!',
+        'intro'         => ':inviter has invited you to join :app. Click the button below to complete your registration.',
+        'email_label'   => 'Email',
+        'role_label'    => 'Role',
+        'expires_label' => 'Valid until',
+        'cta'           => 'Accept invitation',
+        'url_hint'      => 'If the button doesn\'t work, copy this link into your browser:',
+        'footer'        => 'This message was sent by :app. If you weren\'t expecting an invitation, you can safely ignore this email.',
+    ],
 ];

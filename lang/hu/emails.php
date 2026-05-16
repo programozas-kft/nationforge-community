@@ -28,4 +28,16 @@ return [
         'promotion_intro'      => 'Örömmel értesítünk, hogy hely szabadult fel neked a következő eseményen: :event',
         'promotion_body'       => 'Felkerültél a megerősített résztvevők listájára. A belépőjegyed az alábbi gombra kattintva érhető el.',
     ],
+    'invitation' => [
+        'subject'       => 'Meghívó — :app',
+        'header_sub'    => 'Meghívót kaptál',
+        'heading'       => 'Meghívtak a platformra!',
+        'intro'         => ':inviter meghívott a :app rendszerbe. Kattints az alábbi gombra a regisztrációhoz.',
+        'email_label'   => 'Email',
+        'role_label'    => 'Szerepkör',
+        'expires_label' => 'Érvényes',
+        'cta'           => 'Regisztráció megkezdése',
+        'url_hint'      => 'Ha a gomb nem működik, másold be ezt a linket a böngésződbe:',
+        'footer'        => 'Ezt az üzenetet a :app rendszer küldte. Ha nem vártál meghívót, hagyd figyelmen kívül.',
+    ],
 ];

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,8 @@ class UserController extends Controller
         $users = User::with(['roles', 'groups'])->orderBy('name')->get();
         $roles = Role::orderBy('name')->get();
         $groups = \App\Models\Group::orderBy('name')->get();
-        return view('admin.users.index', compact('users', 'roles', 'groups'));
+        $invitations = Invitation::whereNull('used_at')->orderByDesc('created_at')->get();
+        return view('admin.users.index', compact('users', 'roles', 'groups', 'invitations'));
     }
 
     public function store(Request $request)
@@ -96,7 +98,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user->id === auth()->id()) {
+        if ($user->id === auth()->user()?->id) {
             return redirect()->route('admin.users.index')->with('error', 'Saját magadat nem törölheted!');
         }
         if ($user->photo) {

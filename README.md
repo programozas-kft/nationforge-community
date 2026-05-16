@@ -118,7 +118,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ User photo upload
 - ✅ Users assignable to groups with roles
 - ✅ Audit log (who changed what, when — with field-level diff)
-- 🔲 Invitation-based user registration
+- ✅ Invitation-based user registration (email invite, 7-day token, role pre-assignment)
 
 ### Link Collection & Quick Links
 - ✅ Configurable link library for the whole team (social media, news, resources)

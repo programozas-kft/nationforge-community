@@ -7,6 +7,7 @@ use App\Models\Donation;
 use App\Models\Event;
 use App\Models\Person;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\DashboardWidgetController;
 
 class DashboardController extends Controller
 {
@@ -69,10 +70,12 @@ class DashboardController extends Controller
             }
         }
 
+        $widgets = DashboardWidgetController::layoutForUser(auth()->id());
+
         return view('admin.dashboard', compact(
             'stats', 'recent_people', 'upcoming_events',
             'monthLabels', 'monthlyPeople', 'monthlyDonations',
-            'statusNames', 'statusData'
+            'statusNames', 'statusData', 'widgets'
         ));
     }
 }

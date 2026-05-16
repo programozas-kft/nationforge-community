@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DashboardWidgetController;
 use App\Http\Controllers\EventRegistrationController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Admin\PeopleController;
@@ -40,6 +41,7 @@ Route::view('profile', 'profile')
 // Admin panel
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
+    Route::post('dashboard/widgets', [DashboardWidgetController::class, 'save'])->name('dashboard.widgets');
 
     Route::get('people/export', [PeopleController::class, 'export'])->name('people.export');
     Route::post('people/import', [PeopleController::class, 'import'])->name('people.import');

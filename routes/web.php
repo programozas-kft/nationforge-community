@@ -85,6 +85,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
     Route::post('settings/branding', [SettingsController::class, 'updateBranding'])->name('settings.branding');
     Route::post('settings/mail', [SettingsController::class, 'updateMail'])->name('settings.mail');
+    Route::post('settings/report', [SettingsController::class, 'updateReport'])->name('settings.report');
+    Route::post('settings/report/test', [SettingsController::class, 'testReport'])->name('settings.report.test');
 
     Route::get('links', [LinkController::class, 'index'])->name('links.index');
     Route::post('links', [LinkController::class, 'store'])->name('links.store');

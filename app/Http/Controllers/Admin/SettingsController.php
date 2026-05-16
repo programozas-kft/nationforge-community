@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ScheduledReportMail;
+use App\Models\Donation;
+use App\Models\Event;
 use App\Models\Link;
+use App\Models\Person;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
 
 class SettingsController extends Controller
 {
@@ -33,8 +38,16 @@ class SettingsController extends Controller
             'primary_color' => Setting::get('brand_primary_color', '#405189'),
             'logo'          => Setting::get('brand_logo'),
         ];
+        $reportConfig = [
+            'enabled'       => Setting::get('report_enabled', '0') === '1',
+            'frequency'     => Setting::get('report_frequency', 'weekly'),
+            'day_of_week'   => (int) Setting::get('report_day_of_week', 1),
+            'day_of_month'  => (int) Setting::get('report_day_of_month', 1),
+            'hour'          => (int) Setting::get('report_hour', 8),
+            'recipients'    => Setting::get('report_recipients', ''),
+        ];
         $links = Link::orderBy('sort_order')->orderBy('title')->get();
-        return view('admin.settings.index', compact('settings', 'mailConfig', 'branding', 'links'));
+        return view('admin.settings.index', compact('settings', 'mailConfig', 'branding', 'reportConfig', 'links'));
     }
 
     public function updateBranding(Request $request)
@@ -120,6 +133,54 @@ class SettingsController extends Controller
         Artisan::call('config:clear');
 
         return redirect()->route('admin.settings')->with('success', __('settings.mail_saved'));
+    }
+
+    public function updateReport(Request $request)
+    {
+        $request->validate([
+            'report_enabled'      => 'nullable|boolean',
+            'report_frequency'    => 'required|in:daily,weekly,monthly',
+            'report_day_of_week'  => 'nullable|integer|min:1|max:7',
+            'report_day_of_month' => 'nullable|integer|min:1|max:28',
+            'report_hour'         => 'required|integer|min:0|max:23',
+            'report_recipients'   => 'nullable|string|max:1000',
+        ]);
+
+        Setting::set('report_enabled',      $request->boolean('report_enabled') ? '1' : '0');
+        Setting::set('report_frequency',    $request->report_frequency);
+        Setting::set('report_day_of_week',  $request->input('report_day_of_week', 1));
+        Setting::set('report_day_of_month', $request->input('report_day_of_month', 1));
+        Setting::set('report_hour',         $request->report_hour);
+        Setting::set('report_recipients',   $request->input('report_recipients', ''));
+
+        return redirect()->route('admin.settings')->with('success', __('settings.report_saved'));
+    }
+
+    public function testReport(Request $request)
+    {
+        $recipients = array_filter(array_map('trim', explode(',', Setting::get('report_recipients', ''))));
+
+        if (empty($recipients)) {
+            return response()->json(['ok' => false, 'message' => __('settings.report_send_error')]);
+        }
+
+        $stats = [
+            'people'          => Person::count(),
+            'new_people'      => Person::whereMonth('created_at', now()->month)->count(),
+            'events'          => Event::whereNotIn('status', ['cancelled', 'completed'])->where('starts_at', '>', now())->count(),
+            'donations'       => Donation::where('status', 'completed')->sum('amount'),
+            'subscribed'      => Person::where('is_subscribed', true)->count(),
+            'recent_people'   => Person::latest()->limit(5)->get(),
+            'upcoming_events' => Event::whereNotIn('status', ['cancelled', 'completed'])
+                ->where('starts_at', '>', now())->orderBy('starts_at')->limit(5)->get(),
+            'generated_at'    => now(),
+        ];
+
+        foreach ($recipients as $email) {
+            Mail::to($email)->send(new ScheduledReportMail($stats));
+        }
+
+        return response()->json(['ok' => true]);
     }
 
     private function writeEnv(string &$env, string $key, string $value): void

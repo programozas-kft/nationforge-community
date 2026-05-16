@@ -223,6 +223,93 @@
         </form>
     </div>
 
+    {{-- ── SCHEDULED REPORTS ──────────────────────────────── --}}
+    <div id="report" style="margin-top:32px;margin-bottom:32px">
+        <form method="POST" action="{{ route('admin.settings.report') }}">
+            @csrf
+            <div class="nf-card" style="padding:24px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e9ebec">
+                    <h2 style="font-size:0.875rem;font-weight:600;color:#343a40;margin:0">
+                        {{ __('settings.report_title') }}
+                    </h2>
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                        <span style="font-size:0.8rem;color:#6c757d">{{ __('settings.report_enabled') }}</span>
+                        <input type="hidden" name="report_enabled" value="0">
+                        <input type="checkbox" name="report_enabled" value="1" id="report-enabled"
+                               {{ $reportConfig['enabled'] ? 'checked' : '' }}
+                               style="width:16px;height:16px;accent-color:#405189"
+                               onchange="toggleReportFields()">
+                    </label>
+                </div>
+
+                <p style="font-size:0.78rem;color:#6c757d;margin:0 0 18px">{{ __('settings.report_desc') }}</p>
+
+                <div id="report-fields" style="display:{{ $reportConfig['enabled'] ? 'block' : 'none' }}">
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px">
+
+                        {{-- Frequency --}}
+                        <div>
+                            <label class="nf-label">{{ __('settings.report_frequency') }}</label>
+                            <select name="report_frequency" id="report-frequency" class="nf-select" onchange="updateFrequencyFields()">
+                                @foreach(['daily' => __('settings.report_freq_daily'), 'weekly' => __('settings.report_freq_weekly'), 'monthly' => __('settings.report_freq_monthly')] as $val => $label)
+                                <option value="{{ $val }}" {{ $reportConfig['frequency'] === $val ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Day of week (weekly only) --}}
+                        <div id="dow-field" style="display:{{ $reportConfig['frequency'] === 'weekly' ? 'block' : 'none' }}">
+                            <label class="nf-label">{{ __('settings.report_day_of_week') }}</label>
+                            <select name="report_day_of_week" class="nf-select">
+                                @for($d = 1; $d <= 7; $d++)
+                                <option value="{{ $d }}" {{ $reportConfig['day_of_week'] === $d ? 'selected' : '' }}>{{ __('settings.dow_' . $d) }}</option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        {{-- Day of month (monthly only) --}}
+                        <div id="dom-field" style="display:{{ $reportConfig['frequency'] === 'monthly' ? 'block' : 'none' }}">
+                            <label class="nf-label">{{ __('settings.report_day_of_month') }}</label>
+                            <input type="number" name="report_day_of_month" value="{{ $reportConfig['day_of_month'] }}"
+                                   min="1" max="28" class="nf-input">
+                        </div>
+
+                        {{-- Hour --}}
+                        <div>
+                            <label class="nf-label">{{ __('settings.report_hour') }}</label>
+                            <input type="number" name="report_hour" value="{{ $reportConfig['hour'] }}"
+                                   min="0" max="23" class="nf-input">
+                            <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('settings.report_hour_hint') }}</p>
+                        </div>
+
+                    </div>
+
+                    {{-- Recipients --}}
+                    <div style="margin-bottom:16px">
+                        <label class="nf-label">{{ __('settings.report_recipients') }}</label>
+                        <textarea name="report_recipients" rows="2" class="nf-input" style="resize:none"
+                                  placeholder="admin@example.com, director@example.com">{{ $reportConfig['recipients'] }}</textarea>
+                        <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('settings.report_recipients_hint') }}</p>
+                    </div>
+
+                    {{-- Cron hint --}}
+                    <div style="background:#f3f3f9;border-radius:6px;padding:10px 14px;font-size:0.78rem;color:#6c757d;margin-bottom:16px">
+                        {!! __('settings.report_cron_hint') !!}
+                    </div>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+                    <button type="submit" class="btn-teal">{{ __('settings.report_save') }}</button>
+                    <button type="button" id="report-test-btn" onclick="sendTestReport()"
+                            class="btn-ghost" style="display:{{ $reportConfig['enabled'] ? 'inline-flex' : 'none' }}">
+                        {{ __('settings.report_send_test') }}
+                    </button>
+                    <span id="report-test-msg" style="font-size:0.8rem;display:none"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+
     {{-- ── LINKGYŰJTEMÉNY ───────────────────────────────── --}}
     <div id="links" style="margin-top:32px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -448,6 +535,45 @@ function updateColorPreview(hex) {
     if (preview && hex.match(/^#[0-9a-fA-F]{6}$/)) {
         preview.style.background = `linear-gradient(90deg, ${hex}, ${hex}cc)`;
     }
+}
+
+function toggleReportFields() {
+    const enabled = document.getElementById('report-enabled').checked;
+    document.getElementById('report-fields').style.display = enabled ? 'block' : 'none';
+    const testBtn = document.getElementById('report-test-btn');
+    if (testBtn) testBtn.style.display = enabled ? 'inline-flex' : 'none';
+}
+
+function updateFrequencyFields() {
+    const freq = document.getElementById('report-frequency').value;
+    document.getElementById('dow-field').style.display = freq === 'weekly'  ? 'block' : 'none';
+    document.getElementById('dom-field').style.display = freq === 'monthly' ? 'block' : 'none';
+}
+
+function sendTestReport() {
+    const btn = document.getElementById('report-test-btn');
+    const msg = document.getElementById('report-test-msg');
+    btn.disabled = true;
+    msg.style.display = 'none';
+
+    fetch('{{ route("admin.settings.report.test") }}', {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json' },
+        body: '{}',
+    })
+    .then(r => r.json())
+    .then(data => {
+        msg.style.display = 'inline';
+        msg.style.color   = data.ok ? '#0ab39c' : '#f06548';
+        msg.textContent   = data.ok ? '{{ __("settings.report_sent") }}' : (data.message || '{{ __("settings.report_send_error") }}');
+        btn.disabled = false;
+    })
+    .catch(() => {
+        msg.style.display = 'inline';
+        msg.style.color   = '#f06548';
+        msg.textContent   = '{{ __("settings.report_send_error") }}';
+        btn.disabled = false;
+    });
 }
 
 function openLinkEdit(row) {

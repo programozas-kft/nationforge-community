@@ -109,8 +109,8 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Stat cards: total contacts, upcoming events, donation totals, newsletter subscribers
 - ✅ **Chart.js charts**: monthly donations (bar), contact growth (dual-axis line), status distribution (doughnut)
 - ✅ Upcoming events panel, latest contacts feed
-- 🔲 Custom dashboard widget builder
-- 🔲 Scheduled summary reports via email
+- ✅ Custom dashboard widget builder
+- ✅ **Scheduled summary reports via email** (daily/weekly/monthly, configurable recipients & hour, "Send test" button)
 
 ### Users & Roles
 - ✅ Role-based access control: **Super Admin, Admin, Editor, Member**

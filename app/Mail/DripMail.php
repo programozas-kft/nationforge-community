@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 
 class DripMail extends Mailable
@@ -22,12 +23,18 @@ class DripMail extends Mailable
 
     public function envelope(): Envelope
     {
+        $unsubscribeUrl = route('unsubscribe', $this->person->unsubscribe_token);
+
         return new Envelope(
             from: new Address(
                 $this->step->from_email ?: config('mail.from.address'),
                 $this->step->from_name  ?: config('mail.from.name'),
             ),
             subject: $this->step->subject,
+            headers: new Headers(text: [
+                'List-Unsubscribe'      => "<{$unsubscribeUrl}>",
+                'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
+            ]),
         );
     }
 

@@ -37,6 +37,11 @@ Route::prefix('payment')->name('payment.')->group(function () {
     Route::get('donation/barion/callback/{token}', [\App\Http\Controllers\PaymentController::class, 'barionCallbackDonation'])->name('donation.barion.callback');
 });
 
+// Unsubscribe
+Route::get('/unsubscribe/{token}', [\App\Http\Controllers\UnsubscribeController::class, 'show'])->name('unsubscribe');
+Route::post('/unsubscribe/{token}', [\App\Http\Controllers\UnsubscribeController::class, 'confirm'])->name('unsubscribe.confirm');
+Route::post('/unsubscribe/{token}/resubscribe', [\App\Http\Controllers\UnsubscribeController::class, 'resubscribe'])->name('unsubscribe.resubscribe');
+
 // Public donation form
 Route::get('/donate',               [\App\Http\Controllers\DonationFormController::class, 'show'])->name('donate');
 Route::post('/donate',              [\App\Http\Controllers\DonationFormController::class, 'submit'])->name('donate.submit');

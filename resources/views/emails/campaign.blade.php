@@ -28,8 +28,9 @@
     {!! Str::markdown($campaign->body_html) !!}
   </div>
   <div class="footer">
-    &copy; {{ date('Y') }} NationForge &mdash; {{ config('app.name') }}<br>
-    Ez az email a <a href="{{ config('app.url') }}">{{ config('app.url') }}</a> rendszerből érkezett.
+    &copy; {{ date('Y') }} {{ config('app.name') }}<br>
+    Ez az email a <a href="{{ config('app.url') }}">{{ config('app.url') }}</a> rendszerből érkezett.<br><br>
+    <a href="{{ route('unsubscribe', $person->unsubscribe_token) }}" style="color:#adb5bd">Leiratkozás / Unsubscribe</a>
   </div>
 </div>
 </body>

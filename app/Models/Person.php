@@ -4,12 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Person extends Model implements HasMedia
 {
     use SoftDeletes, InteractsWithMedia;
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $person) {
+            if (empty($person->unsubscribe_token)) {
+                $person->unsubscribe_token = Str::random(40);
+            }
+        });
+    }
 
     protected $fillable = [
         'user_id', 'first_name', 'last_name', 'email', 'phone', 'mobile',

@@ -84,7 +84,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Email template library (reusable layouts)
 - ✅ Audience segmentation (send to group / tag / status)
 - ✅ Automated drip / sequence campaigns
-- 🔲 One-click unsubscribe landing page
+- ✅ One-click unsubscribe landing page
 - 🔲 Open & click tracking
 
 ### Donations

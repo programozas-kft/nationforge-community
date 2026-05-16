@@ -89,7 +89,7 @@ class CampaignController extends Controller
             return back()->with('error', __('campaigns.no_resend_key'));
         }
 
-        $recipients = $campaign->buildRecipientsQuery()->get()->pluck('email', 'full_name');
+        $recipients = $campaign->buildRecipientsQuery()->get();
 
         if ($recipients->isEmpty()) {
             return back()->with('error', __('campaigns.no_recipients'));
@@ -100,9 +100,9 @@ class CampaignController extends Controller
         $sent   = 0;
         $failed = 0;
 
-        foreach ($recipients as $name => $email) {
+        foreach ($recipients as $person) {
             try {
-                Mail::to($email, $name)->send(new CampaignMail($campaign));
+                Mail::to($person->email, $person->full_name)->send(new CampaignMail($campaign, $person));
                 $sent++;
             } catch (\Exception) {
                 $failed++;
@@ -110,7 +110,7 @@ class CampaignController extends Controller
         }
 
         $campaign->update([
-            'status'           => $failed > 0 && $sent === 0 ? 'failed' : 'sent',
+            'status'           => ($failed > 0 && $sent === 0) ? 'failed' : 'sent',
             'sent_at'          => now(),
             'sent_count'       => $sent,
             'failed_count'     => $failed,

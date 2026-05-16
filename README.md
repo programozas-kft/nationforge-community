@@ -81,7 +81,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Delivery tracking: sent count, failed count, recipient count
 - ✅ Status workflow: Draft → Sending → Sent / Failed
 - ✅ Powered by [Resend](https://resend.com) transactional email API
-- 🔲 Email template library (reusable layouts)
+- ✅ Email template library (reusable layouts)
 - 🔲 Audience segmentation (send to group / tag / status)
 - 🔲 Automated drip / sequence campaigns
 - 🔲 One-click unsubscribe landing page

@@ -132,6 +132,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::delete('campaigns/{campaign}', [\App\Http\Controllers\Admin\CampaignController::class, 'destroy'])->name('campaigns.destroy');
     Route::post('campaigns/{campaign}/send', [\App\Http\Controllers\Admin\CampaignController::class, 'send'])->name('campaigns.send');
 
+    Route::get('email-templates/api', [\App\Http\Controllers\Admin\EmailTemplateController::class, 'apiList'])->name('email-templates.api');
+    Route::get('email-templates/{emailTemplate}/preview', [\App\Http\Controllers\Admin\EmailTemplateController::class, 'preview'])->name('email-templates.preview');
+    Route::resource('email-templates', \App\Http\Controllers\Admin\EmailTemplateController::class)->only(['index', 'store', 'update', 'destroy']);
+
     Route::get('help', [HelpController::class, 'index'])->name('help.index');
     Route::put('help/{help}', [HelpController::class, 'update'])->name('help.update');
     Route::get('sugo', [HelpController::class, 'sugo'])->name('sugo');

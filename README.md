@@ -103,7 +103,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Overdue detection & progress percentage (based on tasks)
 - ✅ Task list with status and deadlines per project
 - ✅ Task comments & file attachments
-- 🔲 Gantt-style timeline view
+- ✅ Gantt-style timeline view
 
 ### Dashboard
 - ✅ Stat cards: total contacts, upcoming events, donation totals, newsletter subscribers

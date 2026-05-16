@@ -36,6 +36,19 @@ return [
         'refunded'  => 'Visszatérítve',
     ],
 
+    // Export
+    'export'              => 'Exportálás',
+    'export_title'        => 'Adományok exportálása',
+    'export_format'       => 'Formátum',
+    'export_date_from'    => 'Dátumtól',
+    'export_date_to'      => 'Dátumig',
+    'export_status'       => 'Státusz',
+    'export_currency'     => 'Pénznem',
+    'export_campaign'     => 'Kampány',
+    'export_campaign_hint'=> 'Szűrés kampánynév alapján',
+    'export_all'          => 'Összes',
+    'export_download'     => 'Letöltés',
+
     // Publikus adományozási oldal
     'public_title'       => 'Támogass minket',
     'amount_label'       => 'Adomány összege',

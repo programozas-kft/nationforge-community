@@ -95,7 +95,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Recurring donation fields (interval, next charge date)
 - ✅ Public online donation form
 - ✅ Donation receipt / acknowledgment email
-- 🔲 Export for accounting (CSV, PDF)
+- ✅ Export for accounting (CSV, XLSX, PDF)
 
 ### Projects & Tasks
 - ✅ Project management: title, status, priority, start/end date

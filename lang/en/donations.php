@@ -36,6 +36,19 @@ return [
         'refunded'  => 'Refunded',
     ],
 
+    // Export
+    'export'              => 'Export',
+    'export_title'        => 'Export donations',
+    'export_format'       => 'Format',
+    'export_date_from'    => 'From date',
+    'export_date_to'      => 'To date',
+    'export_status'       => 'Status',
+    'export_currency'     => 'Currency',
+    'export_campaign'     => 'Campaign',
+    'export_campaign_hint'=> 'Filter by campaign name',
+    'export_all'          => 'All',
+    'export_download'     => 'Download',
+
     // Public donation form
     'public_title'       => 'Support Us',
     'amount_label'       => 'Donation amount',

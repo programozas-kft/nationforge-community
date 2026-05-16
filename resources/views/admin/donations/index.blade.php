@@ -5,6 +5,10 @@
 @section('breadcrumb') <span class="text-gray-700">{{ __('donations.title') }}</span> @endsection
 
 @section('header-actions')
+    <button onclick="openModal('modal-export')" class="btn-ghost">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        {{ __('donations.export') }}
+    </button>
     <a href="#" class="btn-primary" onclick="openModal('modal-create-donation');return false;">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
         {{ __('donations.new') }}
@@ -112,6 +116,78 @@
         {{ $donations->links() }}
     </div>
     @endif
+</div>
+
+{{-- EXPORT MODAL --}}
+<div id="modal-export" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-export')">
+    <div class="nf-modal">
+        <div class="nf-modal-header">
+            <span class="nf-modal-title">{{ __('donations.export_title') }}</span>
+            <button class="nf-modal-close" onclick="closeModal('modal-export')">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <form method="GET" action="{{ route('admin.donations.export') }}" target="_blank">
+            <div class="nf-modal-body" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+                <div style="grid-column:span 2">
+                    <label class="nf-label">{{ __('donations.export_format') }}</label>
+                    <div class="flex gap-3">
+                        <label class="flex items-center gap-2 cursor-pointer" style="font-size:0.875rem">
+                            <input type="radio" name="format" value="csv" checked style="accent-color:#405189"> CSV
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer" style="font-size:0.875rem">
+                            <input type="radio" name="format" value="xlsx" style="accent-color:#405189"> Excel (XLSX)
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer" style="font-size:0.875rem">
+                            <input type="radio" name="format" value="pdf" style="accent-color:#405189"> PDF
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="nf-label">{{ __('donations.export_date_from') }}</label>
+                    <input type="date" name="date_from" class="nf-input">
+                </div>
+                <div>
+                    <label class="nf-label">{{ __('donations.export_date_to') }}</label>
+                    <input type="date" name="date_to" class="nf-input">
+                </div>
+
+                <div>
+                    <label class="nf-label">{{ __('donations.export_status') }}</label>
+                    <select name="status" class="nf-select">
+                        <option value="">{{ __('donations.export_all') }}</option>
+                        @foreach(['completed','pending','failed','refunded'] as $s)
+                            <option value="{{ $s }}">{{ __('donations.status.' . $s) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="nf-label">{{ __('donations.export_currency') }}</label>
+                    <select name="currency" class="nf-select">
+                        <option value="">{{ __('donations.export_all') }}</option>
+                        <option value="HUF">HUF</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                    </select>
+                </div>
+
+                <div style="grid-column:span 2">
+                    <label class="nf-label">{{ __('donations.export_campaign') }}</label>
+                    <input type="text" name="campaign" class="nf-input" placeholder="{{ __('donations.export_campaign_hint') }}">
+                </div>
+
+            </div>
+            <div class="nf-modal-footer">
+                <button type="button" class="btn-ghost" onclick="closeModal('modal-export')">{{ __('common.cancel') }}</button>
+                <button type="submit" class="btn-primary">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right:4px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    {{ __('donations.export_download') }}
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 {{-- CREATE MODAL --}}

@@ -20,18 +20,17 @@ class HelpDripImageSeeder extends Seeder
         }
 
         $img = "![Screenshot](/img/sugo/drip-kampanyok.png)\n\n";
-
-        if (str_starts_with($article->content, '![')) {
-            $this->command->warn('Image already present, skipping.');
-            return;
+        $update = ['updated_at' => now()];
+        foreach (['content', 'content_en', 'content_de', 'content_ro', 'content_sk'] as $col) {
+            $val = $article->$col;
+            if (!empty($val) && !str_starts_with($val, '![')) {
+                $update[$col] = $img . $val;
+            } elseif (empty($val)) {
+                // leave NULL columns alone — multilingual seeder handles them
+            }
         }
+        DB::table('help_articles')->where('menu_key', 'drip-kampanyok')->update($update);
 
-        DB::table('help_articles')->where('menu_key', 'drip-kampanyok')->update([
-            'content'    => $img . $article->content,
-            'content_en' => $img . $article->content_en,
-            'updated_at' => now(),
-        ]);
-
-        $this->command->info('  ✓ drip-kampanyok — screenshot hozzáadva');
+        $this->command->info('  ✓ drip-kampanyok — screenshot hozzáadva (HU/EN/DE/RO/SK)');
     }
 }

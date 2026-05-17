@@ -490,6 +490,8 @@ MD,
             'feladatok' => [
                 'title_de' => 'Aufgaben',
                 'content_de' => <<<'MD'
+![Screenshot](/img/sugo/feladatok.png)
+
 ## Aufgabenverwaltung
 
 Im Bereich **Aufgaben** verwalten Sie To-dos und Aktivitäten für Ihr Team.
@@ -512,6 +514,8 @@ Im Bereich **Aufgaben** verwalten Sie To-dos und Aktivitäten für Ihr Team.
 MD,
                 'title_ro' => 'Sarcini',
                 'content_ro' => <<<'MD'
+![Screenshot](/img/sugo/feladatok.png)
+
 ## Gestionarea sarcinilor
 
 În secțiunea **Sarcini** gestionați activitățile și sarcinile echipei dvs.
@@ -534,6 +538,8 @@ MD,
 MD,
                 'title_sk' => 'Úlohy',
                 'content_sk' => <<<'MD'
+![Screenshot](/img/sugo/feladatok.png)
+
 ## Správa úloh
 
 V sekcii **Úlohy** spravujete to-do položky a aktivity vášho tímu.
@@ -636,6 +642,8 @@ MD,
             'drip-kampanyok' => [
                 'title_de' => 'Drip-Kampagnen',
                 'content_de' => <<<'MD'
+![Screenshot](/img/sugo/drip-kampanyok.png)
+
 ## Drip-Kampagnen (automatisierte E-Mail-Sequenzen)
 
 **Drip-Kampagnen** ermöglichen den automatischen Versand einer Reihe von E-Mails über einen definierten Zeitraum.
@@ -660,6 +668,8 @@ MD,
 MD,
                 'title_ro' => 'Campanii drip',
                 'content_ro' => <<<'MD'
+![Screenshot](/img/sugo/drip-kampanyok.png)
+
 ## Campanii drip (secvențe automate de e-mail)
 
 **Campaniile drip** permit trimiterea automată a unei serii de e-mailuri pe o perioadă definită.
@@ -684,6 +694,8 @@ MD,
 MD,
                 'title_sk' => 'Drip kampane',
                 'content_sk' => <<<'MD'
+![Screenshot](/img/sugo/drip-kampanyok.png)
+
 ## Drip kampane (automatizované e-mailové sekvencie)
 
 **Drip kampane** umožňujú automatické odosielanie série e-mailov počas definovaného časového obdobia.
@@ -779,6 +791,8 @@ MD,
             'audit-naplo' => [
                 'title_de' => 'Audit-Protokoll',
                 'content_de' => <<<'MD'
+![Screenshot](/img/sugo/audit-naplo.png)
+
 ## Audit-Protokoll
 
 Das **Audit-Protokoll** zeichnet alle wichtigen Aktionen im System auf und ermöglicht vollständige Nachverfolgbarkeit.
@@ -802,6 +816,8 @@ Das **Audit-Protokoll** zeichnet alle wichtigen Aktionen im System auf und ermö
 MD,
                 'title_ro' => 'Jurnal de audit',
                 'content_ro' => <<<'MD'
+![Screenshot](/img/sugo/audit-naplo.png)
+
 ## Jurnal de audit
 
 **Jurnalul de audit** înregistrează toate acțiunile importante din sistem și permite trasabilitate completă.
@@ -825,6 +841,8 @@ MD,
 MD,
                 'title_sk' => 'Auditný denník',
                 'content_sk' => <<<'MD'
+![Screenshot](/img/sugo/audit-naplo.png)
+
 ## Auditný denník
 
 **Auditný denník** zaznamenáva všetky dôležité akcie v systéme a umožňuje úplnú sledovateľnosť.

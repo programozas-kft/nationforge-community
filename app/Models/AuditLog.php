@@ -15,7 +15,10 @@ class AuditLog extends Model
         'changes', 'ip_address',
     ];
 
-    protected $casts = ['changes' => 'array'];
+    protected $casts = [
+        'changes'    => 'array',
+        'created_at' => 'datetime',
+    ];
 
     const SKIP_FIELDS = [
         'password', 'remember_token', 'two_factor_secret',

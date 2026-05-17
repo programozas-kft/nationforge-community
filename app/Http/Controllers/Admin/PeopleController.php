@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Services\WebhookService;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class PeopleController extends Controller
@@ -127,10 +128,12 @@ class PeopleController extends Controller
         }
 
         $person = Person::create($data);
-        
+
         if (isset($data['groups'])) {
             $person->groups()->sync($data['groups']);
         }
+
+        WebhookService::dispatch('contact.created', $person->toArray());
 
         return redirect()->route('admin.people.index')->with('success', 'Kapcsolat sikeresen létrehozva!');
     }
@@ -225,6 +228,8 @@ class PeopleController extends Controller
             $person->groups()->sync([]);
         }
 
+        WebhookService::dispatch('contact.updated', $person->fresh()->toArray());
+
         return redirect()->route('admin.people.index')->with('success', 'Kapcsolat frissítve!');
     }
 
@@ -233,7 +238,9 @@ class PeopleController extends Controller
         if ($person->photo) {
             Storage::disk('public')->delete($person->photo);
         }
+        $data = $person->only('id', 'first_name', 'last_name', 'email');
         $person->delete();
+        WebhookService::dispatch('contact.deleted', $data);
         return redirect()->route('admin.people.index')->with('success', 'Kapcsolat törölve!');
     }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\WebhookService;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -68,7 +69,8 @@ class TaskController extends Controller
             $data['completed_at'] = now();
         }
 
-        Task::create($data);
+        $task = Task::create($data);
+        WebhookService::dispatch('task.created', $task->toArray());
 
         return redirect()->route('admin.tasks.index')->with('success', 'Feladat sikeresen létrehozva!');
     }
@@ -103,6 +105,10 @@ class TaskController extends Controller
         $task->status = $request->status;
         $task->completed_at = $request->status === 'kesz' ? now() : null;
         $task->save();
+
+        if ($request->status === 'kesz') {
+            WebhookService::dispatch('task.completed', $task->toArray());
+        }
 
         return back()->with('success', 'Státusz frissítve!');
     }

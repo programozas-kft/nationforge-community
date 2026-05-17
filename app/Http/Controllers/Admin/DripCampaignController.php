@@ -9,6 +9,7 @@ use App\Models\DripStep;
 use App\Models\Group;
 use App\Models\Person;
 use App\Models\Tag;
+use App\Services\WebhookService;
 use Illuminate\Http\Request;
 
 class DripCampaignController extends Controller
@@ -202,6 +203,14 @@ class DripCampaignController extends Controller
                 'enrolled_at'        => now(),
             ]);
             $count++;
+        }
+
+        if ($count > 0) {
+            WebhookService::dispatch('drip.enrolled', [
+                'drip_campaign_id'   => $dripCampaign->id,
+                'drip_campaign_name' => $dripCampaign->name,
+                'enrolled_count'     => $count,
+            ]);
         }
 
         return back()->with('success', __('drip.enrolled', ['count' => $count]));

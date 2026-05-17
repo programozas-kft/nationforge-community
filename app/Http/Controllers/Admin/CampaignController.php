@@ -11,6 +11,7 @@ use App\Models\Person;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Services\WebhookService;
 use Illuminate\Support\Str;
 
 class CampaignController extends Controller
@@ -127,6 +128,15 @@ class CampaignController extends Controller
             'sent_count'       => $sent,
             'failed_count'     => $failed,
             'recipients_count' => $recipients->count(),
+        ]);
+
+        WebhookService::dispatch('campaign.sent', [
+            'id'               => $campaign->id,
+            'subject'          => $campaign->subject,
+            'sent_count'       => $sent,
+            'failed_count'     => $failed,
+            'recipients_count' => $recipients->count(),
+            'sent_at'          => now()->toIso8601String(),
         ]);
 
         return back()->with('success', __('campaigns.sent_ok', ['count' => $sent]));

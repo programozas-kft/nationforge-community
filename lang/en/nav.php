@@ -23,4 +23,5 @@ return [
     'infographics'   => 'Infographics',
     'campaigns'      => 'Email Campaigns',
     'drip_campaigns' => 'Drip Campaigns',
+    'webhooks'       => 'Webhooks',
 ];

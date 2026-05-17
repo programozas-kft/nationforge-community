@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Donation;
 use App\Models\Person;
+use App\Services\WebhookService;
 use Illuminate\Http\Request;
 
 class DonationController extends Controller
@@ -32,7 +33,8 @@ class DonationController extends Controller
 
         $data['is_recurring'] = $request->boolean('is_recurring');
 
-        Donation::create($data);
+        $donation = Donation::create($data);
+        WebhookService::dispatch('donation.created', $donation->toArray());
 
         return redirect()->route('admin.donations.index')->with('success', 'Adomány sikeresen rögzítve!');
     }

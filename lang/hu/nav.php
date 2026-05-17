@@ -23,4 +23,5 @@ return [
     'infographics'   => 'Infografikonok',
     'campaigns'      => 'Email kampányok',
     'drip_campaigns' => 'Drip kampányok',
+    'webhooks'       => 'Webhook-ok',
 ];

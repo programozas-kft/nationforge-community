@@ -469,6 +469,16 @@
     </a>
     @endif
 
+    @if(auth()->user()->isStrictAdmin())
+    <!-- Webhooks -->
+    <a href="{{ route('admin.webhooks.index') }}"
+       class="sb-item {{ request()->routeIs('admin.webhooks.*') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+        <span class="sb-item-text">{{ __('nav.webhooks') }}</span>
+        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Webhook::count() }}</span>
+    </a>
+    @endif
+
     <!-- Changelog -->
     <a href="{{ route('admin.changelog') }}"
        class="sb-item {{ request()->routeIs('admin.changelog') ? 'active' : '' }}">

@@ -165,6 +165,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::put('help/{help}', [HelpController::class, 'update'])->name('help.update');
     Route::get('sugo', [HelpController::class, 'sugo'])->name('sugo');
     Route::view('changelog', 'admin.changelog')->name('changelog');
+
+    Route::get('webhooks', [\App\Http\Controllers\Admin\WebhookController::class, 'index'])->name('webhooks.index');
+    Route::post('webhooks', [\App\Http\Controllers\Admin\WebhookController::class, 'store'])->name('webhooks.store');
+    Route::put('webhooks/{webhook}', [\App\Http\Controllers\Admin\WebhookController::class, 'update'])->name('webhooks.update');
+    Route::patch('webhooks/{webhook}/toggle', [\App\Http\Controllers\Admin\WebhookController::class, 'toggleActive'])->name('webhooks.toggle');
+    Route::delete('webhooks/{webhook}', [\App\Http\Controllers\Admin\WebhookController::class, 'destroy'])->name('webhooks.destroy');
+    Route::get('webhooks/{webhook}/deliveries', [\App\Http\Controllers\Admin\WebhookController::class, 'deliveries'])->name('webhooks.deliveries');
+    Route::post('webhooks/{webhook}/deliveries/{delivery}/retry', [\App\Http\Controllers\Admin\WebhookController::class, 'retry'])->name('webhooks.retry');
 });
 
 require __DIR__.'/auth.php';

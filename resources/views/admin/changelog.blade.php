@@ -15,11 +15,30 @@ $locale = app()->getLocale();
 $versions = [
 
     [
-        'version' => 'v1.22.0',
+        'version' => 'v1.23.0',
         'latest'  => true,
         'badge'   => [
             'text'  => ['hu' => 'Aktuális, Legújabb', 'en' => 'Current, Latest'],
             'style' => 'background:rgba(10,179,156,0.1);color:#0ab39c;',
+        ],
+        'date' => ['hu' => '2026. május 17.', 'en' => 'May 17, 2026'],
+        'items' => [
+            ['hu' => '<strong>Többnyelvű súgó (DE / RO / SK):</strong> A súgódokumentáció immár öt nyelven érhető el: magyar, angol, <em>német, román és szlovák</em>. Mind a 16 súgócikk teljes szövege le van fordítva. A nyelvváltó a súgó oldalsávjában érhető el — a kiválasztott nyelv azonnal érvényes.',
+             'en'  => '<strong>Multilingual help (DE / RO / SK):</strong> The help documentation is now available in five languages: Hungarian, English, <em>German, Romanian and Slovak</em>. All 16 help articles are fully translated. The language switcher is available in the help sidebar — the selected language takes effect immediately.'],
+            ['hu' => '<strong>Adatbázis-séma bővítése:</strong> A <code>help_articles</code> táblához hat új nullable szöveges oszlop adódott: <code>title_de</code>, <code>content_de</code>, <code>title_ro</code>, <code>content_ro</code>, <code>title_sk</code>, <code>content_sk</code>.',
+             'en'  => '<strong>Database schema extension:</strong> Six new nullable text columns were added to the <code>help_articles</code> table: <code>title_de</code>, <code>content_de</code>, <code>title_ro</code>, <code>content_ro</code>, <code>title_sk</code>, <code>content_sk</code>.'],
+            ['hu' => '<strong>Súgószerkesztő — DE / RO / SK fülek:</strong> Az admin súgókezelő szerkesztő modáljában megjelent a Deutsch, Română és Slovenčina fül, így az összes nyelvi tartalom egy helyen szerkeszthető.',
+             'en'  => '<strong>Help editor — DE / RO / SK tabs:</strong> The admin help editor modal now includes Deutsch, Română and Slovenčina tabs, allowing all language content to be edited from one place.'],
+            ['hu' => '<strong>Képek szinkronizálása minden nyelvre:</strong> A <code>HelpSyncImagesAllLangsSeeder</code> minden olyan cikknél, amelynek magyar tartalma képernyőképpel kezdődik, automatikusan előrészíti ugyanazt a képet a DE / RO / SK tartalomba is — duplikáció nélkül.',
+             'en'  => '<strong>Image sync across all languages:</strong> The <code>HelpSyncImagesAllLangsSeeder</code> automatically prepends the same screenshot to DE / RO / SK content for every article whose Hungarian content starts with a screenshot image — without duplication.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.22.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
         ],
         'date' => ['hu' => '2026. május 16.', 'en' => 'May 16, 2026'],
         'items' => [

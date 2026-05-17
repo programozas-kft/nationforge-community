@@ -31,8 +31,13 @@
                         <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('settings.app_url_hint') }}</p>
                     </div>
                     <div>
-                        <label class="nf-label">{{ __('settings.language') }}</label>
-                        <input type="text" value="{{ $settings['app_locale'] }}" class="nf-input" disabled style="background:#f8f9fa;color:#adb5bd">
+                        <label class="nf-label">{{ __('settings.default_language') }}</label>
+                        <select name="default_locale" class="nf-input">
+                            @foreach(['hu' => '🇭🇺 Magyar', 'en' => '🇬🇧 English', 'de' => '🇩🇪 Deutsch', 'ro' => '🇷🇴 Română', 'sk' => '🇸🇰 Slovenčina'] as $code => $label)
+                                <option value="{{ $code }}" {{ $settings['default_locale'] === $code ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('settings.default_language_hint') }}</p>
                     </div>
                 </div>
             </div>

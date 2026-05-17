@@ -18,11 +18,12 @@ class SettingsController extends Controller
     public function index()
     {
         $settings = [
-            'app_name'    => config('app.name'),
-            'app_url'     => config('app.url'),
-            'app_locale'  => config('app.locale'),
-            'mail_from'   => config('mail.from.address'),
-            'mail_name'   => config('mail.from.name'),
+            'app_name'       => config('app.name'),
+            'app_url'        => config('app.url'),
+            'app_locale'     => config('app.locale'),
+            'default_locale' => Setting::get('default_locale', config('app.locale', 'hu')),
+            'mail_from'      => config('mail.from.address'),
+            'mail_name'      => config('mail.from.name'),
         ];
         $mailConfig = [
             'mailer'    => config('mail.default', 'log'),
@@ -91,6 +92,10 @@ class SettingsController extends Controller
 
     public function update(Request $request)
     {
+        $request->validate([
+            'default_locale' => 'nullable|in:hu,en,de,ro,sk',
+        ]);
+
         $map = [
             'app_name'   => 'APP_NAME',
             'mail_from'  => 'MAIL_FROM_ADDRESS',
@@ -108,6 +113,10 @@ class SettingsController extends Controller
 
         file_put_contents($envPath, $env);
         Artisan::call('config:clear');
+
+        if ($request->filled('default_locale')) {
+            Setting::set('default_locale', $request->default_locale);
+        }
 
         return redirect()->route('admin.settings')->with('success', __('settings.saved'));
     }

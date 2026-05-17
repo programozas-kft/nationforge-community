@@ -568,14 +568,9 @@ function closeModal(id) { document.getElementById(id).classList.remove('open'); 
 document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.nf-overlay.open').forEach(m=>{ m.classList.remove('open'); document.body.style.overflow=''; }); });
 
 // Fix: prevent modal from closing when user drags text inside and releases on the backdrop.
-// Track where mousedown started; only allow backdrop-click-to-close when drag began on the backdrop itself.
+// Track where mousedown started; the inline onclick on .nf-overlay checks __nfMdTarget===this.
 var __nfMdTarget = null;
 document.addEventListener('mousedown', function(e) { __nfMdTarget = e.target; });
-document.querySelectorAll('.nf-overlay').forEach(function(overlay) {
-    overlay.addEventListener('click', function(e) {
-        if (__nfMdTarget !== overlay) e.stopImmediatePropagation();
-    }, true);
-});
 
 function toggleMenu(id) {
     const sub = document.getElementById(id);

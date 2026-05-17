@@ -133,19 +133,25 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ SMTP / mailer configuration from UI (SMTP, Resend API, log mode)
 
 ### Help & Documentation
-- ✅ Built-in help article editor (Markdown-like, bilingual HU/EN)
-- ✅ Image lightbox support
+- ✅ Built-in help article editor (Markdown + image lightbox + video embed)
+- ✅ Full 5-language documentation: **HU / EN / DE / RO / SK**
+- ✅ Separate title & content columns per locale in the database
+- ✅ Admin editor with per-language tabs (HU / EN / DE / RO / SK)
 - ✅ Accessible to all users from the admin panel
-- ✅ Video embed support in help articles (YouTube & Vimeo)
 
 ### Multi-language
-- ✅ Full HU / EN bilingual admin panel
+- ✅ Full **HU / EN / DE / RO / SK** admin panel
 - ✅ Language switcher in sidebar (SVG flag-icons)
 - ✅ Per-session locale switching
-- ✅ Additional language packs (DE, RO, SK, …)
+- ✅ All 16 built-in help articles translated in all 5 languages
 
 ### Integrations & API
-- 🔲 Webhook support (outgoing events)
+- ✅ **Outgoing webhooks** — configurable HTTP POST to any URL on system events
+  - 12 event types: `contact.*`, `event.*`, `donation.created`, `campaign.sent`, `task.*`, `drip.enrolled`
+  - HMAC-SHA256 request signing (`X-NationForge-Signature`)
+  - Delivery log with per-attempt status, HTTP code and response body
+  - Automatic retry (3 attempts, 60 s backoff) via queue
+  - Manual retry for failed deliveries from the admin UI
 - 🔲 Google Calendar sync
 - 🔲 Facebook Events sync
 - 🔲 Zapier / Make (Integromat) integration
@@ -267,6 +273,8 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 | Lead scoring (pipeline + stars) | ✅ | ✅ |
 | Event QR code check-in | ✅ | ✅ |
 | Waitlist management with auto-promotion | ✅ | ✅ |
+| Outgoing webhooks (12 event types, HMAC-signed) | ✅ | ✅ |
+| Help documentation (5 languages: HU/EN/DE/RO/SK) | ✅ | ✅ |
 | Advanced analytics & reports | — | ✅ |
 | Multi-organization / Multi-tenant | — | ✅ |
 | White-label & custom domain | — | ✅ |

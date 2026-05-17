@@ -22,4 +22,7 @@ return [
     'news'           => 'Știri',
     'infographics'   => 'Infografice',
     'campaigns'      => 'Campanii e-mail',
+    'drip_campaigns' => 'Campanii drip',
+    'webhooks'       => 'Webhooks',
+    'integrations'   => 'Integrări',
 ];

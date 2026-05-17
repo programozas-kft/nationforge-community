@@ -24,4 +24,5 @@ return [
     'campaigns'      => 'Email Campaigns',
     'drip_campaigns' => 'Drip Campaigns',
     'webhooks'       => 'Webhooks',
+    'integrations'   => 'Integrations',
 ];

@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
+// iCal feed (Google Calendar / Apple Calendar / Outlook subscription)
+Route::get('/events.ics', [\App\Http\Controllers\IcalController::class, 'events'])->name('ical.events');
+
 // Locale switcher
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
@@ -165,6 +168,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::put('help/{help}', [HelpController::class, 'update'])->name('help.update');
     Route::get('sugo', [HelpController::class, 'sugo'])->name('sugo');
     Route::view('changelog', 'admin.changelog')->name('changelog');
+
+    // Integrations
+    Route::get('integrations', [\App\Http\Controllers\Admin\IntegrationsController::class, 'index'])->name('integrations');
+    Route::post('integrations/facebook', [\App\Http\Controllers\Admin\IntegrationsController::class, 'updateFacebook'])->name('integrations.facebook');
+    Route::post('events/{event}/publish-facebook', [EventController::class, 'publishToFacebook'])->name('events.publish-facebook');
 
     Route::get('webhooks', [\App\Http\Controllers\Admin\WebhookController::class, 'index'])->name('webhooks.index');
     Route::post('webhooks', [\App\Http\Controllers\Admin\WebhookController::class, 'store'])->name('webhooks.store');

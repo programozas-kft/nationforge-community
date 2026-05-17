@@ -22,4 +22,7 @@ return [
     'news'           => 'Neuigkeiten',
     'infographics'   => 'Infografiken',
     'campaigns'      => 'E-Mail-Kampagnen',
+    'drip_campaigns' => 'Drip-Kampagnen',
+    'webhooks'       => 'Webhooks',
+    'integrations'   => 'Integrationen',
 ];

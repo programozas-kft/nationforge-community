@@ -24,4 +24,5 @@ return [
     'campaigns'      => 'Email kampányok',
     'drip_campaigns' => 'Drip kampányok',
     'webhooks'       => 'Webhook-ok',
+    'integrations'   => 'Integrációk',
 ];

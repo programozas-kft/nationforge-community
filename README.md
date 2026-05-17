@@ -152,9 +152,9 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
   - Delivery log with per-attempt status, HTTP code and response body
   - Automatic retry (3 attempts, 60 s backoff) via queue
   - Manual retry for failed deliveries from the admin UI
-- 🔲 Google Calendar sync
-- 🔲 Facebook Events sync
-- 🔲 Zapier / Make (Integromat) integration
+- ✅ **Google Calendar / iCal sync** — public iCal feed (`/events.ics`) subscribable in any calendar app; one-click "Add to Google Calendar" from the Integrations page
+- ✅ **Facebook Events sync** — publish events to a Facebook Page via Graph API (Page Access Token in Integrations settings)
+- ✅ **Zapier / Make (Integromat) integration** — use existing outgoing webhooks as triggers; step-by-step guide built into the Integrations page
 
 ### Advanced / Enterprise
 - 🔲 Multi-organization / Multi-tenant support
@@ -274,6 +274,9 @@ NationForge follows an **Open Core** strategy — the community foundation is MI
 | Event QR code check-in | ✅ | ✅ |
 | Waitlist management with auto-promotion | ✅ | ✅ |
 | Outgoing webhooks (12 event types, HMAC-signed) | ✅ | ✅ |
+| Google Calendar / iCal sync | ✅ | ✅ |
+| Facebook Events sync | ✅ | ✅ |
+| Zapier & Make (Integromat) integration | ✅ | ✅ |
 | Help documentation (5 languages: HU/EN/DE/RO/SK) | ✅ | ✅ |
 | Advanced analytics & reports | — | ✅ |
 | Multi-organization / Multi-tenant | — | ✅ |

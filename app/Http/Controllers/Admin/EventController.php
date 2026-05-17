@@ -7,7 +7,9 @@ use App\Mail\EventRegistrationConfirmation;
 use App\Mail\WaitlistPromotion;
 use App\Models\Event;
 use App\Models\EventRegistration;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -240,5 +242,33 @@ class EventController extends Controller
         }
 
         return back()->with('success', __('events.checkin_updated'));
+    }
+
+    public function publishToFacebook(Event $event)
+    {
+        $pageId    = Setting::get('fb_page_id', '');
+        $pageToken = Setting::get('fb_page_access_token', '');
+
+        if (!$pageId || !$pageToken) {
+            return back()->with('error', __('integrations.fb_not_configured'));
+        }
+
+        $payload = array_filter([
+            'name'         => $event->title,
+            'description'  => strip_tags($event->description ?? ''),
+            'start_time'   => $event->starts_at->toIso8601String(),
+            'end_time'     => $event->ends_at?->toIso8601String(),
+            'location'     => trim(implode(', ', array_filter([$event->venue_name, $event->city]))),
+            'access_token' => $pageToken,
+        ]);
+
+        $response = Http::post("https://graph.facebook.com/v19.0/{$pageId}/events", $payload);
+
+        if ($response->successful()) {
+            return back()->with('success', __('integrations.fb_published'));
+        }
+
+        $msg = $response->json('error.message', 'Unknown error');
+        return back()->with('error', __('integrations.fb_error', ['msg' => $msg]));
     }
 }

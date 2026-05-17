@@ -1,0 +1,60 @@
+<?php
+
+return [
+    'title'    => 'Integrációk',
+    'subtitle' => 'Csatlakoztasd a NationForge-ot külső rendszerekhez',
+
+    // Google Calendar / iCal
+    'gcal_title'    => 'Google Calendar / iCal',
+    'gcal_desc'     => 'Iratkozz fel az eseménynaptárra – az összes publikált esemény automatikusan szinkronizálódik bármilyen iCal-kompatibilis naptáralkalmazásba (Google Calendar, Apple Calendar, Outlook).',
+    'ical_url_label'=> 'iCal feed URL',
+    'gcal_copy'     => 'Másol',
+    'gcal_copied'   => 'Másolva!',
+    'gcal_steps'    => 'Hogyan add hozzá Google Naptárhoz:',
+    'gcal_step1'    => 'Másold ki az iCal URL-t fentről',
+    'gcal_step2'    => 'Nyisd meg a Google Naptárt → Más naptárak (+) → URL-ből',
+    'gcal_step3'    => 'Illeszd be az URL-t és kattints a „Naptár hozzáadása" gombra',
+    'gcal_step4'    => 'A Google kb. 12–24 óránként frissíti az előfizetett naptárakat',
+    'gcal_btn'      => 'Megnyitás Google Naptárban',
+
+    // Facebook
+    'fb_title'            => 'Facebook Események',
+    'fb_desc'             => 'Tedd közzé a NationForge eseményeket közvetlenül a Facebook Oldaladra a Graph API segítségével.',
+    'fb_page_id'          => 'Facebook Oldal ID',
+    'fb_page_token'       => 'Oldal Hozzáférési Token',
+    'fb_page_token_hint'  => 'Szükséges jogosultságok: pages_manage_events, pages_read_engagement',
+    'fb_save'             => 'Beállítások mentése',
+    'fb_not_configured'   => 'A Facebook integráció nincs beállítva. Add meg az Oldal ID-t és a hozzáférési tokent az Integrációk oldalon.',
+    'fb_published'        => 'Az esemény sikeresen közzétéve a Facebook Oldalon!',
+    'fb_error'            => 'Facebook hiba: :msg',
+    'fb_publish_btn'      => 'Közzétesz Facebookon',
+    'fb_setup_steps'      => 'Hogyan szerezd meg az Oldal Hozzáférési Tokent:',
+    'fb_step1'            => 'Lépj be a developers.facebook.com oldalra, és hozz létre egy alkalmazást',
+    'fb_step2'            => 'Add hozzá a „Facebook Login for Business" terméket',
+    'fb_step3'            => 'A Graph API Explorerben válaszd ki az Oldaladat, és generálj Oldal Hozzáférési Tokent',
+    'fb_step4'            => 'Szükséges jogosultságok: pages_manage_events, pages_read_engagement',
+    'fb_configured'       => 'Facebook integráció konfigurálva',
+    'fb_not_set'          => 'Nincs beállítva',
+
+    // Zapier / Make
+    'zapier_title'      => 'Zapier és Make (Integromat)',
+    'zapier_desc'       => 'A NationForge kimenő webhookjain keresztül könnyedén automatizálhatod a munkafolyamataidat Zapier-ben és Make-ben – kód nélkül.',
+    'zapier_how'        => 'Hogyan működik:',
+    'zapier_how_desc'   => 'A NationForge webhook küld egy HTTP POST kérést a te Zapier / Make URL-edre, valahányszor egy esemény bekövetkezik (pl. új kapcsolat, leadott adomány, teljesített feladat). A Zapier / Make lekezeli a fogadott adatokat, és bármilyen akcióhoz kapcsolhatod.',
+    'zapier_steps_title'=> 'Zapier beállítása:',
+    'zapier_step1'      => 'Hozz létre egy új Zap-et a Zapier-ben',
+    'zapier_step2'      => 'Triggerként válaszd a „Webhooks by Zapier" → „Catch Hook" lehetőséget',
+    'zapier_step3'      => 'Másold ki a Zapier által generált webhook URL-t',
+    'zapier_step4'      => 'A NationForge-ban menj a Webhookok oldalra, és hozz létre új webhookot ezzel az URL-lel',
+    'zapier_step5'      => 'Válaszd ki, melyik eseménytípusra triggereljenek (pl. contact.created)',
+    'make_steps_title'  => 'Make (Integromat) beállítása:',
+    'make_step1'        => 'Hozz létre egy új forgatókönyvet a Make-ben',
+    'make_step2'        => 'Első modulként add hozzá a „Webhooks" → „Custom webhook" modult',
+    'make_step3'        => 'Másold ki a Make által generált webhook URL-t',
+    'make_step4'        => 'A NationForge-ban hozz létre új webhookot ezzel az URL-lel',
+    'make_step5'        => 'Aktiváld a webhookot és a forgatókönyvet',
+    'available_events'  => 'Elérhető NationForge eseménytípusok',
+    'go_to_webhooks'    => 'Webhookok kezelése',
+
+    'settings_saved' => 'Integrációs beállítások elmentve!',
+];

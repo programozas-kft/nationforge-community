@@ -15,11 +15,43 @@ $locale = app()->getLocale();
 $versions = [
 
     [
-        'version' => 'v1.23.0',
+        'version' => 'v1.25.0',
         'latest'  => true,
         'badge'   => [
             'text'  => ['hu' => 'Aktuális, Legújabb', 'en' => 'Current, Latest'],
             'style' => 'background:rgba(10,179,156,0.1);color:#0ab39c;',
+        ],
+        'date' => ['hu' => '2026. május 17.', 'en' => 'May 17, 2026'],
+        'items' => [
+            ['hu' => '<strong>Google Calendar / iCal szinkronizáció:</strong> Nyilvános iCal feed (<code>/events.ics</code>) — az összes publikált esemény előfizethetővé vált bármilyen naptáralkalmazásban (Google Calendar, Apple Calendar, Outlook). Az Integrációk oldalon megjelenő URL egyetlen kattintással a Google Naptárba is hozzáadható.',
+             'en'  => '<strong>Google Calendar / iCal sync:</strong> Public iCal feed (<code>/events.ics</code>) — all published events are now subscribable in any calendar app (Google Calendar, Apple Calendar, Outlook). The URL shown on the Integrations page can be added to Google Calendar in a single click.'],
+            ['hu' => '<strong>Facebook Esemény közzétevő:</strong> A publikált esemény nézetében megjelent egy <em>Közzétesz Facebookon</em> gomb, amely a Graph API v19.0 segítségével létrehozza az eseményt a beállított Facebook Oldalon. Az Integrációk oldalon adható meg az Oldal ID és a Page Access Token.',
+             'en'  => '<strong>Facebook Event publisher:</strong> A <em>Publish to Facebook</em> button appears on published event pages, creating the event on the configured Facebook Page via Graph API v19.0. The Page ID and Page Access Token are configured on the Integrations page.'],
+            ['hu' => '<strong>Zapier & Make (Integromat) integráció:</strong> A meglévő kimenő webhook rendszer (v1.24.0) az alapja. Az új Integrációk oldalon lépésről lépésre útmutató mutatja, hogyan kell Zapier Catch Hook és Make Custom Webhook triggert összekapcsolni a NationForge-zal — kód nélkül.',
+             'en'  => '<strong>Zapier & Make (Integromat) integration:</strong> Built on the existing outgoing webhook system (v1.24.0). The new Integrations page provides a step-by-step guide on how to connect Zapier Catch Hook and Make Custom Webhook triggers to NationForge — no code required.'],
+            ['hu' => '<strong>Integrációk menüpont a sidebarban:</strong> Az összes külső integráció egy dedikált <em>Integrációk</em> oldalon érhető el — Google Calendar URL másoló, Facebook token beállítás és a Zapier/Make útmutató egy helyen.',
+             'en'  => '<strong>Integrations menu item in sidebar:</strong> All external integrations are accessible from a dedicated <em>Integrations</em> page — Google Calendar URL copy, Facebook token configuration, and the Zapier/Make guide all in one place.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.24.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Új modul', 'en' => 'New module'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. május 17.', 'en' => 'May 17, 2026'],
+        'items' => [
+            ['hu' => '<strong>Kimenő webhookok:</strong> Konfigurálható HTTP POST küldés tetszőleges URL-re rendszereseményekre. 12 eseménytípus: <code>contact.*</code>, <code>event.*</code>, <code>donation.created</code>, <code>campaign.sent</code>, <code>task.*</code>, <code>drip.enrolled</code>. HMAC-SHA256 aláírás (<code>X-NationForge-Signature</code>). Kézbesítési napló per-kísérlet státusszal, HTTP kóddal és válasz törzzsel. Automatikus újrakísérlet (3 alkalom, 60 másodperces visszatartással) queue-n. Sikertelen kézbesítések manuális újraküldése az admin felületről.',
+             'en'  => '<strong>Outgoing webhooks:</strong> Configurable HTTP POST to any URL on system events. 12 event types: <code>contact.*</code>, <code>event.*</code>, <code>donation.created</code>, <code>campaign.sent</code>, <code>task.*</code>, <code>drip.enrolled</code>. HMAC-SHA256 signing (<code>X-NationForge-Signature</code>). Delivery log with per-attempt status, HTTP code and response body. Automatic retry (3 attempts, 60 s backoff) via queue. Manual retry for failed deliveries from the admin UI.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.23.0',
+        'badge'   => [
+            'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
         ],
         'date' => ['hu' => '2026. május 17.', 'en' => 'May 17, 2026'],
         'items' => [

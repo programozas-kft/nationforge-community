@@ -22,4 +22,7 @@ return [
     'news'           => 'Správy',
     'infographics'   => 'Infografiky',
     'campaigns'      => 'E-mailové kampane',
+    'drip_campaigns' => 'Drip kampane',
+    'webhooks'       => 'Webhooks',
+    'integrations'   => 'Integrácie',
 ];

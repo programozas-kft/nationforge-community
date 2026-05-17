@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
 @section('title', __('settings.title'))
 @section('header', __('settings.title'))
@@ -572,7 +572,7 @@
 </div>
 
 {{-- CREATE MODAL --}}
-<div id="modal-link-create" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-link-create')">
+<div id="modal-link-create" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-link-create')">
     <div class="nf-modal" style="max-width:520px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('settings.link_new') }}</span>
@@ -625,7 +625,7 @@
 </div>
 
 {{-- EDIT MODAL --}}
-<div id="modal-link-edit" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-link-edit')">
+<div id="modal-link-edit" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-link-edit')">
     <div class="nf-modal" style="max-width:520px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('settings.link_edit') }}</span>

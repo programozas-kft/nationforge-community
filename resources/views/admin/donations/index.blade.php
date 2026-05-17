@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
 @section('title', __('donations.title'))
 @section('header', __('donations.title'))
@@ -119,7 +119,7 @@
 </div>
 
 {{-- EXPORT MODAL --}}
-<div id="modal-export" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-export')">
+<div id="modal-export" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-export')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('donations.export_title') }}</span>
@@ -191,7 +191,7 @@
 </div>
 
 {{-- CREATE MODAL --}}
-<div id="modal-create-donation" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-create-donation')">
+<div id="modal-create-donation" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-create-donation')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('donations.new') }}</span>
@@ -265,7 +265,7 @@
 </div>
 
 {{-- EDIT MODAL --}}
-<div id="modal-edit-donation" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-edit-donation')">
+<div id="modal-edit-donation" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-edit-donation')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('donations.edit_title') }}</span>

@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
 @section('title', __('help.manage_title'))
 @section('header', __('help.manage_title'))
@@ -42,7 +42,7 @@
 </div>
 
 {{-- EDIT MODAL --}}
-<div id="modal-help-edit" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-help-edit')">
+<div id="modal-help-edit" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-help-edit')">
     <div class="nf-modal" style="max-width:620px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('help.modal_title') }}</span>

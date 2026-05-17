@@ -1,4 +1,4 @@
-@php
+﻿@php
     /** @var \App\Models\Event $event */
     /** @var \Illuminate\Support\Collection $people */
     $shifts = $event->shifts;
@@ -186,7 +186,7 @@
 </div>
 
 {{-- ── NEW / EDIT SHIFT MODAL ─────────────────────────── --}}
-<div id="shift-modal" class="nf-overlay" onclick="if(event.target===this)closeModal('shift-modal')">
+<div id="shift-modal" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('shift-modal')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title" id="shift-modal-title">{{ __('shifts.new') }}</span>
@@ -235,7 +235,7 @@
 </div>
 
 {{-- ── ADD SIGNUP MODAL ──────────────────────────────── --}}
-<div id="signup-modal" class="nf-overlay" onclick="if(event.target===this)closeModal('signup-modal')">
+<div id="signup-modal" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('signup-modal')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('shifts.add_signup_title') }} — <span id="signup-shift-title" style="color:#405189"></span></span>

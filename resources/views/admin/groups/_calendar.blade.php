@@ -1,4 +1,4 @@
-@php
+﻿@php
     /** @var \Carbon\Carbon $month */
     /** @var \Illuminate\Support\Collection $events grouped by Y-m-d */
     $prevMonth   = $month->copy()->subMonthNoOverflow()->format('Y-m');
@@ -133,7 +133,7 @@
 </div>
 
 {{-- ── QUICK-ADD EVENT MODAL ──────────────────────────── --}}
-<div id="group-event-modal" class="nf-overlay" onclick="if(event.target===this)closeModal('group-event-modal')">
+<div id="group-event-modal" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('group-event-modal')">
     <div class="nf-modal nf-modal-lg">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('group_calendar.modal_title') }}</span>

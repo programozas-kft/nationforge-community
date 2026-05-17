@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
 @section('title', __('groups.title'))
 @section('header', __('groups.title'))
@@ -120,7 +120,7 @@
 </style>
 
 {{-- CREATE MODAL --}}
-<div id="modal-create" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-create')">
+<div id="modal-create" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-create')">
     <div class="nf-modal" style="max-width:540px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('groups.create_title') }}</span>
@@ -185,7 +185,7 @@
 </div>
 
 {{-- EDIT MODAL --}}
-<div id="modal-edit" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-edit')">
+<div id="modal-edit" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-edit')">
     <div class="nf-modal" style="max-width:540px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('groups.edit_title') }}</span>

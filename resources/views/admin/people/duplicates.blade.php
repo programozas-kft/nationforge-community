@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
 @section('title', 'Duplikátum detektálás')
 @section('header', 'Duplikátum detektálás')
@@ -112,7 +112,7 @@
 @endif
 
 {{-- ── MERGE MODAL ──────────────────────────────────────── --}}
-<div id="modal-merge" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-merge')">
+<div id="modal-merge" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-merge')">
     <div class="nf-modal" style="max-width:560px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">Kapcsolatok összevonása</span>

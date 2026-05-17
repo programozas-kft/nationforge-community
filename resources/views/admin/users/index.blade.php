@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
 @section('title', __('users.title'))
 @section('header', __('users.title'))
@@ -165,7 +165,7 @@
 @endif
 
 {{-- INVITE MODAL --}}
-<div id="modal-invite" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-invite')">
+<div id="modal-invite" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-invite')">
     <div class="nf-modal" style="max-width:440px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('users.invite_modal_title') }}</span>
@@ -206,7 +206,7 @@
 </div>
 
 {{-- CREATE MODAL --}}
-<div id="modal-create" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-create')">
+<div id="modal-create" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-create')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('users.new') }}</span>
@@ -281,7 +281,7 @@
 </div>
 
 {{-- EDIT MODAL --}}
-<div id="modal-edit" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-edit')">
+<div id="modal-edit" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-edit')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('users.edit_title') }}</span>

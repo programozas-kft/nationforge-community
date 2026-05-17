@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+﻿@extends('admin.layouts.app')
 
 @section('title', __('people.title'))
 @section('header', __('people.title'))
@@ -257,7 +257,7 @@
 </form>
 
 {{-- ── SAVE FILTER MODAL ──────────────────────────────── --}}
-<div id="modal-save-filter" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-save-filter')">
+<div id="modal-save-filter" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-save-filter')">
     <div class="nf-modal" style="max-width:380px">
         <div class="nf-modal-header">
             <span class="nf-modal-title">Szűrő mentése</span>
@@ -380,7 +380,7 @@
 </div>
 
 {{-- ── CREATE MODAL ─────────────────────────────────── --}}
-<div id="modal-create" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-create')">
+<div id="modal-create" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-create')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('people.create_title') }}</span>
@@ -474,7 +474,7 @@
 </div>
 
 {{-- ── EDIT MODAL ───────────────────────────────────── --}}
-<div id="modal-edit" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-edit')">
+<div id="modal-edit" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-edit')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title">{{ __('people.edit_title') }}</span>
@@ -570,7 +570,7 @@
 </div>
 
 {{-- ── IMPORT MODAL ──────────────────────────────────── --}}
-<div id="modal-import" class="nf-overlay" onclick="if(event.target===this)closeModal('modal-import')">
+<div id="modal-import" class="nf-overlay" onclick="if(event.target===this&&__nfMdTarget===this)closeModal('modal-import')">
     <div class="nf-modal">
         <div class="nf-modal-header">
             <span class="nf-modal-title">Kapcsolatok importálása</span>

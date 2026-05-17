@@ -109,15 +109,46 @@
         <span class="sb-brand-name">{{ __('help.brand') }}</span>
     </div>
 
-    <div class="sb-section">{{ __('help.topics') }}</div>
-    
+    @php
+        // Section boundaries matching the admin sidebar structure
+        // sort_order 10–39 = MENÜ, 40–99 = SZERVEZŐ, 100+ = ADMINISZTRÁCIÓ
+        $sections = [
+            10  => $locale === 'en' ? 'Menu'           : 'Menü',
+            40  => $locale === 'en' ? 'Organizing'     : 'Szervező',
+            100 => $locale === 'en' ? 'Administration' : 'Adminisztráció',
+        ];
+        $shownSections = [];
+    @endphp
+
     <div id="help-tabs">
         @forelse($help_articles as $i => $art)
-        <button onclick="showHelpTab({{ $art->id }})"
-            id="htab-{{ $art->id }}"
-            class="help-tab {{ $i === 0 ? 'active' : '' }}">
-            {{ ($locale === 'en' && $art->title_en) ? $art->title_en : $art->title }}
-        </button>
+            @php
+                // Determine which section this article belongs to
+                $currentSection = null;
+                foreach ($sections as $threshold => $label) {
+                    if ($art->sort_order >= $threshold) {
+                        $currentSection = $threshold;
+                    }
+                }
+                $showHeader = $currentSection && !in_array($currentSection, $shownSections);
+                if ($showHeader) { $shownSections[] = $currentSection; }
+            @endphp
+
+            @if($showHeader)
+            <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+                        color:#5a6587;padding:16px 20px 6px;{{ $i > 0 ? 'margin-top:4px' : '' }}">
+                {{ $sections[$currentSection] }}
+            </div>
+            @endif
+
+            <button onclick="showHelpTab({{ $art->id }})"
+                id="htab-{{ $art->id }}"
+                class="help-tab {{ $i === 0 ? 'active' : '' }}"
+                @if(in_array($art->menu_key, ['csoportok-fajlok-naptar', 'drip-kampanyok']))
+                    style="padding-left:32px"
+                @endif>
+                {{ ($locale === 'en' && $art->title_en) ? $art->title_en : $art->title }}
+            </button>
         @empty
         <div class="px-5 py-4 text-sm text-gray-400 italic">{{ __('help.no_articles') }}</div>
         @endforelse

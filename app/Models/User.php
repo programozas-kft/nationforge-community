@@ -35,6 +35,11 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
+        return $this->hasRole(['super-admin', 'admin', 'editor']);
+    }
+
+    public function isStrictAdmin(): bool
+    {
         return $this->hasRole(['super-admin', 'admin']);
     }
 

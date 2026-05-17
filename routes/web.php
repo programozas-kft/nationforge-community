@@ -104,20 +104,22 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('donations/export', [\App\Http\Controllers\Admin\DonationExportController::class, 'export'])->name('donations.export');
     Route::resource('donations', DonationController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
 
-    // Admin kezelő
-    Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::post('invitations', [\App\Http\Controllers\Admin\InvitationController::class, 'store'])->name('invitations.store');
-    Route::post('invitations/{invitation}/resend', [\App\Http\Controllers\Admin\InvitationController::class, 'resend'])->name('invitations.resend');
-    Route::delete('invitations/{invitation}', [\App\Http\Controllers\Admin\InvitationController::class, 'destroy'])->name('invitations.destroy');
-    Route::get('audit', [\App\Http\Controllers\Admin\AuditController::class, 'index'])->name('audit');
-    Route::get('settings', [SettingsController::class, 'index'])->name('settings');
-    Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
-    Route::post('settings/branding', [SettingsController::class, 'updateBranding'])->name('settings.branding');
-    Route::post('settings/mail', [SettingsController::class, 'updateMail'])->name('settings.mail');
-    Route::post('settings/report', [SettingsController::class, 'updateReport'])->name('settings.report');
-    Route::post('settings/report/test', [SettingsController::class, 'testReport'])->name('settings.report.test');
-    Route::post('settings/payment', [SettingsController::class, 'updatePayment'])->name('settings.payment');
-    Route::post('settings/donation', [SettingsController::class, 'updateDonationPage'])->name('settings.donation');
+    // Admin kezelő (csak admin / super-admin)
+    Route::middleware(\App\Http\Middleware\EnsureStrictAdmin::class)->group(function () {
+        Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::post('invitations', [\App\Http\Controllers\Admin\InvitationController::class, 'store'])->name('invitations.store');
+        Route::post('invitations/{invitation}/resend', [\App\Http\Controllers\Admin\InvitationController::class, 'resend'])->name('invitations.resend');
+        Route::delete('invitations/{invitation}', [\App\Http\Controllers\Admin\InvitationController::class, 'destroy'])->name('invitations.destroy');
+        Route::get('audit', [\App\Http\Controllers\Admin\AuditController::class, 'index'])->name('audit');
+        Route::get('settings', [SettingsController::class, 'index'])->name('settings');
+        Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
+        Route::post('settings/branding', [SettingsController::class, 'updateBranding'])->name('settings.branding');
+        Route::post('settings/mail', [SettingsController::class, 'updateMail'])->name('settings.mail');
+        Route::post('settings/report', [SettingsController::class, 'updateReport'])->name('settings.report');
+        Route::post('settings/report/test', [SettingsController::class, 'testReport'])->name('settings.report.test');
+        Route::post('settings/payment', [SettingsController::class, 'updatePayment'])->name('settings.payment');
+        Route::post('settings/donation', [SettingsController::class, 'updateDonationPage'])->name('settings.donation');
+    });
 
     Route::get('links', [LinkController::class, 'index'])->name('links.index');
     Route::post('links', [LinkController::class, 'store'])->name('links.store');

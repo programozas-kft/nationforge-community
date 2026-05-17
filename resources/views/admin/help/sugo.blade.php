@@ -141,13 +141,20 @@
             </div>
             @endif
 
+            @php
+                $tabTitle = $art->title;
+                if (in_array($locale, ['en','de','ro','sk'])) {
+                    $tCol = "title_{$locale}";
+                    if (!empty($art->$tCol)) $tabTitle = $art->$tCol;
+                }
+            @endphp
             <button onclick="showHelpTab({{ $art->id }})"
                 id="htab-{{ $art->id }}"
                 class="help-tab {{ $i === 0 ? 'active' : '' }}"
                 @if(in_array($art->menu_key, ['csoportok-fajlok-naptar', 'drip-kampanyok']))
                     style="padding-left:32px"
                 @endif>
-                {{ ($locale === 'en' && $art->title_en) ? $art->title_en : $art->title }}
+                {{ $tabTitle }}
             </button>
         @empty
         <div class="px-5 py-4 text-sm text-gray-400 italic">{{ __('help.no_articles') }}</div>
@@ -192,8 +199,14 @@
             @forelse($help_articles as $i => $art)
             <div id="hcontent-{{ $art->id }}" style="display:{{ $i===0 ? 'block' : 'none' }}">
                 @php
-                    $displayTitle   = ($locale === 'en' && $art->title_en)   ? $art->title_en   : $art->title;
-                    $displayContent = ($locale === 'en' && $art->content_en) ? $art->content_en : $art->content;
+                    $displayTitle   = $art->title;
+                    $displayContent = $art->content;
+                    if (in_array($locale, ['en','de','ro','sk'])) {
+                        $tCol = "title_{$locale}";
+                        $cCol = "content_{$locale}";
+                        if (!empty($art->$tCol)) $displayTitle   = $art->$tCol;
+                        if (!empty($art->$cCol)) $displayContent = $art->$cCol;
+                    }
                 @endphp
                 <h1 class="text-3xl font-bold text-gray-800 mb-8" style="color:#2a2f45">{{ $displayTitle }}</h1>
                 <div class="prose prose-blue max-w-none text-gray-600 leading-relaxed help-content" style="font-size:0.95rem;">

@@ -27,7 +27,7 @@
                 <span style="font-weight:600;color:#343a40;font-size:0.875rem">{{ $article->title }}</span>
                 <span style="font-size:0.72rem;color:#adb5bd;background:#e9ebec;padding:2px 8px;border-radius:20px">{{ $article->menu_key }}</span>
             </div>
-            <button onclick="openEditHelp({{ $article->id }}, {{ json_encode($article->title) }}, {{ json_encode($article->content) }}, {{ json_encode($article->title_en) }}, {{ json_encode($article->content_en) }}, {{ json_encode($article->video_url) }})"
+            <button onclick="openEditHelp({{ $article->id }}, {{ json_encode($article->title) }}, {{ json_encode($article->content) }}, {{ json_encode($article->title_en) }}, {{ json_encode($article->content_en) }}, {{ json_encode($article->video_url) }}, {{ json_encode($article->title_de) }}, {{ json_encode($article->content_de) }}, {{ json_encode($article->title_ro) }}, {{ json_encode($article->content_ro) }}, {{ json_encode($article->title_sk) }}, {{ json_encode($article->content_sk) }})"
                 style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:5px;border:1px solid #dee2e6;background:#fff;color:#495057;font-size:0.78rem;cursor:pointer">
                 <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 {{ __('help.edit_btn') }}
@@ -63,6 +63,18 @@
                     style="padding:10px 16px;font-size:0.8rem;font-weight:500;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;color:#6c757d">
                     {{ __('help.tab_en') }}
                 </button>
+                <button type="button" id="help-tab-de" onclick="switchHelpLang('de')"
+                    style="padding:10px 16px;font-size:0.8rem;font-weight:500;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;color:#6c757d">
+                    DE
+                </button>
+                <button type="button" id="help-tab-ro" onclick="switchHelpLang('ro')"
+                    style="padding:10px 16px;font-size:0.8rem;font-weight:500;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;color:#6c757d">
+                    RO
+                </button>
+                <button type="button" id="help-tab-sk" onclick="switchHelpLang('sk')"
+                    style="padding:10px 16px;font-size:0.8rem;font-weight:500;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;color:#6c757d">
+                    SK
+                </button>
             </div>
             <div class="nf-modal-body" style="display:grid;gap:14px">
                 {{-- HU panel --}}
@@ -93,6 +105,48 @@
                         <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('help.markdown_hint') }}</p>
                     </div>
                 </div>
+                {{-- DE panel --}}
+                <div id="help-panel-de" style="display:none">
+                    <div style="margin-bottom:12px">
+                        <label class="nf-label">{{ __('help.menu_name') }} (DE)</label>
+                        <input type="text" name="title_de" id="help_title_de" class="nf-input">
+                    </div>
+                    <div>
+                        <label class="nf-label">{{ __('help.content_label') }} (DE)</label>
+                        <textarea name="content_de" id="help_content_de" class="nf-input"
+                            style="height:240px;resize:vertical;font-family:monospace;font-size:0.8rem;line-height:1.6"
+                            placeholder="{{ __('help.placeholder') }}"></textarea>
+                        <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('help.markdown_hint') }}</p>
+                    </div>
+                </div>
+                {{-- RO panel --}}
+                <div id="help-panel-ro" style="display:none">
+                    <div style="margin-bottom:12px">
+                        <label class="nf-label">{{ __('help.menu_name') }} (RO)</label>
+                        <input type="text" name="title_ro" id="help_title_ro" class="nf-input">
+                    </div>
+                    <div>
+                        <label class="nf-label">{{ __('help.content_label') }} (RO)</label>
+                        <textarea name="content_ro" id="help_content_ro" class="nf-input"
+                            style="height:240px;resize:vertical;font-family:monospace;font-size:0.8rem;line-height:1.6"
+                            placeholder="{{ __('help.placeholder') }}"></textarea>
+                        <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('help.markdown_hint') }}</p>
+                    </div>
+                </div>
+                {{-- SK panel --}}
+                <div id="help-panel-sk" style="display:none">
+                    <div style="margin-bottom:12px">
+                        <label class="nf-label">{{ __('help.menu_name') }} (SK)</label>
+                        <input type="text" name="title_sk" id="help_title_sk" class="nf-input">
+                    </div>
+                    <div>
+                        <label class="nf-label">{{ __('help.content_label') }} (SK)</label>
+                        <textarea name="content_sk" id="help_content_sk" class="nf-input"
+                            style="height:240px;resize:vertical;font-family:monospace;font-size:0.8rem;line-height:1.6"
+                            placeholder="{{ __('help.placeholder') }}"></textarea>
+                        <p style="font-size:0.72rem;color:#adb5bd;margin-top:4px">{{ __('help.markdown_hint') }}</p>
+                    </div>
+                </div>
                 {{-- Video URL (shared, not per-language) --}}
                 <div style="border-top:1px solid #e9ebec;padding-top:14px">
                     <label class="nf-label">{{ __('help.video_url_label') }}</label>
@@ -111,31 +165,36 @@
 
 @push('scripts')
 <script>
-function openEditHelp(id, title, content, titleEn, contentEn, videoUrl) {
+function openEditHelp(id, title, content, titleEn, contentEn, videoUrl, titleDe, contentDe, titleRo, contentRo, titleSk, contentSk) {
     const form = document.getElementById('help-edit-form');
     form.action = form.dataset.base + '/' + id;
     document.getElementById('help_title').value      = title;
     document.getElementById('help_content').value    = content;
     document.getElementById('help_title_en').value   = titleEn   || '';
     document.getElementById('help_content_en').value = contentEn || '';
+    document.getElementById('help_title_de').value   = titleDe   || '';
+    document.getElementById('help_content_de').value = contentDe || '';
+    document.getElementById('help_title_ro').value   = titleRo   || '';
+    document.getElementById('help_content_ro').value = contentRo || '';
+    document.getElementById('help_title_sk').value   = titleSk   || '';
+    document.getElementById('help_content_sk').value = contentSk || '';
     document.getElementById('help_video_url').value  = videoUrl  || '';
     switchHelpLang('hu');
     openModal('modal-help-edit');
 }
 
 function switchHelpLang(lang) {
-    const isHu = lang === 'hu';
-    document.getElementById('help-panel-hu').style.display = isHu ? 'block' : 'none';
-    document.getElementById('help-panel-en').style.display = isHu ? 'none'  : 'block';
-
-    const tabHu = document.getElementById('help-tab-hu');
-    const tabEn = document.getElementById('help-tab-en');
-    tabHu.style.borderBottomColor = isHu ? '#405189' : 'transparent';
-    tabHu.style.color             = isHu ? '#405189' : '#6c757d';
-    tabHu.style.fontWeight        = isHu ? '600' : '500';
-    tabEn.style.borderBottomColor = isHu ? 'transparent' : '#405189';
-    tabEn.style.color             = isHu ? '#6c757d' : '#405189';
-    tabEn.style.fontWeight        = isHu ? '500' : '600';
+    ['hu','en','de','ro','sk'].forEach(l => {
+        const panel = document.getElementById('help-panel-' + l);
+        const tab   = document.getElementById('help-tab-' + l);
+        const active = l === lang;
+        if (panel) panel.style.display = active ? 'block' : 'none';
+        if (tab) {
+            tab.style.borderBottomColor = active ? '#405189' : 'transparent';
+            tab.style.color             = active ? '#405189' : '#6c757d';
+            tab.style.fontWeight        = active ? '600' : '500';
+        }
+    });
 }
 </script>
 @endpush

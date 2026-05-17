@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class HelpArticle extends Model
 {
-    protected $fillable = ['menu_key', 'title', 'title_en', 'content', 'content_en', 'sort_order', 'video_url'];
+    protected $fillable = [
+        'menu_key', 'title', 'title_en', 'title_de', 'title_ro', 'title_sk',
+        'content', 'content_en', 'content_de', 'content_ro', 'content_sk',
+        'sort_order', 'video_url',
+    ];
 
     public static function toEmbedUrl(?string $url): ?string
     {

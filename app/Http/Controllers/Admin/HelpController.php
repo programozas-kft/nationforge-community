@@ -25,13 +25,26 @@ class HelpController extends Controller
     {
         $request->validate([
             'title'      => 'required|string|max:200',
-            'content'    => 'required|string|max:5000',
+            'content'    => 'required|string|max:10000',
             'title_en'   => 'nullable|string|max:200',
-            'content_en' => 'nullable|string|max:5000',
+            'content_en' => 'nullable|string|max:10000',
+            'title_de'   => 'nullable|string|max:200',
+            'content_de' => 'nullable|string|max:10000',
+            'title_ro'   => 'nullable|string|max:200',
+            'content_ro' => 'nullable|string|max:10000',
+            'title_sk'   => 'nullable|string|max:200',
+            'content_sk' => 'nullable|string|max:10000',
             'video_url'  => 'nullable|url|max:500',
         ]);
 
-        $help->update($request->only('title', 'content', 'title_en', 'content_en', 'video_url'));
+        $help->update($request->only(
+            'title', 'content',
+            'title_en', 'content_en',
+            'title_de', 'content_de',
+            'title_ro', 'content_ro',
+            'title_sk', 'content_sk',
+            'video_url'
+        ));
 
         return redirect()->route('admin.help.index')->with('success', __('help.updated'));
     }

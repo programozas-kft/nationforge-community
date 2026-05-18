@@ -1,5 +1,5 @@
 @php
-$locale = app()->getLocale();
+$locale = in_array(app()->getLocale(), ['hu', 'en']) ? app()->getLocale() : 'hu';
 
 $versions = [
 

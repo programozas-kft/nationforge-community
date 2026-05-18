@@ -1,10 +1,3 @@
-@php
-    // Default to HU on public page if no session locale is set
-    if (!session()->has('locale')) {
-        app()->setLocale('hu');
-    }
-    $locale = app()->getLocale();
-@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', $locale) }}">
 <head>

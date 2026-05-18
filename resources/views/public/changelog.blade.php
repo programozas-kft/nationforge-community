@@ -105,11 +105,20 @@
         </a>
     </div>
     <div class="pub-right">
-        @foreach([['hu','hu','HU'],['en','gb','EN'],['de','de','DE'],['ro','ro','RO'],['sk','sk','SK']] as [$lc,$flag,$label])
-        <a href="{{ route('locale.switch', $lc) }}"
-           class="lang-btn {{ $locale === $lc ? 'active' : '' }}">
-            <span class="fi fi-{{ $flag }}" style="width:16px;height:12px;display:inline-block;background-size:cover;border-radius:2px;"></span>
-            {{ $label }}
+        @php
+        $langs = [
+            ['lc'=>'hu','flag'=>'hu','label'=>'HU'],
+            ['lc'=>'en','flag'=>'gb','label'=>'EN'],
+            ['lc'=>'de','flag'=>'de','label'=>'DE'],
+            ['lc'=>'ro','flag'=>'ro','label'=>'RO'],
+            ['lc'=>'sk','flag'=>'sk','label'=>'SK'],
+        ];
+        @endphp
+        @foreach($langs as $lang)
+        <a href="{{ route('locale.switch', $lang['lc']) }}"
+           class="lang-btn {{ $locale === $lang['lc'] ? 'active' : '' }}">
+            <span class="fi fi-{{ $lang['flag'] }}" style="width:16px;height:12px;display:inline-block;background-size:cover;border-radius:2px;"></span>
+            {{ $lang['label'] }}
         </a>
         @endforeach
         <a href="{{ route('admin.login') }}" class="pub-login-btn">

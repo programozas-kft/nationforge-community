@@ -89,13 +89,21 @@
 <body>
 
 <header class="pub-header">
-    <a href="{{ route('admin.login') }}" class="pub-logo">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <polygon points="16,2 30,9 30,23 16,30 2,23 2,9" fill="#1a2456" stroke="#4a7fd4" stroke-width="1.5"/>
-            <text x="16" y="22" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="16" fill="white">N</text>
-        </svg>
-        {{ config('app.name', 'NationForge') }}
-    </a>
+    <div style="display:flex;align-items:center;gap:16px;">
+        <a href="{{ route('admin.login') }}" class="pub-logo">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <polygon points="16,2 30,9 30,23 16,30 2,23 2,9" fill="#1a2456" stroke="#4a7fd4" stroke-width="1.5"/>
+                <text x="16" y="22" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="16" fill="white">N</text>
+            </svg>
+            {{ config('app.name', 'NationForge') }}
+        </a>
+        <span style="color:#dee2e6;font-size:1.1rem;">|</span>
+        <a href="https://www.facebook.com/programozas.kft" target="_blank" rel="noopener"
+           style="font-size:0.8rem;color:#878a99;text-decoration:none;font-weight:500;white-space:nowrap;"
+           onmouseover="this.style.color='#405189'" onmouseout="this.style.color='#878a99'">
+            Programozás Kft.
+        </a>
+    </div>
     <div class="pub-right">
         @foreach([['hu','hu','HU'],['en','gb','EN'],['de','de','DE'],['ro','ro','RO'],['sk','sk','SK']] as [$lc,$flag,$label])
         <a href="{{ route('locale.switch', $lc) }}"

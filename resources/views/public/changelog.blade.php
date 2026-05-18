@@ -1,5 +1,12 @@
+@php
+    // Default to HU on public page if no session locale is set
+    if (!session()->has('locale')) {
+        app()->setLocale('hu');
+    }
+    $locale = app()->getLocale();
+@endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', $locale) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,6 +37,23 @@
             color: #2a2f45;
         }
         .pub-logo svg { flex-shrink: 0; }
+        .pub-right { display: flex; align-items: center; gap: 12px; }
+        .lang-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #e9ebec;
+            color: #495057;
+            background: #fff;
+            transition: background 0.15s;
+        }
+        .lang-btn:hover { background: #f3f3f9; }
+        .lang-btn.active { background: #405189; color: #fff; border-color: #405189; }
         .pub-login-btn {
             display: inline-flex;
             align-items: center;
@@ -72,20 +96,33 @@
         </svg>
         {{ config('app.name', 'NationForge') }}
     </a>
-    <a href="{{ route('admin.login') }}" class="pub-login-btn">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
-        </svg>
-        {{ __('Log in') }}
-    </a>
+    <div class="pub-right">
+        <a href="{{ route('locale.switch', 'hu') }}"
+           class="lang-btn {{ $locale === 'hu' ? 'active' : '' }}">
+            <span class="fi fi-hu" style="width:16px;height:12px;display:inline-block;background-size:cover;border-radius:2px;"></span>
+            HU
+        </a>
+        <a href="{{ route('locale.switch', 'en') }}"
+           class="lang-btn {{ $locale === 'en' ? 'active' : '' }}">
+            <span class="fi fi-gb" style="width:16px;height:12px;display:inline-block;background-size:cover;border-radius:2px;"></span>
+            EN
+        </a>
+        <a href="{{ route('admin.login') }}" class="pub-login-btn">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+            </svg>
+            {{ __('Log in') }}
+        </a>
+    </div>
 </header>
 
 <main class="pub-main">
     <div class="pub-page-title">{{ __('changelog.header') }}</div>
-    <div class="pub-page-sub">{{ config('app.name', 'NationForge') }} – Release history</div>
+    <div class="pub-page-sub">{{ config('app.name', 'NationForge') }} – {{ $locale === 'hu' ? 'Verziótörténet' : 'Release history' }}</div>
 
     @include('admin.partials.changelog_content')
 </main>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css"/>
 </body>
 </html>

@@ -82,4 +82,13 @@ new #[Layout('layouts.admin-guest')] class extends Component
             </x-primary-button>
         </div>
     </form>
+
+    <div class="mt-5 pt-4 border-t border-gray-200 text-center">
+        <a href="{{ route('public.changelog') }}" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            {{ __('changelog.title') }}
+        </a>
+    </div>
 </div>

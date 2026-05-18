@@ -20,7 +20,7 @@ class HelpIntegracioSeeder extends Seeder
                 'content_de' => $this->contentDe(),
                 'content_ro' => $this->contentRo(),
                 'content_sk' => $this->contentSk(),
-                'sort_order' => 120,
+                'sort_order' => 72,
                 'updated_at' => now(),
             ]);
         } else {
@@ -36,7 +36,7 @@ class HelpIntegracioSeeder extends Seeder
                 'content_de' => $this->contentDe(),
                 'content_ro' => $this->contentRo(),
                 'content_sk' => $this->contentSk(),
-                'sort_order' => 120,
+                'sort_order' => 72,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

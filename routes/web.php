@@ -19,6 +19,9 @@ Route::view('/', 'welcome');
 // iCal feed (Google Calendar / Apple Calendar / Outlook subscription)
 Route::get('/events.ics', [\App\Http\Controllers\IcalController::class, 'events'])->name('ical.events');
 
+// Public changelog (no auth required)
+Route::view('/changelog', 'public.changelog')->name('public.changelog');
+
 // Locale switcher
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 

@@ -83,7 +83,7 @@
             @foreach($logs as $log)
             <tr>
                 <td style="font-size:0.78rem;color:#6c757d;white-space:nowrap">
-                    <span title="{{ $log->created_at }}">{{ $log->created_at->format('Y.m.d H:i') }}</span>
+                    <span title="{{ $log->created_at }}">{{ \Carbon\Carbon::parse($log->created_at)->format('Y.m.d H:i') }}</span>
                 </td>
                 <td>
                     <span style="font-size:0.8rem;font-weight:500;color:#343a40">{{ $log->user_name ?? '—' }}</span>

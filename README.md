@@ -157,7 +157,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ **Zapier / Make (Integromat) integration** — use existing outgoing webhooks as triggers; step-by-step guide built into the Integrations page
 
 ### Advanced / Enterprise
-- 🔲 Multi-organization / Multi-tenant support
+- ✅ Multi-organization / Multi-tenant support
 - 🔲 White-label & custom domain per tenant
 - 🔲 Advanced reporting & data export
 - 🔲 Two-factor authentication (TOTP)

@@ -97,16 +97,13 @@
         {{ config('app.name', 'NationForge') }}
     </a>
     <div class="pub-right">
-        <a href="{{ route('locale.switch', 'hu') }}"
-           class="lang-btn {{ $locale === 'hu' ? 'active' : '' }}">
-            <span class="fi fi-hu" style="width:16px;height:12px;display:inline-block;background-size:cover;border-radius:2px;"></span>
-            HU
+        @foreach([['hu','hu','HU'],['en','gb','EN'],['de','de','DE'],['ro','ro','RO'],['sk','sk','SK']] as [$lc,$flag,$label])
+        <a href="{{ route('locale.switch', $lc) }}"
+           class="lang-btn {{ $locale === $lc ? 'active' : '' }}">
+            <span class="fi fi-{{ $flag }}" style="width:16px;height:12px;display:inline-block;background-size:cover;border-radius:2px;"></span>
+            {{ $label }}
         </a>
-        <a href="{{ route('locale.switch', 'en') }}"
-           class="lang-btn {{ $locale === 'en' ? 'active' : '' }}">
-            <span class="fi fi-gb" style="width:16px;height:12px;display:inline-block;background-size:cover;border-radius:2px;"></span>
-            EN
-        </a>
+        @endforeach
         <a href="{{ route('admin.login') }}" class="pub-login-btn">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>

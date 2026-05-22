@@ -164,7 +164,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ REST API for mobile clients
 - ✅  Document storage (files per contact / project)
 - ✅ Survey & form builder
-- 🔲 Petition / signature collection
+- ✅ Petition / signature collection
 - 🔲 Volunteer hours tracking
 - 🔲 Priority support & SLA
 - 🔲 Managed cloud hosting

@@ -69,9 +69,27 @@
 
     /* ── HERO ── */
     .hero {
-      background: linear-gradient(135deg, #f8f9ff 0%, #eef0f8 50%, #e8ecf8 100%);
-      padding: 100px 40px 90px;
-      text-align: center;
+      position: relative;
+      min-height: 540px;
+      display: flex; align-items: center;
+      background-image: url('../images/nation-forge-fooldal.png');
+      background-size: cover;
+      background-position: left center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent 30%, rgba(243,243,249,0.82) 52%, rgba(243,243,249,0.97) 65%, #f3f3f9 80%);
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      margin-left: auto;
+      max-width: 520px;
+      padding: 80px 60px 80px 20px;
+      text-align: left;
     }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 7px;
@@ -81,16 +99,33 @@
       margin-bottom: 28px;
     }
     .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
       font-weight: 800; color: var(--text);
       line-height: 1.15; margin-bottom: 20px;
     }
     .hero h1 span { color: var(--blue); }
     .hero p {
-      font-size: 1.15rem; color: var(--muted);
-      max-width: 600px; margin: 0 auto 40px;
+      font-size: 1.1rem; color: var(--muted);
+      margin-bottom: 40px; max-width: 420px;
     }
-    .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    @media (max-width: 768px) {
+      .hero {
+        background-position: 20% center;
+        min-height: auto;
+      }
+      .hero::after {
+        background: linear-gradient(to bottom, transparent 30%, rgba(243,243,249,0.9) 55%, #f3f3f9 75%);
+      }
+      .hero-content {
+        margin: 0; max-width: 100%;
+        padding: 340px 20px 60px;
+        text-align: center;
+      }
+      .hero-cta { justify-content: center; }
+      .hero p { margin-left: auto; margin-right: auto; }
+    }
     .btn-primary {
       padding: 14px 32px; border-radius: 8px;
       background: var(--blue); color: #fff;
@@ -280,18 +315,20 @@
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/></svg>
-    <span data-hu="Nyílt forráskódú · Ingyenes Community kiadás" data-en="Open source · Free Community edition">Nyílt forráskódú · Ingyenes Community kiadás</span>
-  </div>
-  <h1>
-    <span data-hu="Szervezd meg a" data-en="Organize your">Szervezd meg a</span><br>
-    <span data-hu="közösségedet!" data-en="community!">közösségedet!</span>
-  </h1>
-  <p data-hu="Kapcsolatok, események, email kampányok, adományok és projektek – minden egy helyen, minden csapatodnak." data-en="Contacts, events, email campaigns, donations and projects – everything in one place, for your entire team.">Kapcsolatok, események, email kampányok, adományok és projektek – minden egy helyen, minden csapatodnak.</p>
-  <div class="hero-cta">
-    <a href="https://nationforge.on-forge.com/" class="btn-primary" data-hu="Kipróbálom ingyen →" data-en="Try for free →">Kipróbálom ingyen →</a>
-    <a href="https://github.com/programozas-kft/nationforge-community" class="btn-secondary" data-hu="GitHub →" data-en="GitHub →">GitHub →</a>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/></svg>
+      <span data-hu="Nyílt forráskódú · Ingyenes Community kiadás" data-en="Open source · Free Community edition">Nyílt forráskódú · Ingyenes Community kiadás</span>
+    </div>
+    <h1>
+      <span data-hu="Szervezd meg a" data-en="Organize your">Szervezd meg a</span><br>
+      <span data-hu="közösségedet!" data-en="community!">közösségedet!</span>
+    </h1>
+    <p data-hu="Kapcsolatok, események, email kampányok, adományok és projektek – minden egy helyen, minden csapatodnak." data-en="Contacts, events, email campaigns, donations and projects – everything in one place, for your entire team.">Kapcsolatok, események, email kampányok, adományok és projektek – minden egy helyen, minden csapatodnak.</p>
+    <div class="hero-cta">
+      <a href="https://nationforge.on-forge.com/" class="btn-primary" data-hu="Kipróbálom ingyen →" data-en="Try for free →">Kipróbálom ingyen →</a>
+      <a href="https://github.com/programozas-kft/nationforge-community" class="btn-secondary" data-hu="GitHub →" data-en="GitHub →">GitHub →</a>
+    </div>
   </div>
 </div>
 

@@ -161,7 +161,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ White-label & custom domain per tenant
 - ✅ Advanced reporting & data export
 - ✅ Two-factor authentication (TOTP)
-- 🔲 REST API for mobile clients
+- ✅ REST API for mobile clients
 - 🔲 Document storage (files per contact / project)
 - 🔲 Survey & form builder
 - 🔲 Petition / signature collection

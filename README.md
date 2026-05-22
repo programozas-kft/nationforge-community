@@ -163,7 +163,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Two-factor authentication (TOTP)
 - ✅ REST API for mobile clients
 - ✅  Document storage (files per contact / project)
-- 🔲 Survey & form builder
+- ✅ Survey & form builder
 - 🔲 Petition / signature collection
 - 🔲 Volunteer hours tracking
 - 🔲 Priority support & SLA

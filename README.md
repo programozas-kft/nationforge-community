@@ -159,7 +159,7 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 ### Advanced / Enterprise
 - ✅ Multi-organization / Multi-tenant support
 - ✅ White-label & custom domain per tenant
-- 🔲 Advanced reporting & data export
+- ✅ Advanced reporting & data export
 - 🔲 Two-factor authentication (TOTP)
 - 🔲 REST API for mobile clients
 - 🔲 Document storage (files per contact / project)

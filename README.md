@@ -166,8 +166,8 @@ Running an organization means juggling hundreds of contacts, events, volunteers,
 - ✅ Survey & form builder
 - ✅ Petition / signature collection
 - ✅ Volunteer hours tracking
-- 🔲 Priority support & SLA
-- 🔲 Managed cloud hosting
+- ✅ Priority support & SLA
+- ✅ Managed cloud hosting
 
 ---
 

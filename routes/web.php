@@ -22,6 +22,9 @@ Route::get('/events.ics', [\App\Http\Controllers\IcalController::class, 'events'
 // Public changelog (no auth required)
 Route::get('/changelog', [\App\Http\Controllers\PublicChangelogController::class, 'index'])->name('public.changelog');
 
+// Public help (no auth required)
+Route::get('/help', [\App\Http\Controllers\PublicHelpController::class, 'index'])->name('public.help');
+
 // Locale switcher
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 

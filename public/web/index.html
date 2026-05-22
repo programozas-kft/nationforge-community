@@ -60,6 +60,16 @@
     .lang-btn:hover { background: rgba(255,255,255,0.85); }
     .lang-btn.active { background: #fff; color: var(--blue); border-color: #c5cadf; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 
+    .nav-link {
+      font-size: 0.85rem; font-weight: 600;
+      color: var(--text); text-decoration: none;
+      padding: 6px 10px; border-radius: 6px;
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(6px);
+      transition: background 0.2s;
+    }
+    .nav-link:hover { background: rgba(255,255,255,0.9); }
+
     .btn-nav {
       padding: 8px 22px; border-radius: 7px;
       background: var(--blue); color: #fff;
@@ -303,6 +313,7 @@
   <!-- NAV overlay – csak jobb oldal -->
   <div class="hero-nav">
     <div class="nav-right">
+      <a href="https://nationforge.on-forge.com/changelog" class="nav-link" data-hu="Verziókövetés" data-en="Changelog">Verziókövetés</a>
       <div class="lang-switcher">
         <button class="lang-btn active" id="btn-hu" onclick="setLang('hu')">
           <span class="fi fi-hu" style="border-radius:2px"></span> HU

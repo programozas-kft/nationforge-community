@@ -25,45 +25,45 @@
       --bg-soft: #f3f3f9;
     }
 
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 40px;
-      height: 64px;
+    /* ── HERO NAV OVERLAY ── */
+    .hero-nav {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+      height: 68px;
       display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
     }
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
-      text-decoration: none; color: var(--text);
+      text-decoration: none;
     }
     .nav-logo-icon {
-      width: 34px; height: 34px; border-radius: 8px;
+      width: 36px; height: 36px; border-radius: 8px;
       background: var(--blue);
       display: flex; align-items: center; justify-content: center;
       color: #fff; font-weight: 800; font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(64,81,137,0.35);
     }
-    .nav-logo-name { font-weight: 700; font-size: 1.1rem; color: var(--text); }
-    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-logo-name { font-weight: 700; font-size: 1.15rem; color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
 
-    .lang-switcher { display: flex; gap: 4px; }
+    .lang-switcher { display: flex; gap: 3px; }
     .lang-btn {
-      padding: 4px 10px; border-radius: 5px; border: 1px solid transparent;
-      background: transparent; cursor: pointer; font-size: 0.78rem; font-weight: 600;
-      color: var(--muted); display: flex; align-items: center; gap: 5px;
+      padding: 5px 10px; border-radius: 6px; border: 1px solid transparent;
+      background: rgba(255,255,255,0.6); cursor: pointer; font-size: 0.78rem; font-weight: 600;
+      color: var(--text); display: flex; align-items: center; gap: 5px;
+      backdrop-filter: blur(6px);
       transition: all 0.2s;
     }
-    .lang-btn:hover { background: var(--bg-soft); color: var(--text); }
-    .lang-btn.active { background: var(--blue-light); color: var(--blue); border-color: #c5cadf; }
+    .lang-btn:hover { background: rgba(255,255,255,0.85); }
+    .lang-btn.active { background: #fff; color: var(--blue); border-color: #c5cadf; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 
     .btn-nav {
-      padding: 8px 20px; border-radius: 7px;
+      padding: 8px 22px; border-radius: 7px;
       background: var(--blue); color: #fff;
       font-size: 0.85rem; font-weight: 600;
       text-decoration: none; transition: background 0.2s;
       border: none; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(64,81,137,0.3);
     }
     .btn-nav:hover { background: var(--blue-dark); }
 
@@ -88,7 +88,7 @@
       position: relative; z-index: 1;
       margin-left: auto;
       max-width: 520px;
-      padding: 80px 60px 80px 20px;
+      padding: 120px 60px 90px 20px;
       text-align: left;
     }
     .hero-badge {
@@ -118,9 +118,10 @@
       .hero::after {
         background: linear-gradient(to bottom, transparent 30%, rgba(243,243,249,0.9) 55%, #f3f3f9 75%);
       }
+      .hero-nav { padding: 0 20px; }
       .hero-content {
         margin: 0; max-width: 100%;
-        padding: 340px 20px 60px;
+        padding: 360px 20px 60px;
         text-align: center;
       }
       .hero-cta { justify-content: center; }
@@ -294,27 +295,26 @@
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">
-    <div class="nav-logo-icon">N</div>
-    <span class="nav-logo-name">NationForge</span>
-  </a>
-  <div class="nav-right">
-    <div class="lang-switcher">
-      <button class="lang-btn active" id="btn-hu" onclick="setLang('hu')">
-        <span class="fi fi-hu" style="border-radius:2px"></span> HU
-      </button>
-      <button class="lang-btn" id="btn-en" onclick="setLang('en')">
-        <span class="fi fi-gb" style="border-radius:2px"></span> EN
-      </button>
-    </div>
-    <a href="https://nationforge.on-forge.com/" class="btn-nav" data-hu="Bejelentkezés" data-en="Login">Bejelentkezés</a>
-  </div>
-</nav>
-
 <!-- HERO -->
 <div class="hero">
+  <!-- NAV overlay -->
+  <div class="hero-nav">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">N</div>
+      <span class="nav-logo-name">NationForge</span>
+    </a>
+    <div class="nav-right">
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-hu" onclick="setLang('hu')">
+          <span class="fi fi-hu" style="border-radius:2px"></span> HU
+        </button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">
+          <span class="fi fi-gb" style="border-radius:2px"></span> EN
+        </button>
+      </div>
+      <a href="https://nationforge.on-forge.com/" class="btn-nav" data-hu="Bejelentkezés" data-en="Login">Bejelentkezés</a>
+    </div>
+  </div>
   <div class="hero-content">
     <div class="hero-badge">
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/></svg>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NationForge – Közösségszervező platform</title>
+  <meta name="description" content="NationForge – Az átfogó közösségszervező platform. Kapcsolatok, események, email kampányok, adományok és projektek egy helyen." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #2a2f45; line-height: 1.6; }
+
+    /* ── COLORS ── */
+    :root {
+      --blue: #405189;
+      --blue-dark: #364474;
+      --blue-light: #eef0f8;
+      --accent: #5b6ab1;
+      --text: #2a2f45;
+      --muted: #6c757d;
+      --border: #e9ebec;
+      --bg-soft: #f3f3f9;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+    }
+    .nav-logo-icon {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: 1rem;
+    }
+    .nav-logo-name { font-weight: 700; font-size: 1.1rem; color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+
+    .lang-switcher { display: flex; gap: 4px; }
+    .lang-btn {
+      padding: 4px 10px; border-radius: 5px; border: 1px solid transparent;
+      background: transparent; cursor: pointer; font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); display: flex; align-items: center; gap: 5px;
+      transition: all 0.2s;
+    }
+    .lang-btn:hover { background: var(--bg-soft); color: var(--text); }
+    .lang-btn.active { background: var(--blue-light); color: var(--blue); border-color: #c5cadf; }
+
+    .btn-nav {
+      padding: 8px 20px; border-radius: 7px;
+      background: var(--blue); color: #fff;
+      font-size: 0.85rem; font-weight: 600;
+      text-decoration: none; transition: background 0.2s;
+      border: none; cursor: pointer;
+    }
+    .btn-nav:hover { background: var(--blue-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #f8f9ff 0%, #eef0f8 50%, #e8ecf8 100%);
+      padding: 100px 40px 90px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--blue-light); color: var(--blue);
+      border: 1px solid #c5cadf; border-radius: 20px;
+      padding: 5px 16px; font-size: 0.78rem; font-weight: 600;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800; color: var(--text);
+      line-height: 1.15; margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--blue); }
+    .hero p {
+      font-size: 1.15rem; color: var(--muted);
+      max-width: 600px; margin: 0 auto 40px;
+    }
+    .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 14px 32px; border-radius: 8px;
+      background: var(--blue); color: #fff;
+      font-size: 1rem; font-weight: 600;
+      text-decoration: none; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 15px rgba(64,81,137,0.25);
+    }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(64,81,137,0.3); }
+    .btn-secondary {
+      padding: 14px 32px; border-radius: 8px;
+      background: #fff; color: var(--blue);
+      font-size: 1rem; font-weight: 600;
+      text-decoration: none; transition: all 0.2s;
+      border: 2px solid #c5cadf;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary:hover { border-color: var(--blue); background: var(--blue-light); }
+
+    /* ── STATS ── */
+    .stats {
+      background: var(--blue);
+      padding: 40px 40px;
+    }
+    .stats-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px; text-align: center;
+    }
+    .stat-num { font-size: 2.2rem; font-weight: 800; color: #fff; }
+    .stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 40px; }
+    .section-tag {
+      display: inline-block;
+      background: var(--blue-light); color: var(--blue);
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 12px; margin-bottom: 14px;
+    }
+    h2.section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800; color: var(--text);
+      margin-bottom: 14px;
+    }
+    .section-sub { font-size: 1.05rem; color: var(--muted); max-width: 560px; }
+    .section-header { margin-bottom: 56px; }
+    .section-header.center { text-align: center; }
+    .section-header.center .section-sub { margin: 0 auto; }
+
+    /* ── FEATURES GRID ── */
+    .features-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 14px; padding: 30px;
+      transition: all 0.25s;
+    }
+    .feature-card:hover { border-color: #c5cadf; box-shadow: 0 8px 30px rgba(64,81,137,0.08); transform: translateY(-3px); }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--blue-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+      color: var(--blue);
+    }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .feature-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── EDITIONS (PRICING) ── */
+    .editions { background: var(--bg-soft); }
+    .editions-grid {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+    }
+    .edition-card {
+      background: #fff; border: 2px solid var(--border);
+      border-radius: 16px; padding: 36px;
+    }
+    .edition-card.pro {
+      border-color: var(--blue);
+      background: linear-gradient(135deg, #fff 0%, #f4f5ff 100%);
+      position: relative; overflow: hidden;
+    }
+    .edition-card.pro::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--blue), #6366f1);
+    }
+    .edition-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .edition-card.pro .edition-label { color: var(--blue); }
+    .edition-card h3 { font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+    .edition-price { font-size: 2rem; font-weight: 800; color: var(--blue); margin: 16px 0 20px; }
+    .edition-price small { font-size: 1rem; font-weight: 500; color: var(--muted); }
+    .edition-features { list-style: none; margin-bottom: 30px; }
+    .edition-features li {
+      display: flex; gap: 10px; align-items: flex-start;
+      padding: 7px 0; font-size: 0.9rem; color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+    .edition-features li:last-child { border-bottom: none; }
+    .edition-features .check { color: #22c55e; font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .edition-features .pro-badge {
+      font-size: 0.68rem; font-weight: 700;
+      background: rgba(64,81,137,0.12); color: var(--blue);
+      border-radius: 4px; padding: 1px 6px; margin-left: auto; flex-shrink: 0;
+    }
+    .btn-edition-primary {
+      display: block; width: 100%; padding: 13px;
+      background: var(--blue); color: #fff;
+      border-radius: 8px; text-align: center;
+      font-weight: 600; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-edition-primary:hover { background: var(--blue-dark); }
+    .btn-edition-outline {
+      display: block; width: 100%; padding: 13px;
+      background: transparent; color: var(--blue);
+      border: 2px solid var(--blue); border-radius: 8px;
+      text-align: center; font-weight: 600; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-edition-outline:hover { background: var(--blue-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.65);
+      padding: 48px 40px 32px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand .nav-logo-icon { background: rgba(255,255,255,0.15); }
+    .footer-brand .nav-logo-name { color: #fff; }
+    .footer-brand p { margin-top: 10px; font-size: 0.85rem; max-width: 260px; }
+    .footer-links h4 { color: #fff; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+    .footer-links a { display: block; color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.88rem; margin-bottom: 8px; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1100px; margin: 24px auto 0;
+      font-size: 0.82rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .hero { padding: 70px 20px 60px; }
+      section { padding: 60px 20px; }
+      .stats { padding: 32px 20px; }
+      footer { padding: 40px 20px 24px; }
+      .footer-inner { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">N</div>
+    <span class="nav-logo-name">NationForge</span>
+  </a>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btn-hu" onclick="setLang('hu')">
+        <span class="fi fi-hu" style="border-radius:2px"></span> HU
+      </button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">
+        <span class="fi fi-gb" style="border-radius:2px"></span> EN
+      </button>
+    </div>
+    <a href="https://nationforge.on-forge.com/" class="btn-nav" data-hu="Bejelentkezés" data-en="Login">Bejelentkezés</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">
+    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/></svg>
+    <span data-hu="Nyílt forráskódú · Ingyenes Community kiadás" data-en="Open source · Free Community edition">Nyílt forráskódú · Ingyenes Community kiadás</span>
+  </div>
+  <h1>
+    <span data-hu="Szervezd meg a" data-en="Organize your">Szervezd meg a</span><br>
+    <span data-hu="közösségedet!" data-en="community!">közösségedet!</span>
+  </h1>
+  <p data-hu="Kapcsolatok, események, email kampányok, adományok és projektek – minden egy helyen, minden csapatodnak." data-en="Contacts, events, email campaigns, donations and projects – everything in one place, for your entire team.">Kapcsolatok, események, email kampányok, adományok és projektek – minden egy helyen, minden csapatodnak.</p>
+  <div class="hero-cta">
+    <a href="https://nationforge.on-forge.com/" class="btn-primary" data-hu="Kipróbálom ingyen →" data-en="Try for free →">Kipróbálom ingyen →</a>
+    <a href="https://github.com/programozas-kft/nationforge-community" class="btn-secondary" data-hu="GitHub →" data-en="GitHub →">GitHub →</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">10+</div>
+      <div class="stat-label" data-hu="Fő modul" data-en="Core modules">Fő modul</div>
+    </div>
+    <div>
+      <div class="stat-num">5</div>
+      <div class="stat-label" data-hu="Támogatott nyelv" data-en="Supported languages">Támogatott nyelv</div>
+    </div>
+    <div>
+      <div class="stat-num">v1.26</div>
+      <div class="stat-label" data-hu="Aktuális verzió" data-en="Current version">Aktuális verzió</div>
+    </div>
+    <div>
+      <div class="stat-num">100%</div>
+      <div class="stat-label" data-hu="Nyílt forráskód" data-en="Open source">Nyílt forráskód</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section style="background:#fff">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-header center">
+      <div class="section-tag" data-hu="Funkciók" data-en="Features">Funkciók</div>
+      <h2 class="section-title" data-hu="Minden, amire szükséged van" data-en="Everything you need">Minden, amire szükséged van</h2>
+      <p class="section-sub" data-hu="NationForge egy helyen kezeli a szervezeted teljes működését." data-en="NationForge manages your entire organization's operations in one place.">NationForge egy helyen kezeli a szervezeted teljes működését.</p>
+    </div>
+    <div class="features-grid">
+
+      <!-- Kapcsolatok -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+        </div>
+        <h3 data-hu="Kapcsolatok (CRM)" data-en="Contacts (CRM)">Kapcsolatok (CRM)</h3>
+        <p data-hu="Teljes CRM rendszer: kapcsolatok adatbázisa, szűrők, import/export, lead pontozás, duplikátum felismerés, zászló ikonok." data-en="Full CRM system: contacts database, filters, import/export, lead scoring, duplicate detection, flag icons.">Teljes CRM rendszer: kapcsolatok adatbázisa, szűrők, import/export, lead pontozás, duplikátum felismerés, zászló ikonok.</p>
+      </div>
+
+      <!-- Események -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <h3 data-hu="Események" data-en="Events">Események</h3>
+        <p data-hu="Eseménykezelés nyilvános regisztrációval, QR-kódos bejelentkezéssel, várólista kezeléssel és Google Calendar / iCal szinkronizálással." data-en="Event management with public registration, QR code check-in, waitlist management and Google Calendar / iCal sync.">Eseménykezelés nyilvános regisztrációval, QR-kódos bejelentkezéssel, várólista kezeléssel és Google Calendar / iCal szinkronizálással.</p>
+      </div>
+
+      <!-- Email kampányok -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <h3 data-hu="Email kampányok" data-en="Email campaigns">Email kampányok</h3>
+        <p data-hu="Tömeges emailek Markdown szerkesztővel, megnyitás és kattintás nyomon követéssel, leiratkozás kezeléssel, sablonkönyvtárral és drip kampányokkal." data-en="Bulk emails with Markdown editor, open & click tracking, unsubscribe management, template library and drip campaigns.">Tömeges emailek Markdown szerkesztővel, megnyitás és kattintás nyomon követéssel, leiratkozás kezeléssel, sablonkönyvtárral és drip kampányokkal.</p>
+      </div>
+
+      <!-- Adományok -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        </div>
+        <h3 data-hu="Adományok" data-en="Donations">Adományok</h3>
+        <p data-hu="Nyilvános adományozási oldal Stripe és Barion fizetéssel, adomány nyilvántartás, CSV/XLSX/PDF export könyveléshez." data-en="Public donation page with Stripe and Barion payments, donation records, CSV/XLSX/PDF export for accounting.">Nyilvános adományozási oldal Stripe és Barion fizetéssel, adomány nyilvántartás, CSV/XLSX/PDF export könyveléshez.</p>
+      </div>
+
+      <!-- Projektek & Feladatok -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+        </div>
+        <h3 data-hu="Projektek & Feladatok" data-en="Projects & Tasks">Projektek & Feladatok</h3>
+        <p data-hu="Projekt és feladatkezelés megjegyzésekkel, fájlmellékletekkel, Gantt idővonal nézettel, felelős személyek és határidők hozzárendelésével." data-en="Project and task management with comments, file attachments, Gantt timeline view, assignees and deadlines.">Projekt és feladatkezelés megjegyzésekkel, fájlmellékletekkel, Gantt idővonal nézettel, felelős személyek és határidők hozzárendelésével.</p>
+      </div>
+
+      <!-- Integrációk -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+        </div>
+        <h3 data-hu="Integrációk & Webhook-ok" data-en="Integrations & Webhooks">Integrációk & Webhook-ok</h3>
+        <p data-hu="Google Calendar / iCal szinkron, Facebook esemény közzétevő, Zapier & Make (Integromat) összekötő, kimenő webhook-ok HMAC aláírással." data-en="Google Calendar / iCal sync, Facebook event publisher, Zapier & Make (Integromat) connector, outgoing webhooks with HMAC signing.">Google Calendar / iCal szinkron, Facebook esemény közzétevő, Zapier & Make (Integromat) összekötő, kimenő webhook-ok HMAC aláírással.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDITIONS -->
+<section class="editions">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-header center">
+      <div class="section-tag" data-hu="Kiadások" data-en="Editions">Kiadások</div>
+      <h2 class="section-title" data-hu="Community & Pro" data-en="Community & Pro">Community & Pro</h2>
+      <p class="section-sub" data-hu="Válaszd a számodra megfelelő kiadást. A Community teljesen ingyenes és nyílt forráskódú." data-en="Choose the edition that fits you. Community is completely free and open source.">Válaszd a számodra megfelelő kiadást. A Community teljesen ingyenes és nyílt forráskódú.</p>
+    </div>
+    <div class="editions-grid">
+
+      <!-- Community -->
+      <div class="edition-card">
+        <div class="edition-label" data-hu="Ingyenes · Nyílt forráskód" data-en="Free · Open source">Ingyenes · Nyílt forráskód</div>
+        <h3>Community</h3>
+        <div class="edition-price">
+          <span data-hu="Ingyenes" data-en="Free">Ingyenes</span>
+        </div>
+        <ul class="edition-features">
+          <li><span class="check">✓</span> <span data-hu="Teljes CRM & kapcsolatkezelés" data-en="Full CRM & contact management">Teljes CRM & kapcsolatkezelés</span></li>
+          <li><span class="check">✓</span> <span data-hu="Eseménykezelés & QR bejelentkezés" data-en="Event management & QR check-in">Eseménykezelés & QR bejelentkezés</span></li>
+          <li><span class="check">✓</span> <span data-hu="Email kampányok & Drip szekvenciák" data-en="Email campaigns & Drip sequences">Email kampányok & Drip szekvenciák</span></li>
+          <li><span class="check">✓</span> <span data-hu="Adományok (Stripe & Barion)" data-en="Donations (Stripe & Barion)">Adományok (Stripe & Barion)</span></li>
+          <li><span class="check">✓</span> <span data-hu="Projektek, Feladatok & Gantt" data-en="Projects, Tasks & Gantt">Projektek, Feladatok & Gantt</span></li>
+          <li><span class="check">✓</span> <span data-hu="Csoportok & Fájlmegosztás" data-en="Groups & File sharing">Csoportok & Fájlmegosztás</span></li>
+          <li><span class="check">✓</span> <span data-hu="Google Calendar, Zapier, Make, Webhook" data-en="Google Calendar, Zapier, Make, Webhook">Google Calendar, Zapier, Make, Webhook</span></li>
+          <li><span class="check">✓</span> <span data-hu="5 nyelv (HU / EN / DE / RO / SK)" data-en="5 languages (HU / EN / DE / RO / SK)">5 nyelv (HU / EN / DE / RO / SK)</span></li>
+          <li><span class="check">✓</span> <span data-hu="1 szervezet" data-en="1 organization">1 szervezet</span></li>
+        </ul>
+        <a href="https://github.com/programozas-kft/nationforge-community" class="btn-edition-outline" data-hu="GitHub →" data-en="GitHub →">GitHub →</a>
+      </div>
+
+      <!-- Pro -->
+      <div class="edition-card pro">
+        <div class="edition-label" data-hu="Hamarosan" data-en="Coming soon">Hamarosan</div>
+        <h3>Pro</h3>
+        <div class="edition-price">
+          <span data-hu="Kapcsolatfelvétel" data-en="Contact us">Kapcsolatfelvétel</span>
+        </div>
+        <ul class="edition-features">
+          <li><span class="check">✓</span> <span data-hu="Minden Community funkció" data-en="All Community features">Minden Community funkció</span></li>
+          <li><span class="check">✓</span> <span data-hu="Több szervezet kezelése" data-en="Multiple organizations">Több szervezet kezelése</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Prioritásos támogatás" data-en="Priority support">Prioritásos támogatás</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Pro-exkluzív funkciók" data-en="Pro-exclusive features">Pro-exkluzív funkciók</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Privát forráskód hozzáférés" data-en="Private source code access">Privát forráskód hozzáférés</span> <span class="pro-badge">PRO</span></li>
+        </ul>
+        <a href="mailto:programozas.kft@gmail.com" class="btn-edition-primary" data-hu="Kapcsolatfelvétel →" data-en="Contact us →">Kapcsolatfelvétel →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="margin-bottom:10px;display:inline-flex">
+        <div class="nav-logo-icon">N</div>
+        <span class="nav-logo-name" style="color:#fff">NationForge</span>
+      </a>
+      <p data-hu="Átfogó közösségszervező platform – nyílt forráskódú, ingyenes Community kiadás." data-en="Comprehensive community organizing platform – open source, free Community edition.">Átfogó közösségszervező platform – nyílt forráskódú, ingyenes Community kiadás.</p>
+    </div>
+    <div class="footer-links">
+      <h4 data-hu="Platform" data-en="Platform">Platform</h4>
+      <a href="https://nationforge.on-forge.com/" data-hu="Bejelentkezés" data-en="Login">Bejelentkezés</a>
+      <a href="https://nationforge.on-forge.com/changelog" data-hu="Verziókövetés" data-en="Changelog">Verziókövetés</a>
+      <a href="https://github.com/programozas-kft/nationforge-community" data-hu="GitHub" data-en="GitHub">GitHub</a>
+    </div>
+    <div class="footer-links">
+      <h4 data-hu="Fejlesztő" data-en="Developer">Fejlesztő</h4>
+      <a href="https://www.facebook.com/programozas.kft" data-hu="Programozás Kft." data-en="Programozás Kft.">Programozás Kft.</a>
+      <a href="mailto:programozas.kft@gmail.com">programozas.kft@gmail.com</a>
+      <a href="https://github.com/programozas-kft/nationforge-community/issues" data-hu="Hibajelentés" data-en="Report a bug">Hibajelentés</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-hu="© 2026 Programozás Kft. — NationForge nyílt forráskódú szoftver." data-en="© 2026 Programozás Kft. — NationForge is open source software.">© 2026 Programozás Kft. — NationForge nyílt forráskódú szoftver.</span>
+    <span>Laravel 12 · PHP 8.3 · Tailwind CSS</span>
+  </div>
+</footer>
+
+<script>
+  let currentLang = 'hu';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-hu]').forEach(el => {
+      el.textContent = el.getAttribute('data-' + lang) || el.getAttribute('data-hu');
+    });
+
+    document.getElementById('btn-hu').classList.toggle('active', lang === 'hu');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+    document.title = lang === 'en'
+      ? 'NationForge – Community organizing platform'
+      : 'NationForge – Közösségszervező platform';
+  }
+</script>
+</body>
+</html>

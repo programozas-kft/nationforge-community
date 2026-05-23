@@ -243,8 +243,8 @@
     .edition-price small { font-size: 1rem; font-weight: 500; color: var(--muted); }
     .edition-features { list-style: none; margin-bottom: 30px; }
     .edition-features li {
-      display: flex; gap: 10px; align-items: flex-start;
-      padding: 7px 0; font-size: 0.9rem; color: var(--text);
+      display: flex; gap: 8px; align-items: flex-start;
+      padding: 5px 0; font-size: 0.85rem; color: var(--text);
       border-bottom: 1px solid var(--border);
     }
     .edition-features li:last-child { border-bottom: none; }
@@ -544,38 +544,54 @@
 
       <!-- Community -->
       <div class="edition-card">
-        <div class="edition-label" data-hu="Ingyenes · Nyílt forráskód" data-en="Free · Open source">Ingyenes · Nyílt forráskód</div>
+        <div class="edition-label" data-hu="Ingyenes · Nyílt forráskód · MIT licenc" data-en="Free · Open source · MIT license">Ingyenes · Nyílt forráskód · MIT licenc</div>
         <h3>Community</h3>
         <div class="edition-price">
           <span data-hu="Ingyenes" data-en="Free">Ingyenes</span>
         </div>
         <ul class="edition-features">
-          <li><span class="check">✓</span> <span data-hu="Teljes CRM & kapcsolatkezelés" data-en="Full CRM & contact management">Teljes CRM & kapcsolatkezelés</span></li>
-          <li><span class="check">✓</span> <span data-hu="Eseménykezelés & QR bejelentkezés" data-en="Event management & QR check-in">Eseménykezelés & QR bejelentkezés</span></li>
+          <li><span class="check">✓</span> <span data-hu="Teljes forráskód" data-en="Full source code">Teljes forráskód</span></li>
+          <li><span class="check">✓</span> <span data-hu="Kapcsolatok, Csoportok, Események" data-en="Contacts, Groups, Events">Kapcsolatok, Csoportok, Események</span></li>
+          <li><span class="check">✓</span> <span data-hu="Adományok, Projektek, Feladatok" data-en="Donations, Projects, Tasks">Adományok, Projektek, Feladatok</span></li>
+          <li><span class="check">✓</span> <span data-hu="Beépített valós idejű csevegés" data-en="Built-in real-time chat">Beépített valós idejű csevegés</span></li>
           <li><span class="check">✓</span> <span data-hu="Email kampányok & Drip szekvenciák" data-en="Email campaigns & Drip sequences">Email kampányok & Drip szekvenciák</span></li>
-          <li><span class="check">✓</span> <span data-hu="Adományok (Stripe & Barion)" data-en="Donations (Stripe & Barion)">Adományok (Stripe & Barion)</span></li>
-          <li><span class="check">✓</span> <span data-hu="Projektek, Feladatok & Gantt" data-en="Projects, Tasks & Gantt">Projektek, Feladatok & Gantt</span></li>
-          <li><span class="check">✓</span> <span data-hu="Csoportok & Fájlmegosztás" data-en="Groups & File sharing">Csoportok & Fájlmegosztás</span></li>
-          <li><span class="check">✓</span> <span data-hu="Google Calendar, Zapier, Make, Webhook" data-en="Google Calendar, Zapier, Make, Webhook">Google Calendar, Zapier, Make, Webhook</span></li>
-          <li><span class="check">✓</span> <span data-hu="5 nyelv (HU / EN / DE / RO / SK)" data-en="5 languages (HU / EN / DE / RO / SK)">5 nyelv (HU / EN / DE / RO / SK)</span></li>
-          <li><span class="check">✓</span> <span data-hu="1 szervezet" data-en="1 organization">1 szervezet</span></li>
+          <li><span class="check">✓</span> <span data-hu="Többnyelvű (HU / EN / DE / RO / SK)" data-en="Multi-language (HU / EN / DE / RO / SK)">Többnyelvű (HU / EN / DE / RO / SK)</span></li>
+          <li><span class="check">✓</span> <span data-hu="CSV / Excel import & export" data-en="CSV / Excel import & export">CSV / Excel import & export</span></li>
+          <li><span class="check">✓</span> <span data-hu="Haladó szűrők & mentett preset-ek" data-en="Advanced filters & saved presets">Haladó szűrők & mentett preset-ek</span></li>
+          <li><span class="check">✓</span> <span data-hu="Duplikátum felismerés & összevonás" data-en="Duplicate detection & merge">Duplikátum felismerés & összevonás</span></li>
+          <li><span class="check">✓</span> <span data-hu="Kapcsolatonkénti aktivitásnapló" data-en="Per-contact activity log">Kapcsolatonkénti aktivitásnapló</span></li>
+          <li><span class="check">✓</span> <span data-hu="Lead pontozás (pipeline + csillagok)" data-en="Lead scoring (pipeline + stars)">Lead pontozás (pipeline + csillagok)</span></li>
+          <li><span class="check">✓</span> <span data-hu="Esemény QR-kódos bejelentkezés" data-en="Event QR code check-in">Esemény QR-kódos bejelentkezés</span></li>
+          <li><span class="check">✓</span> <span data-hu="Várólista automatikus előléptetéssel" data-en="Waitlist with auto-promotion">Várólista automatikus előléptetéssel</span></li>
+          <li><span class="check">✓</span> <span data-hu="Kimenő webhook-ok (12 típus, HMAC)" data-en="Outgoing webhooks (12 types, HMAC)">Kimenő webhook-ok (12 típus, HMAC)</span></li>
+          <li><span class="check">✓</span> <span data-hu="Google Calendar / iCal szinkron" data-en="Google Calendar / iCal sync">Google Calendar / iCal szinkron</span></li>
+          <li><span class="check">✓</span> <span data-hu="Facebook esemény közzétevő" data-en="Facebook Events sync">Facebook esemény közzétevő</span></li>
+          <li><span class="check">✓</span> <span data-hu="Zapier & Make (Integromat) integráció" data-en="Zapier & Make (Integromat) integration">Zapier & Make (Integromat) integráció</span></li>
+          <li><span class="check">✓</span> <span data-hu="Súgó dokumentáció (5 nyelv)" data-en="Help documentation (5 languages)">Súgó dokumentáció (5 nyelv)</span></li>
         </ul>
         <a href="https://github.com/programozas-kft/nationforge-community" class="btn-edition-outline" data-hu="GitHub →" data-en="GitHub →">GitHub →</a>
       </div>
 
       <!-- Pro -->
       <div class="edition-card pro">
-        <div class="edition-label" data-hu="Hamarosan" data-en="Coming soon">Hamarosan</div>
+        <div class="edition-label" data-hu="Community + exkluzív Pro funkciók" data-en="Community + exclusive Pro features">Community + exkluzív Pro funkciók</div>
         <h3>Pro</h3>
         <div class="edition-price">
           <span data-hu="Kapcsolatfelvétel" data-en="Contact us">Kapcsolatfelvétel</span>
         </div>
         <ul class="edition-features">
           <li><span class="check">✓</span> <span data-hu="Minden Community funkció" data-en="All Community features">Minden Community funkció</span></li>
-          <li><span class="check">✓</span> <span data-hu="Több szervezet kezelése" data-en="Multiple organizations">Több szervezet kezelése</span> <span class="pro-badge">PRO</span></li>
-          <li><span class="check">✓</span> <span data-hu="Prioritásos támogatás" data-en="Priority support">Prioritásos támogatás</span> <span class="pro-badge">PRO</span></li>
-          <li><span class="check">✓</span> <span data-hu="Pro-exkluzív funkciók" data-en="Pro-exclusive features">Pro-exkluzív funkciók</span> <span class="pro-badge">PRO</span></li>
-          <li><span class="check">✓</span> <span data-hu="Privát forráskód hozzáférés" data-en="Private source code access">Privát forráskód hozzáférés</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Haladó analitika & riportok" data-en="Advanced analytics & reports">Haladó analitika & riportok</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Több szervezet / Multi-tenant" data-en="Multi-organization / Multi-tenant">Több szervezet / Multi-tenant</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="White-label & egyedi domain" data-en="White-label & custom domain">White-label & egyedi domain</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Kétlépéses azonosítás (TOTP)" data-en="Two-factor authentication (TOTP)">Kétlépéses azonosítás (TOTP)</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="REST API mobil klienseknek" data-en="REST API for mobile clients">REST API mobil klienseknek</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Dokumentumtároló" data-en="Document storage">Dokumentumtároló</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Kérdőív & űrlapkészítő" data-en="Survey & form builder">Kérdőív & űrlapkészítő</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Petíció / aláírásgyűjtés" data-en="Petition / signature collection">Petíció / aláírásgyűjtés</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Önkéntes óra nyomon követés" data-en="Volunteer hours tracking">Önkéntes óra nyomon követés</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Elsőbbségi támogatás & SLA" data-en="Priority support & SLA">Elsőbbségi támogatás & SLA</span> <span class="pro-badge">PRO</span></li>
+          <li><span class="check">✓</span> <span data-hu="Felügyelt felhőtárhely" data-en="Managed cloud hosting">Felügyelt felhőtárhely</span> <span class="pro-badge">PRO</span></li>
         </ul>
         <a href="mailto:programozas.kft@gmail.com" class="btn-edition-primary" data-hu="Kapcsolatfelvétel →" data-en="Contact us →">Kapcsolatfelvétel →</a>
       </div>

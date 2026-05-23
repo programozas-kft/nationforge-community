@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://nationforge.programozas.org/web/">🌐 Live Demo & Product Page</a>
+  <a href="https://nationforge.programozas.org">🌐 Live Demo & Product Page</a>
 </p>
 
 <p align="center">

@@ -811,14 +811,14 @@ $versions = [
                 <div class="tl-title">
                     {{ $v['version'] }}
                     @if(isset($v['badge']))
-                        <span class="tl-badge" style="{{ $v['badge']['style'] }}">{{ $v['badge']['text'][$locale] }}</span>
+                        <span class="tl-badge" style="{{ $v['badge']['style'] }}">{{ $v['badge']['text'][$locale] ?? $v['badge']['text']['en'] }}</span>
                     @endif
                 </div>
-                <div class="tl-date">{{ $v['date'][$locale] }}</div>
+                <div class="tl-date">{{ $v['date'][$locale] ?? $v['date']['en'] }}</div>
             </div>
             <ul>
                 @foreach($v['items'] as $item)
-                <li>{!! $item[$locale] !!}</li>
+                <li>{!! $item[$locale] ?? $item['en'] !!}</li>
                 @endforeach
             </ul>
         </div>

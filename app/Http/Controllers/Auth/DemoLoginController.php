@@ -11,7 +11,7 @@ class DemoLoginController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $email = env('DEMO_USER_EMAIL');
+        $email = config('app.demo_user_email');
 
         if (!$email) {
             abort(404);

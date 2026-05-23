@@ -91,4 +91,20 @@ new #[Layout('layouts.admin-guest')] class extends Component
             {{ __('changelog.title') }}
         </a>
     </div>
+
+    @if(env('DEMO_USER_EMAIL'))
+    <div class="mt-4 pt-4 border-t border-gray-200">
+        <a href="{{ route('demo.login') }}"
+           class="inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-lg transition-colors"
+           style="background-color: #16a34a;"
+           onmouseover="this.style.backgroundColor='#15803d'"
+           onmouseout="this.style.backgroundColor='#16a34a'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Demó belépés
+        </a>
+    </div>
+    @endif
 </div>

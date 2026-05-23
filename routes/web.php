@@ -189,4 +189,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('webhooks/{webhook}/deliveries/{delivery}/retry', [\App\Http\Controllers\Admin\WebhookController::class, 'retry'])->name('webhooks.retry');
 });
 
+Route::get('/demo-login', \App\Http\Controllers\Auth\DemoLoginController::class)
+    ->middleware('guest')
+    ->name('demo.login');
+
 require __DIR__.'/auth.php';

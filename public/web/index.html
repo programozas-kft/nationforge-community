@@ -214,11 +214,35 @@
 
     /* ── EDITIONS (PRICING) ── */
     .editions { background: var(--bg-soft); }
-    .editions-grid {
-      max-width: 900px; margin: 0 auto;
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 28px;
+    /* billing toggle */
+    .billing-toggle {
+      display: inline-flex; align-items: center; gap: 0;
+      background: var(--border); border-radius: 8px; padding: 3px;
+      margin-bottom: 40px;
     }
+    .billing-btn {
+      padding: 8px 22px; border-radius: 6px; border: none;
+      font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      background: transparent; color: var(--muted); transition: all 0.2s;
+    }
+    .billing-btn.active { background: #fff; color: var(--blue); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .billing-save {
+      font-size: 0.72rem; font-weight: 700; color: #22c55e;
+      background: rgba(34,197,94,0.1); border-radius: 10px;
+      padding: 2px 8px; margin-left: 6px;
+    }
+
+    .editions-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px; align-items: start;
+    }
+    /* contact tier table */
+    .tier-table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; font-size: 0.82rem; }
+    .tier-table th { text-align: left; color: var(--muted); font-weight: 600; padding: 4px 6px; border-bottom: 1px solid var(--border); }
+    .tier-table td { padding: 5px 6px; border-bottom: 1px solid var(--border); color: var(--text); }
+    .tier-table tr:last-child td { border-bottom: none; }
+    .tier-table td:last-child { font-weight: 700; color: var(--blue); text-align: right; }
     .edition-card {
       background: #fff; border: 2px solid var(--border);
       border-radius: 16px; padding: 36px;
@@ -536,15 +560,25 @@
 <section class="editions">
   <div style="max-width:1100px;margin:0 auto">
     <div class="section-header center">
-      <div class="section-tag" data-hu="Kiadások" data-en="Editions">Kiadások</div>
-      <h2 class="section-title" data-hu="Community & Pro" data-en="Community & Pro">Community & Pro</h2>
-      <p class="section-sub" data-hu="Válaszd a számodra megfelelő kiadást. A Community teljesen ingyenes és nyílt forráskódú." data-en="Choose the edition that fits you. Community is completely free and open source.">Válaszd a számodra megfelelő kiadást. A Community teljesen ingyenes és nyílt forráskódú.</p>
+      <div class="section-tag" data-hu="Árazás" data-en="Pricing">Árazás</div>
+      <h2 class="section-title" data-hu="Válaszd ki a csomagodat" data-en="Choose your plan">Válaszd ki a csomagodat</h2>
+      <p class="section-sub" data-hu="A Community ingyenes és nyílt forráskódú. A Starter és Pro felügyelt, felhőalapú kiadások." data-en="Community is free and open source. Starter and Pro are managed, cloud-based editions.">A Community ingyenes és nyílt forráskódú. A Starter és Pro felügyelt, felhőalapú kiadások.</p>
+      <!-- Billing toggle -->
+      <div class="billing-toggle" style="margin-top:24px">
+        <button class="billing-btn active" id="btn-annual" onclick="setBilling('annual')">
+          <span data-hu="Éves fizetés" data-en="Annual billing">Éves fizetés</span>
+          <span class="billing-save" data-hu="–15% kedvezmény" data-en="–15% off">–15% kedvezmény</span>
+        </button>
+        <button class="billing-btn" id="btn-monthly" onclick="setBilling('monthly')">
+          <span data-hu="Havi fizetés" data-en="Monthly billing">Havi fizetés</span>
+        </button>
+      </div>
     </div>
     <div class="editions-grid">
 
       <!-- Community -->
       <div class="edition-card">
-        <div class="edition-label" data-hu="Ingyenes · Nyílt forráskód · MIT licenc" data-en="Free · Open source · MIT license">Ingyenes · Nyílt forráskód · MIT licenc</div>
+        <div class="edition-label" data-hu="Önálló üzemeltetés · MIT licenc" data-en="Self-hosted · MIT license">Önálló üzemeltetés · MIT licenc</div>
         <h3>Community</h3>
         <div class="edition-price">
           <span data-hu="Ingyenes" data-en="Free">Ingyenes</span>
@@ -570,6 +604,44 @@
           <li><span class="check">✓</span> <span data-hu="Súgó dokumentáció (5 nyelv)" data-en="Help documentation (5 languages)">Súgó dokumentáció (5 nyelv)</span></li>
         </ul>
         <a href="https://github.com/programozas-kft/nationforge-community" class="btn-edition-outline" data-hu="GitHub →" data-en="GitHub →">GitHub →</a>
+      </div>
+
+      <!-- Starter -->
+      <div class="edition-card pro" style="border-color:#405189">
+        <div class="edition-label" data-hu="Felügyelt felhő · Induló csapatoknak" data-en="Managed cloud · For growing teams">Felügyelt felhő · Induló csapatoknak</div>
+        <h3>Starter</h3>
+        <div class="edition-price">
+          <span id="starter-price-annual">$34</span>
+          <span id="starter-price-monthly" style="display:none">$41</span>
+          <small data-hu="/ hó" data-en="/ mo">/ hó</small>
+        </div>
+        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px">
+          <span id="starter-billing-note-annual" data-hu="Éves számlázással · havi számlázás esetén $41/hó" data-en="Billed annually · $41/mo if billed monthly">Éves számlázással · havi számlázás esetén $41/hó</span>
+          <span id="starter-billing-note-monthly" style="display:none" data-hu="Havi számlázással · éves fizetéssel $34/hó" data-en="Billed monthly · $34/mo if billed annually">Havi számlázással · éves fizetéssel $34/hó</span>
+        </p>
+        <p style="font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:6px" data-hu="Az ár a kontaktok számával nő:" data-en="Price scales with contact count:">Az ár a kontaktok számával nő:</p>
+        <table class="tier-table">
+          <thead><tr>
+            <th data-hu="Kontaktok száma" data-en="Contacts">Kontaktok száma</th>
+            <th data-hu="Éves" data-en="Annual" style="text-align:right">Éves / hó</th>
+            <th data-hu="Havi" data-en="Monthly" style="text-align:right">Havi / hó</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>0 – 500</td><td style="text-align:right;font-weight:700;color:var(--blue)">$34</td><td style="text-align:right;font-weight:700;color:var(--blue)">$41</td></tr>
+            <tr><td>– 1 000</td><td style="text-align:right;font-weight:700;color:var(--blue)">$44</td><td style="text-align:right;font-weight:700;color:var(--blue)">$53</td></tr>
+            <tr><td>– 2 000</td><td style="text-align:right;font-weight:700;color:var(--blue)">$54</td><td style="text-align:right;font-weight:700;color:var(--blue)">$65</td></tr>
+            <tr><td>– 5 000</td><td style="text-align:right;font-weight:700;color:var(--blue)">$69</td><td style="text-align:right;font-weight:700;color:var(--blue)">$83</td></tr>
+          </tbody>
+        </table>
+        <ul class="edition-features" style="margin-bottom:24px">
+          <li><span class="check">✓</span> <span data-hu="Minden Community funkció" data-en="All Community features">Minden Community funkció</span></li>
+          <li><span class="check">✓</span> <span data-hu="1 webhely" data-en="1 website">1 webhely</span></li>
+          <li><span class="check">✓</span> <span data-hu="Havi 20 000 email küldés" data-en="20,000 emails / month">Havi 20 000 email küldés</span></li>
+          <li><span class="check">✓</span> <span data-hu="Adománygyűjtési sablonok" data-en="Donation templates">Adománygyűjtési sablonok</span></li>
+          <li><span class="check">✓</span> <span data-hu="Petíciós sablonok" data-en="Petition templates">Petíciós sablonok</span></li>
+          <li><span class="check">✓</span> <span data-hu="Felügyelt hosztolás & frissítések" data-en="Managed hosting & updates">Felügyelt hosztolás & frissítések</span></li>
+        </ul>
+        <a href="mailto:programozas.kft@gmail.com" class="btn-edition-primary" data-hu="Kipróbálom →" data-en="Get started →">Kipróbálom →</a>
       </div>
 
       <!-- Pro -->
@@ -631,6 +703,17 @@
 
 <script>
   let currentLang = 'hu';
+  let currentBilling = 'annual';
+
+  function setBilling(type) {
+    currentBilling = type;
+    document.getElementById('btn-annual').classList.toggle('active', type === 'annual');
+    document.getElementById('btn-monthly').classList.toggle('active', type === 'monthly');
+    document.getElementById('starter-price-annual').style.display   = type === 'annual'  ? '' : 'none';
+    document.getElementById('starter-price-monthly').style.display  = type === 'monthly' ? '' : 'none';
+    document.getElementById('starter-billing-note-annual').style.display  = type === 'annual'  ? '' : 'none';
+    document.getElementById('starter-billing-note-monthly').style.display = type === 'monthly' ? '' : 'none';
+  }
 
   function setLang(lang) {
     currentLang = lang;

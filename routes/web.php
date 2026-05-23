@@ -14,7 +14,7 @@ use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\SettingsController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::get('/', fn() => redirect('/web/'));
 
 // iCal feed (Google Calendar / Apple Calendar / Outlook subscription)
 Route::get('/events.ics', [\App\Http\Controllers\IcalController::class, 'events'])->name('ical.events');

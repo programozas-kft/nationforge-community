@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', $locale) }}">
 <head>
     <meta charset="utf-8">
@@ -83,7 +83,7 @@
 
 <header class="pub-header">
     <div style="display:flex;align-items:center;gap:16px;">
-        <a href="https://nationforge.on-forge.com/web/" class="pub-logo">
+        <a href="https://nationforge.programozas.org/web/" class="pub-logo">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
                 <polygon points="16,2 30,9 30,23 16,30 2,23 2,9" fill="#1a2456" stroke="#4a7fd4" stroke-width="1.5"/>
                 <text x="16" y="22" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="16" fill="white">N</text>

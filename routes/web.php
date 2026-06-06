@@ -128,6 +128,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::post('settings/report/test', [SettingsController::class, 'testReport'])->name('settings.report.test');
         Route::post('settings/payment', [SettingsController::class, 'updatePayment'])->name('settings.payment');
         Route::post('settings/donation', [SettingsController::class, 'updateDonationPage'])->name('settings.donation');
+        Route::post('settings/website', [SettingsController::class, 'updateWebsite'])->name('settings.website');
+        Route::get('website', [SettingsController::class, 'website'])->name('website');
     });
 
     Route::get('links', [LinkController::class, 'index'])->name('links.index');

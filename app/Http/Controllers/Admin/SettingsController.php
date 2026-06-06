@@ -266,6 +266,64 @@ class SettingsController extends Controller
         return response()->json(['ok' => true]);
     }
 
+    public function website()
+    {
+        $websiteConfig = [
+            'hero_title'           => Setting::get('web_hero_title', ''),
+            'hero_subtitle'        => Setting::get('web_hero_subtitle', ''),
+            'hero_image'           => Setting::get('web_hero_image', ''),
+            'intro'                => Setting::get('web_intro', ''),
+            'who_title'            => Setting::get('web_who_title', ''),
+            'who_text'             => Setting::get('web_who_text', ''),
+            'problems'             => Setting::get('web_problems', ''),
+            'services'             => Setting::get('web_services', ''),
+            'booking_url'          => Setting::get('web_booking_url', ''),
+            'booking_label'        => Setting::get('web_booking_label', 'Időpontfoglalás'),
+            'newsletter_form_slug' => Setting::get('web_newsletter_form_slug', ''),
+            'show_events'          => Setting::get('web_show_events', '1') === '1',
+            'show_testimonials'    => Setting::get('web_show_testimonials', '1') === '1',
+        ];
+        return view('admin.website.index', compact('websiteConfig'));
+    }
+
+    public function updateWebsite(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'hero_title'           => 'nullable|string|max:200',
+            'hero_subtitle'        => 'nullable|string|max:300',
+            'hero_image'           => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'intro'                => 'nullable|string|max:1000',
+            'who_title'            => 'nullable|string|max:200',
+            'who_text'             => 'nullable|string|max:1000',
+            'problems'             => 'nullable|string|max:2000',
+            'services'             => 'nullable|string|max:2000',
+            'booking_url'          => 'nullable|url|max:500',
+            'booking_label'        => 'nullable|string|max:80',
+            'newsletter_form_slug' => 'nullable|string|max:100',
+        ]);
+
+        $map = [
+            'hero_title', 'hero_subtitle', 'intro', 'who_title', 'who_text',
+            'problems', 'services', 'booking_url', 'booking_label', 'newsletter_form_slug',
+        ];
+        foreach ($map as $key) {
+            Setting::set('web_' . $key, $request->input($key, ''));
+        }
+        Setting::set('web_show_events',       $request->boolean('show_events') ? '1' : '0');
+        Setting::set('web_show_testimonials', $request->boolean('show_testimonials') ? '1' : '0');
+
+        if ($request->hasFile('hero_image')) {
+            $ext  = $request->file('hero_image')->getClientOriginalExtension();
+            $path = $request->file('hero_image')->storeAs('website/default', 'hero.' . $ext, 'public');
+            Setting::set('web_hero_image', $path);
+        }
+        if ($request->boolean('remove_hero_image')) {
+            Setting::set('web_hero_image', '');
+        }
+
+        return redirect()->route('admin.website')->with('success', 'Weboldal beállítások mentve.');
+    }
+
     private function writeEnv(string &$env, string $key, string $value): void
     {
         $escaped = str_contains($value, ' ') ? '"' . addslashes($value) . '"' : $value;

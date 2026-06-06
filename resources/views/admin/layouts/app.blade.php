@@ -469,22 +469,36 @@
     </a>
     @endif
 
-    <!-- Integrations -->
-    <a href="{{ route('admin.integrations') }}"
-       class="sb-item {{ request()->routeIs('admin.integrations*') ? 'active' : '' }}">
-        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"/></svg>
-        <span class="sb-item-text">{{ __('nav.integrations') }}</span>
+    <!-- Weboldal -->
+    <a href="{{ route('admin.website') }}"
+       class="sb-item {{ request()->routeIs('admin.website') ? 'active' : '' }}">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+        <span class="sb-item-text">Weboldal</span>
     </a>
 
-    @if(auth()->user()->isStrictAdmin())
-    <!-- Webhooks -->
-    <a href="{{ route('admin.webhooks.index') }}"
-       class="sb-item {{ request()->routeIs('admin.webhooks.*') ? 'active' : '' }}">
-        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-        <span class="sb-item-text">{{ __('nav.webhooks') }}</span>
-        <span class="sb-item-badge" style="background:rgba(255,255,255,0.1); color:#c8cedf;">{{ \App\Models\Webhook::count() }}</span>
-    </a>
-    @endif
+    @php
+        $integrationsOpen = request()->routeIs('admin.integrations*') || request()->routeIs('admin.webhooks.*');
+    @endphp
+    <!-- Integrációk + Webhookok csoport -->
+    <div class="sb-item {{ $integrationsOpen ? 'open' : '' }}"
+         onclick="toggleMenu('sub-integrations')">
+        <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"/></svg>
+        <span class="sb-item-text">{{ __('nav.integrations') }}</span>
+        <svg class="sb-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </div>
+    <div class="sb-sub {{ $integrationsOpen ? 'open' : '' }}" id="sub-integrations">
+        <a href="{{ route('admin.integrations') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.integrations*') ? 'active' : '' }}">
+            {{ __('nav.integrations') }}
+        </a>
+        @if(auth()->user()->isStrictAdmin())
+        <a href="{{ route('admin.webhooks.index') }}"
+           class="sb-sub-item {{ request()->routeIs('admin.webhooks.*') ? 'active' : '' }}">
+            {{ __('nav.webhooks') }}
+            <span class="sb-item-badge" style="background:rgba(255,255,255,0.1);color:#c8cedf;margin-left:auto">{{ \App\Models\Webhook::count() }}</span>
+        </a>
+        @endif
+    </div>
 
     <!-- Changelog -->
     <a href="{{ route('admin.changelog') }}"

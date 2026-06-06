@@ -492,13 +492,11 @@
            class="sb-sub-item {{ request()->routeIs('admin.integrations*') ? 'active' : '' }}">
             {{ __('nav.integrations') }}
         </a>
-        @if(auth()->user()->isStrictAdmin())
         <a href="{{ route('admin.webhooks.index') }}"
            class="sb-sub-item {{ request()->routeIs('admin.webhooks.*') ? 'active' : '' }}">
             {{ __('nav.webhooks') }}
             <span class="sb-item-badge" style="background:rgba(255,255,255,0.1);color:#c8cedf;margin-left:auto">{{ \App\Models\Webhook::count() }}</span>
         </a>
-        @endif
     </div>
 
     <!-- Changelog -->

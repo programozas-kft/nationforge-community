@@ -4,8 +4,29 @@ $locale = in_array(app()->getLocale(), ['hu', 'en', 'de', 'ro', 'sk']) ? app()->
 $versions = [
 
     [
-        'version' => 'v1.29.0',
+        'version' => 'v1.30.0',
         'latest'  => true,
+        'badge'   => [
+            'text'  => ['hu' => 'UX fejlesztés', 'en' => 'UX improvement', 'de' => 'UX-Verbesserung', 'ro' => 'Îmbunătățire UX', 'sk' => 'UX vylepšenie'],
+            'style' => 'background:rgba(64,81,137,0.1);color:#405189;',
+        ],
+        'date' => ['hu' => '2026. június 6.', 'en' => 'June 6, 2026', 'de' => '6. Juni 2026', 'ro' => '6 iunie 2026', 'sk' => '6. júna 2026'],
+        'items' => [
+            ['hu' => '<strong>Weboldal menüpont — önálló oldal a Beállítások helyett:</strong> A nyilvános főoldal tartalmának szerkesztése (főcím, hero kép, bemutatkozás, „Kinek segítesz?", problémák, szolgáltatások, időpontfoglalás, esemény- és visszajelzés-megjelenítés) kikerült a Beállítások oldalból és egy dedikált <em>Weboldal</em> menüpontba lett áthelyezve az oldalsávban (földgömb ikon). Elérhető: <code>/admin/website</code>.',
+             'en'  => '<strong>Website menu item — dedicated page instead of Settings:</strong> The public homepage content editor (hero title, hero image, intro, who-section, problems, services, booking, events and testimonials toggles) has been moved out of the Settings page into a dedicated <em>Website</em> menu item in the sidebar (globe icon). Available at <code>/admin/website</code>.',
+             'de'  => '<strong>Webseiten-Menüpunkt — dedizierte Seite statt Einstellungen:</strong> Der Editor für den öffentlichen Startseiten-Inhalt (Hero-Titel, Hero-Bild, Einleitung, Zielgruppen-Bereich, Probleme, Dienstleistungen, Terminbuchung, Veranstaltungs- und Testimonial-Umschalter) wurde aus der Einstellungsseite in einen dedizierten <em>Webseite</em>-Menüpunkt in der Seitenleiste (Globus-Symbol) verlagert. Erreichbar unter <code>/admin/website</code>.',
+             'ro'  => '<strong>Element de meniu Website — pagină dedicată în loc de Setări:</strong> Editorul de conținut al paginii principale publice (titlu hero, imagine hero, introducere, secțiunea „Pentru cine ajuți?", probleme, servicii, programare, comutatoare pentru evenimente și testimoniale) a fost mutat din pagina Setări într-un element de meniu dedicat <em>Website</em> în bara laterală (iconiță glob). Disponibil la <code>/admin/website</code>.',
+             'sk'  => '<strong>Položka menu Webstránka — dedikovaná stránka namiesto Nastavení:</strong> Editor obsahu verejnej hlavnej stránky (hero nadpis, hero obrázok, úvod, sekcia „Komu pomáhaš?", problémy, služby, rezervácia, prepínače udalostí a referencií) bol presunutý zo stránky Nastavenia do dedikovanej položky menu <em>Webstránka</em> v bočnom paneli (ikona glóbusu). Dostupné na <code>/admin/website</code>.'],
+            ['hu' => '<strong>Integrációk + Webhook-ok összevonása kinyitható csoportba:</strong> Az oldalsávban az <em>Integrációk</em> és <em>Webhook-ok</em> menüpontok egyetlen kinyitható csoportba lettek összevonva. A fejlécre kattintva az almenü kinyílik és megjeleníti a két alpontot — az aktív aloldal automatikusan nyitva tartja a csoportot.',
+             'en'  => '<strong>Integrations + Webhooks grouped into a collapsible section:</strong> In the sidebar, the <em>Integrations</em> and <em>Webhooks</em> menu items have been merged into a single collapsible group. Clicking the group header opens the sub-menu and displays both items — the active sub-page keeps the group expanded automatically.',
+             'de'  => '<strong>Integrationen + Webhooks in eine ausklappbare Gruppe zusammengefasst:</strong> In der Seitenleiste wurden die Menüpunkte <em>Integrationen</em> und <em>Webhooks</em> in eine einzige ausklappbare Gruppe zusammengefasst. Ein Klick auf die Gruppenüberschrift öffnet das Untermenü und zeigt beide Einträge — die aktive Unterseite hält die Gruppe automatisch geöffnet.',
+             'ro'  => '<strong>Integrări + Webhook-uri grupate într-o secțiune pliabilă:</strong> În bara laterală, elementele de meniu <em>Integrări</em> și <em>Webhook-uri</em> au fost reunite într-un singur grup pliabil. Clic pe antetul grupului deschide submeniul și afișează ambele elemente — subpagina activă menține grupul extins automat.',
+             'sk'  => '<strong>Integrácie + Webhooky zoskupené do skladateľnej sekcie:</strong> V bočnom paneli boli položky menu <em>Integrácie</em> a <em>Webhooky</em> zlúčené do jedinej skladateľnej skupiny. Kliknutím na záhlavie skupiny sa otvorí podnabídka a zobrazia sa obe položky — aktívna podstránka udržuje skupinu automaticky rozbalenou.'],
+        ],
+    ],
+
+    [
+        'version' => 'v1.29.0',
         'badge'   => [
             'text'  => ['hu' => 'Fejlesztés', 'en' => 'Improvement', 'de' => 'Verbesserung', 'ro' => 'Îmbunătățire', 'sk' => 'Vylepšenie'],
             'style' => 'background:rgba(64,81,137,0.1);color:#405189;',

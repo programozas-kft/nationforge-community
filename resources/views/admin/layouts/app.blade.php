@@ -569,6 +569,12 @@
         </div>
         <div style="display:flex;align-items:center;gap:8px">
             @yield('header-actions')
+            <a href="{{ url('/') }}" target="_blank"
+               style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;border:1px solid #e9ebec;background:#f8f9fa;color:#495057;font-size:0.78rem;font-weight:500;text-decoration:none;white-space:nowrap;transition:background 0.15s"
+               onmouseover="this.style.background='#e9ebec'" onmouseout="this.style.background='#f8f9fa'">
+                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                Weboldal megtekintése
+            </a>
         </div>
     </header>
 

@@ -333,6 +333,10 @@
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         {{ __('nav.help') }}
     </a>
+    <a href="{{ url('/') }}" class="ql-link" title="Weboldal megtekintése" target="_blank" rel="noopener" style="margin-left:auto">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        Weboldal megtekintése
+    </a>
 </div>
 
 <!-- ── LAYOUT WRAPPER ────────────────────────────────────── -->
@@ -569,12 +573,6 @@
         </div>
         <div style="display:flex;align-items:center;gap:8px">
             @yield('header-actions')
-            <a href="{{ url('/') }}" target="_blank"
-               style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;border:1px solid #e9ebec;background:#f8f9fa;color:#495057;font-size:0.78rem;font-weight:500;text-decoration:none;white-space:nowrap;transition:background 0.15s"
-               onmouseover="this.style.background='#e9ebec'" onmouseout="this.style.background='#f8f9fa'">
-                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                Weboldal megtekintése
-            </a>
         </div>
     </header>
 

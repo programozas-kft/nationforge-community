@@ -481,7 +481,9 @@
     @endphp
     <!-- Integrációk + Webhookok csoport -->
     <div class="sb-item {{ $integrationsOpen ? 'open' : '' }}"
-         onclick="toggleMenu('sub-integrations')">
+         data-submenu="sub-integrations"
+         onclick="toggleMenu('sub-integrations')"
+         style="cursor:pointer">
         <svg class="sb-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"/></svg>
         <span class="sb-item-text">{{ __('nav.integrations') }}</span>
         <svg class="sb-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -606,14 +608,14 @@ var __nfMdTarget = null;
 document.addEventListener('mousedown', function(e) { __nfMdTarget = e.target; });
 
 function toggleMenu(id) {
-    const sub = document.getElementById(id);
-    const isOpen = sub.classList.contains('open');
-    // close all
+    const sub     = document.getElementById(id);
+    const trigger = document.querySelector('[data-submenu="' + id + '"]');
+    const isOpen  = sub.classList.contains('open');
     document.querySelectorAll('.sb-sub').forEach(el => el.classList.remove('open'));
-    document.querySelectorAll('.sb-item[onclick]').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('[data-submenu]').forEach(el => el.classList.remove('open'));
     if (!isOpen) {
         sub.classList.add('open');
-        sub.previousElementSibling.classList.add('open');
+        if (trigger) trigger.classList.add('open');
     }
 }
 </script>

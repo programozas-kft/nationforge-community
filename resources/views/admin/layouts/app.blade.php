@@ -126,12 +126,8 @@
         .sb-item.open .sb-arrow { transform: rotate(90deg); }
 
         /* Sub-menu */
-        .sb-sub {
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.25s ease;
-        }
-        .sb-sub.open { max-height: 500px; }
+        .sb-sub { display: none; }
+        .sb-sub.open { display: block; }
 
         .sb-sub-item {
             display: flex; align-items: center; gap: 8px;

@@ -12,9 +12,12 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\HelpController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\PublicWebController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn() => redirect('/web/'));
+// Public website
+Route::get('/', [PublicWebController::class, 'home'])->name('public.home');
+Route::get('/esemenyek', [PublicWebController::class, 'events'])->name('public.events');
 
 // iCal feed (Google Calendar / Apple Calendar / Outlook subscription)
 Route::get('/events.ics', [\App\Http\Controllers\IcalController::class, 'events'])->name('ical.events');
